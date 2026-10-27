@@ -245,7 +245,7 @@
         /* --- КОНФЕТТИ --- */
         .confetti { position: absolute; top: -20px; width: 12px; height: 18px; border-radius: 3px; opacity: 0.95; animation: confettiFall linear forwards; }
         @keyframes confettiFall {
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -601,6 +601,57 @@
         }
         @keyframes logoFloat { from { transform: translateY(0) rotate(-1deg); } to { transform: translateY(-6px) rotate(1deg); } }
         .subtitle { text-align: center; font-weight: 800; color: #6b63a0; margin-top: -18px; margin-bottom: 20px; font-size: 17px; }
+
+        /* --- ПЕРЕКЛЮЧАТЕЛЬ ПРЕДМЕТОВ (математика / буквы) --- */
+        .subject-switcher { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+        .subj-btn {
+            padding: 11px 26px; border-radius: 999px; font-size: 19px; font-weight: 900; cursor: pointer;
+            background: linear-gradient(180deg, #fff, #eceaf7); color: #6b63a0; border: 3px solid #cfc6ea; box-shadow: 0 5px 0 #c3b8e6;
+            transition: transform 0.15s; font-family: 'Baloo 2', cursive;
+        }
+        .subj-btn:hover { transform: scale(1.07) rotate(-1deg); }
+        .subj-btn.active-math   { background: linear-gradient(180deg, #ffd3a8, #ffab5e); color: #a3540a; border-color: #ff9e2f; box-shadow: 0 5px 0 #d97b12; }
+        .subj-btn.active-letters{ background: linear-gradient(180deg, #ffb8dd, #ff8fc0); color: #a3205e; border-color: #ff6b9d; box-shadow: 0 5px 0 #d84470; }
+
+        /* --- БУКВОЗНАЙКА: крупные буквы --- */
+        .letter-big {
+            width: 84px; height: 84px; border-radius: 22px; display: flex; align-items: center; justify-content: center;
+            font-family: 'Baloo 2', cursive; font-size: 52px; font-weight: 800; color: white;
+            text-shadow: 0 3px 5px rgba(0,0,0,0.25);
+            box-shadow: 0 7px 0 var(--shadow-c), inset 0 -5px 10px rgba(0,0,0,0.15), inset 0 5px 8px rgba(255,255,255,0.35);
+            border: 4px solid rgba(255,255,255,0.8); margin: 0 6px;
+        }
+        .lb-0 { --shadow-c: #d84470; background: linear-gradient(160deg, #ff9db8, #ff6b93); }
+        .lb-1 { --shadow-c: #2b8cc4; background: linear-gradient(160deg, #8ddcff, #45b6ef); }
+        .lb-2 { --shadow-c: #d99a12; background: linear-gradient(160deg, #ffe28a, #ffc23d); }
+        .lb-3 { --shadow-c: #7a44d4; background: linear-gradient(160deg, #c9a6ff, #a06bff); }
+        .lb-4 { --shadow-c: #35a046; background: linear-gradient(160deg, #9df0a1, #4cbf5f); }
+        .lb-ghost { opacity: 0.4; filter: grayscale(0.6); animation: ghostPulse 1.2s infinite alternate; }
+        @keyframes ghostPulse { from { opacity: 0.25; } to { opacity: 0.6; } }
+        .letter-gap { width: 34px; border-bottom: 6px dotted #b9b1d8; height: 84px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #b9b1d8; font-weight: 900; margin: 0 2px; }
+        .word-pics { font-size: 46px; letter-spacing: 8px; margin: 6px 0 14px; min-height: 56px; text-align: center; line-height: 1.2; }
+        .word-pics .wp-word { display: inline-block; animation: popWord 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes popWord { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .btn-option.letter-btn { font-size: 42px; padding: 10px; }
+        .btn-option.word-btn { font-size: 30px; letter-spacing: 3px; }
+        .options-grid.wide { max-width: 520px; }
+        .lesson-intro { font-size: 22px; font-weight: 900; color: #6b63a0; text-align: center; margin-bottom: 10px; line-height: 1.4; }
+        body[data-theme="night"] .lesson-intro, body[data-theme="space"] .lesson-intro { color: #bfe0ff; }
+        body[data-theme="night"] .letter-gap, body[data-theme="space"] .letter-gap { border-bottom-color: #5a6ac0; color: #5a6ac0; }
+
+        /* --- МУЗЫКАЛЬНАЯ КНОПКА --- */
+        #music-btn {
+            position: fixed; top: 118px; right: 20px; z-index: 100; cursor: pointer;
+            background: linear-gradient(180deg, #ffe6f4, #ffc9e6);
+            padding: 8px 18px; border-radius: 999px;
+            font-size: 18px; font-weight: 900; color: #b0246e;
+            box-shadow: 0 5px 0 rgba(176,36,110,0.25), 0 8px 20px rgba(0,0,0,0.1);
+            border: 3px solid #ff8fc0; user-select: none; transition: transform 0.15s;
+        }
+        #music-btn:hover { transform: scale(1.07) rotate(2deg); }
+        #music-btn.muted { background: linear-gradient(180deg, #eee, #ddd); color: #999; border-color: #bbb; box-shadow: 0 5px 0 rgba(0,0,0,0.12); }
+        .note-float { position: absolute; font-size: 26px; animation: noteUp 2.2s ease-out forwards; pointer-events: none; }
+        @keyframes noteUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-90px) scale(1.3) rotate(20deg); } }
     </style>
 </head>
 <body>
@@ -613,6 +664,7 @@
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
     <div id="top-bar"><span id="coin-icon">🪙</span> <span id="coin-display">0</span></div>
     <div id="timer-box">⏱️ <span id="timer-display">0:00</span></div>
+    <div id="music-btn" title="Тихая фоновая песенка">🎵 Песенка</div>
 
     <div id="map-screen" class="screen active">
         <div class="character-container">
@@ -620,7 +672,8 @@
             <div class="speech-bubble" id="speech-text">Привет! Выбирай урок на тропинке!</div>
         </div>
         <h1 class="logo-title">🌈 Тропинка Знаний ✨</h1>
-        <div class="subtitle">Учимся считать играя! 🎈</div>
+        <div class="subtitle" id="map-subtitle">Учимся считать и читать играя! 🎈</div>
+        <div class="subject-switcher" id="subject-switcher"></div>
         <div class="module-switcher" id="module-switcher"></div>
         <div class="module-banner mb-1" id="module-banner">☀️ МОДУЛЬ 1 · Солнечная поляна</div>
         <div class="map-wrap">
@@ -638,10 +691,12 @@
 
         <div class="game-board">
             <div class="progress-dots" id="progress-dots"></div>
+            <div class="lesson-intro" id="lesson-intro" style="display:none;"></div>
+            <div class="word-pics" id="word-pics" style="display:none;"></div>
             <div class="visual-aid" id="visual-aid"></div>
             <div class="question-display" id="question-text">1 + 1 = ?</div>
             <div class="options-grid" id="options-container"></div>
-            <button class="btn-help" onmouseenter="playSound('hover')" onclick="showHint()">💡 Помоги мне посчитать!</button>
+            <button class="btn-help" id="hint-btn" onmouseenter="playSound('hover')" onclick="showHint()">💡 Помоги мне посчитать!</button>
         </div>
 
         <button class="btn-nav" onmouseenter="playSound('hover')" onclick="backToMap()">🏡 Назад на тропинку</button>
@@ -808,24 +863,85 @@
             { id: 19, title: "9", max: 20, type: 'mix' },
             { id: 20, title: "👑", max: 20, type: 'mix' }
         ];
-        const MODULES = [
+        const MODULES_MATH = [
             { num: 1, name: 'Солнечная поляна', icon: '☀️', cls: 'mb-1', lessons: lessons1 },
             { num: 2, name: 'Лунная долина',    icon: '🌙', cls: 'mb-2', lessons: lessons2 }
+        ];
+
+        // ================= БУКВОЗНАЙКА (азбука в двух модулях) =================
+        // Каждая буква: слово + картинки-подсказки — ребёнок ПОНИМАЕТ букву через слова, а не зубрит
+        const LETTER_DATA = {
+            'А': { word: 'арбуз', pics: '🍉' },   'Б': { word: 'барабан', pics: '🥁' },
+            'В': { word: 'воробей', pics: '🐦' },  'Г': { word: 'гриб', pics: '🍄' },
+            'Д': { word: 'дом', pics: '🏠' },      'Е': { word: 'енот', pics: '🦝' },
+            'Ё': { word: 'ёлочка', pics: '🎄' },    'Й': { word: 'йогурт', pics: '🥛' },
+            'Ж': { word: 'жираф', pics: '🦒' },    'З': { word: 'зайчик', pics: '🐰' },
+            'И': { word: 'игрушки', pics: '🧸' },  'К': { word: 'котёнок', pics: '🐱' },
+            'Л': { word: 'лыжи', pics: '⛷️🎿' },   'М': { word: 'машина', pics: '🚗' },
+            'Н': { word: 'носорог', pics: '🦏' },  'О': { word: 'обезьянка', pics: '🐵' },
+            'П': { word: 'пингвин', pics: '🐧' },  'Р': { word: 'ракета', pics: '🚀' },
+            'С': { word: 'слон', pics: '🐘' },     'Т': { word: 'тигр', pics: '🐯' },
+            'У': { word: 'утка', pics: '🦆' },     'Ф': { word: 'фонарик', pics: '🔦' },
+            'Х': { word: 'хомяк', pics: '🐹' },    'Ц': { word: 'циркуль', pics: '🎪' },
+            'Ч': { word: 'чайник', pics: '🫖' },   'Ш': { word: 'шапка', pics: '🧢' },
+            'Щ': { word: 'щенок', pics: '🐶' },    'Э': { word: 'электровоз', pics: '🚃' },
+            'Ы': { word: 'рысь', pics: '🐈' },      'Ь': { word: 'письмо', pics: '✉️' },
+            'Ъ': { word: 'подъезд', pics: '🚪' },   'Ю': { word: 'юла', pics: '🌀' },      'Я': { word: 'яблоко', pics: '🍎' }
+        };
+        // Модуль 1 — весёлые буквы: сначала знакомство, потом поиск и сборка слов (максимально просто!)
+        const letterLessons1 = [
+            { id: 1,  title: '🌟', type: 'intro', letters: ['А','У','М'] },
+            { id: 2,  title: '1',  type: 'find', pool: ['А','У','М','О','Х'] },
+            { id: 3,  title: '2',  type: 'first', pool: ['А','У','М','О','Х'] },
+            { id: 4,  title: '3',  type: 'word', words: ['МАМА','МУХА','СОКИ','УДАВ'] },
+            { id: 5,  title: '4',  type: 'find', pool: ['Н','Р','С','Т','К','А','У','М','О'] },
+            { id: 6,  title: '5',  type: 'first', pool: ['Н','Р','С','Т','К','А','У','М','О'] },
+            { id: 7,  title: '6',  type: 'word', words: ['НОС','РУКА','УХО','ТОРТ'] },
+            { id: 8,  title: '7',  type: 'find', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] },
+            { id: 9,  title: '8',  type: 'first', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] },
+            { id: 10, title: '🏆', type: 'word', words: ['ЛИСА','КОЗА','КНИГА','МАЛЬВА'] }
+        ];
+        // Модуль 2 — буквы посерьёзнее, открывается после всего модуля 1
+        const letterLessons2 = [
+            { id: 11, title: '🌟', type: 'intro', letters: ['Ё','Ж','Й','Ц','Ч','Щ','Э','Ю','Я','Ы','Ь','Ъ'] },
+            { id: 12, title: '1',  type: 'find', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'] },
+            { id: 13, title: '2',  type: 'first', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ы','Э','Ю','Я'] },
+            { id: 14, title: '3',  type: 'word', words: ['ЕЖИК','ЁРШИК','ЧАЙ','ЮЛА'] },
+            { id: 15, title: '4',  type: 'find', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] },
+            { id: 16, title: '5',  type: 'first', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] },
+            { id: 17, title: '6',  type: 'word', words: ['Флаг'.toUpperCase(),'ЗАБОР','ХИТРИНА','ВОДА'] },
+            { id: 18, title: '7',  type: 'find', pool: Object.keys(LETTER_DATA) },
+            { id: 19, title: '8',  type: 'first', pool: Object.keys(LETTER_DATA) },
+            { id: 20, title: '👑', type: 'word', words: ['РАКЕТА','ЩИТУХА','ЦЫПЛЁНОК','ЯГОДА'] }
+        ];
+        const MODULES_LETTERS = [
+            { num: 1, name: 'Весёлые буквы',    icon: '🌈', cls: 'mb-1', lessons: letterLessons1 },
+            { num: 2, name: 'Взрослая азбука',  icon: '📚', cls: 'mb-2', lessons: letterLessons2 }
         ];
 
         // --- СОСТОЯНИЕ ---
         let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
         let currentPetId = localStorage.getItem('mathPet') || 'bear';
         let ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear'];
-        let unlockedLevel = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1; // глобальный уровень 1..20
-        let levelStars = JSON.parse(localStorage.getItem('mathLevelStars')) || {};
-        let bestTimes = JSON.parse(localStorage.getItem('mathBestTimes')) || {};
         let currentTheme = localStorage.getItem('mathTheme') || 'meadow';
         let ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow'];
-        let currentModule = (parseInt(localStorage.getItem('mathUnlockedLevel')) || 1) >= 11 ? 2 : 1;
-        if (currentModule === 2 && (parseInt(localStorage.getItem('mathUnlockedLevel')) || 1) < 11) currentModule = 1;
+        // Прогресс по предметам: математика (глобальный уровень 1..20) и буквы (1..20)
+        let mathUnlocked = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1; // совместимость со старым сохранением
+        let letterUnlocked = parseInt(localStorage.getItem('letUnlockedLevel')) || 1;
+        let levelStars = JSON.parse(localStorage.getItem('mathLevelStars')) || {};   // ключи: "m5", "l12"
+        let bestTimes = JSON.parse(localStorage.getItem('mathBestTimes')) || {};
+        let currentSubject = localStorage.getItem('tkSubject') || 'math';           // 'math' | 'letters'
+        let currentModule = 1;
         let shopTab = 'pets';
         let currentPetName = "Мишутка";
+
+        function getModules() { return currentSubject === 'math' ? MODULES_MATH : MODULES_LETTERS; }
+        function unlockedForSubject() { return currentSubject === 'math' ? mathUnlocked : letterUnlocked; }
+        function setUnlocked(v) {
+            if (currentSubject === 'math') { mathUnlocked = v; localStorage.setItem('mathUnlockedLevel', v); }
+            else { letterUnlocked = v; localStorage.setItem('letUnlockedLevel', v); }
+        }
+        function starKey(lvl) { return (currentSubject === 'math' ? 'm' : 'l') + lvl; }
 
         // --- ЭЛЕМЕНТЫ ---
         const coinDisplay = document.getElementById('coin-display');
@@ -907,6 +1023,77 @@
             }
         }
 
+        // --- ТИХАЯ ФОНОВАЯ ПЕСЕНКА (колыбельная-мотивик, Web Audio) ---
+        let musicOn = localStorage.getItem('tkMusic') !== 'off';
+        let musicTimer = null, musicStep = 0;
+        // Мелодия: до-мажорная лесенка с мягким ритмом (ноты в Гц, 0 = пауза)
+        const MELODY = [523.25,659.25,783.99,659.25, 523.25,587.33,659.25,0, 587.33,698.46,880,698.46, 587.33,659.25,523.25,0];
+        const BASS   = [261.63,0,196,0, 261.63,0,174.61,0, 220,0,174.61,0, 196,0,261.63,0];
+        function musicTick() {
+            if (!audioCtx || !musicOn) return;
+            const now = audioCtx.currentTime;
+            const i = musicStep % MELODY.length;
+            // Мягкий основной голос
+            if (MELODY[i] > 0) {
+                const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+                o.type = 'triangle'; o.frequency.value = MELODY[i];
+                g.gain.setValueAtTime(0.0001, now);
+                g.gain.exponentialRampToValueAtTime(0.045, now + 0.06);
+                g.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+                o.connect(g); g.connect(audioCtx.destination);
+                o.start(now); o.stop(now + 0.6);
+            }
+            // Тихий бас-подпевка
+            if (BASS[i] > 0) {
+                const o2 = audioCtx.createOscillator(), g2 = audioCtx.createGain();
+                o2.type = 'sine'; o2.frequency.value = BASS[i];
+                g2.gain.setValueAtTime(0.0001, now);
+                g2.gain.exponentialRampToValueAtTime(0.03, now + 0.08);
+                g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.7);
+                o2.connect(g2); g2.connect(audioCtx.destination);
+                o2.start(now); o2.stop(now + 0.75);
+            }
+            musicStep++;
+        }
+        function startMusic() {
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (musicTimer) clearInterval(musicTimer);
+            musicStep = 0;
+            musicTick();
+            musicTimer = setInterval(musicTick, 620);
+            const mb = document.getElementById('music-btn');
+            mb.classList.remove('muted'); mb.innerHTML = '🎵 Песенка';
+            floatNotes(mb);
+        }
+        function stopMusic() {
+            if (musicTimer) clearInterval(musicTimer);
+            musicTimer = null;
+            const mb = document.getElementById('music-btn');
+            mb.classList.add('muted'); mb.innerHTML = '🔇 Тишина';
+        }
+        function toggleMusic() {
+            musicOn = !musicOn;
+            localStorage.setItem('tkMusic', musicOn ? 'on' : 'off');
+            if (musicOn) startMusic(); else stopMusic();
+        }
+        function floatNotes(el) {
+            const notes = ['🎵','🎶','🎼','🎤'];
+            for (let k = 0; k < 3; k++) {
+                const n = document.createElement('div');
+                n.className = 'note-float';
+                n.textContent = notes[Math.floor(Math.random()*notes.length)];
+                n.style.left = (Math.random()*70) + 'px';
+                n.style.top = '-6px';
+                n.style.animationDelay = (k*0.35)+'s';
+                el.appendChild(n);
+                setTimeout(() => n.remove(), 2600);
+            }
+        }
+        document.getElementById('music-btn').addEventListener('click', (e) => { e.stopPropagation(); playSound('click'); toggleMusic(); });
+        // Первый клик по странице разблокирует аудио и тихо включает песенку
+        document.body.addEventListener('click', () => { initAudio(); if (musicOn && !musicTimer) startMusic(); }, { once: true });
+
         function say(text) {
             const activeScreen = document.querySelector('.screen.active');
             if (activeScreen && activeScreen.id === 'game-screen') {
@@ -941,13 +1128,17 @@
             const container = document.getElementById('map-container');
             container.innerHTML = '';
 
-            // Переключатель модулей и баннер
+            // Переключатели предмета и модулей + баннер
+            renderSubjectSwitcher();
             renderModuleSwitcher();
-            const mod = MODULES[currentModule - 1];
+            const mod = getModules()[currentModule - 1];
             const banner = document.getElementById('module-banner');
             banner.className = 'module-banner ' + mod.cls;
             banner.textContent = `${mod.icon} МОДУЛЬ ${mod.num} · ${mod.name}`;
+            document.getElementById('map-subtitle').textContent = currentSubject === 'math'
+                ? 'Учимся считать играя! 🎈' : 'Учим буквы играя — без зубрёжки! 🎈';
 
+            const unlocked = unlockedForSubject();
             mod.lessons.forEach((lesson, index) => {
                 const globalLevel = (currentModule - 1) * 10 + index + 1;
                 const node = document.createElement('div');
@@ -956,12 +1147,12 @@
                 node.classList.add('node-c' + ((currentModule === 2 ? (index + 2) % 5 : index % 5)));
                 node.dataset.level = globalLevel;
 
-                const stars = levelStars[globalLevel] || 0;
-                if (globalLevel < unlockedLevel) {
+                const stars = levelStars[starKey(globalLevel)] || 0;
+                if (globalLevel < unlocked) {
                     node.classList.add('completed');
                     node.innerHTML = '<span>' + lesson.title + '</span><div class="node-stars">' + ('⭐'.repeat(stars) || '✅') + '</div>';
                     node.onclick = () => startLesson(lesson, index + 1);
-                } else if (globalLevel === unlockedLevel) {
+                } else if (globalLevel === unlocked) {
                     node.classList.add('current');
                     node.innerHTML = '<span>' + lesson.title + '</span><div class="node-stars">▶️</div>';
                     node.onclick = () => startLesson(lesson, index + 1);
@@ -987,6 +1178,7 @@
             svg.setAttribute('height', wRect.height);
             svg.innerHTML = '';
 
+            const unlocked = unlockedForSubject();
             const nodes = [...document.querySelectorAll('.map-node')];
             const pts = nodes.map(n => ({ x: n.offsetLeft + n.offsetWidth / 2, y: n.offsetTop + n.offsetHeight / 2 }));
 
@@ -996,11 +1188,11 @@
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', `M ${a.x} ${a.y} C ${a.x} ${midY}, ${b.x} ${midY}, ${b.x} ${b.y}`);
                 path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', i + 1 < unlockedLevel ? '#e8b04a' : '#c9c3dd');
+                path.setAttribute('stroke', i + 1 < unlocked ? '#e8b04a' : '#c9c3dd');
                 path.setAttribute('stroke-width', '7');
                 path.setAttribute('stroke-linecap', 'round');
                 path.setAttribute('stroke-dasharray', '1 16');
-                path.setAttribute('opacity', i + 1 < unlockedLevel ? '0.9' : '0.5');
+                path.setAttribute('opacity', i + 1 < unlocked ? '0.9' : '0.5');
                 svg.appendChild(path);
             }
         }
@@ -1091,11 +1283,13 @@
 
         // --- ИГРОВАЯ ЛОГИКА ---
         let currentLessonObj = null;
-        let correctAnswer = 0;
+        let correctAnswer = 0;          // матеша: число; буквы: буква или индекс слова
+        let correctWordIdx = -1;        // для типа 'word' — индекс выбранного слова
         let questionCount = 0;
         const QUESTIONS_PER_LESSON = 5;
         let lessonCorrectCount = 0;
         let wrongAttempts = 0;
+        let hintUsed = false;           // подсказка не штрафуется, но запоминается
 
         let num1 = 0, num2 = 0, op = '+';
 
@@ -1105,10 +1299,15 @@
             questionCount = 0;
             lessonCorrectCount = 0;
             wrongAttempts = 0;
+            hintUsed = false;
 
             switchScreen('game-screen');
             startTimer();
-            say([`Урок ${levelIndex}! Поехали! 🚀`, `Урок ${levelIndex}. Давай учиться!`, `Время математики! Урок ${levelIndex} ✨`][Math.floor(Math.random() * 3)]);
+            if (currentSubject === 'math') {
+                say([`Урок ${levelIndex}! Поехали! 🚀`, `Урок ${levelIndex}. Давай учиться!`, `Время математики! Урок ${levelIndex} ✨`][Math.floor(Math.random() * 3)]);
+            } else {
+                say([`Буквознайка! Урок ${levelIndex} 🌟`, `Тут ${currentPetName} учит тебя буквам!`, `Не зубри — играй! Поехали! 🎈`][Math.floor(Math.random() * 3)]);
+            }
             generateQuestion();
         }
 
@@ -1131,22 +1330,58 @@
 
         function showHint() {
             playSound('click');
-            const container = document.getElementById('visual-aid');
-            container.innerHTML = '';
+            hintUsed = true;
+            if (currentSubject === 'math') {
+                // НОВАЯ ПОДСКАЗКА: не путаем цифрами над яблоками, а показываем ЧИСТЫЙ счёт —
+                // ребёнок сам считает пальчиком по ряду, числа растут ПОД рядами, без лишних знаков.
+                const container = document.getElementById('visual-aid');
+                container.innerHTML = '';
+                say(op === '+' ? `Сложи всё в один ряд и посчитай!` : `Убрали ${num2} — посчитай, сколько осталось!`);
 
-            say(`Считай пальчиком!`);
+                const row1 = document.createElement('div'); row1.classList.add('group');
+                for (let i = 0; i < num1; i++) row1.innerHTML += '🍎';
+                const lbl1 = document.createElement('div'); lbl1.style.cssText = 'font-size:22px;font-weight:900;color:#2f9fd8;width:100%;text-align:center;'; lbl1.textContent = num1;
+                const opEl = document.createElement('div'); opEl.classList.add('operator'); opEl.textContent = op;
+                const row2 = document.createElement('div'); row2.classList.add('group');
+                for (let i = 0; i < num2; i++) row2.innerHTML += '🍎';
+                const lbl2 = document.createElement('div'); lbl2.style.cssText = 'font-size:22px;font-weight:900;color:#e0559a;width:100%;text-align:center;'; lbl2.textContent = num2;
 
-            const group1 = document.createElement('div'); group1.classList.add('group');
-            for(let i=1; i<=num1; i++) group1.innerHTML += `<div style="display:flex; flex-direction:column; align-items:center; font-size:20px; margin: 2px;">${i}🍎</div>`;
+                if (op === '-') row2.classList.add('crossed');
+                const wrap1 = document.createElement('div'); wrap1.style.cssText = 'display:flex;flex-direction:column;align-items:center;';
+                wrap1.appendChild(row1); wrap1.appendChild(lbl1);
+                const wrap2 = document.createElement('div'); wrap2.style.cssText = 'display:flex;flex-direction:column;align-items:center;';
+                wrap2.appendChild(row2); wrap2.appendChild(lbl2);
+                container.appendChild(wrap1); container.appendChild(opEl); container.appendChild(wrap2);
+            } else {
+                // Подсказка для букв: НЕ даёт ответа, а помогает УВИДЕТЬ нужную букву
+                letterHint();
+            }
+        }
 
-            const opEl = document.createElement('div'); opEl.classList.add('operator'); opEl.textContent = op;
-
-            const group2 = document.createElement('div'); group2.classList.add('group');
-            for(let i=1; i<=num2; i++) group2.innerHTML += `<div style="display:flex; flex-direction:column; align-items:center; font-size:20px; margin: 2px;">${i}🍎</div>`;
-
-            if(op === '-') group2.style.opacity = '0.3';
-
-            container.appendChild(group1); container.appendChild(opEl); container.appendChild(group2);
+        // --- ПОДСКАЗКИ ДЛЯ БУКВ: мягкие, не запутывают ---
+        function letterHint() {
+            const t = currentLessonObj.type;
+            if (t === 'find') {
+                // Находим букву в слове-картинке: слово с выделенной первой буквой
+                const d = LETTER_DATA[correctAnswer];
+                document.getElementById('word-pics').innerHTML =
+                    `<span class="wp-word">🔎 <b style="color:#e0559a">${correctAnswer}</b>${d.word.slice(1)}</span>`;
+                say(`Видишь? Это «${d.word}» ${d.pics}. Найди такую же букву!`);
+            } else if (t === 'first') {
+                // Первая буква: картинка + слово, первая буква спрятана
+                const d = LETTER_DATA[correctAnswer];
+                document.getElementById('word-pics').innerHTML =
+                    `<span class="wp-word">${d.pics} <b style="color:#e0559a">❓</b>${d.word.slice(1)}</span>`;
+                say(`«${d.word}» начинается вот с этой буквы — сравни варианты!`);
+            } else if (t === 'word') {
+                // Собери слово: показываем картинки и начало слова
+                const w = currentLessonObj.words[correctWordIdx];
+                const pics = w.split('').map(ch => LETTER_DATA[ch] ? LETTER_DATA[ch].pics : '❓').join(' ');
+                document.getElementById('word-pics').innerHTML = `<span class="wp-word">${pics}</span>`;
+                say(`Начинается на «${w[0]}…» — собери слово целиком!`);
+            } else if (t === 'intro') {
+                say(`Смотри на большую букву и слушай слово: «${LETTER_DATA[correctAnswer].word}»!`);
+            }
         }
 
         function renderProgressDots() {
@@ -1162,6 +1397,22 @@
         function generateQuestion() {
             if (questionCount >= QUESTIONS_PER_LESSON) { finishLesson(); return; }
             renderProgressDots();
+
+            // Сброс вспомогательных зон
+            const introEl = document.getElementById('lesson-intro');
+            const picsEl = document.getElementById('word-pics');
+            const vaEl = document.getElementById('visual-aid');
+            const optEl = document.getElementById('options-container');
+            const qEl = document.getElementById('question-text');
+            const hintBtn = document.getElementById('hint-btn');
+            introEl.style.display = 'none'; introEl.innerHTML = '';
+            picsEl.style.display = 'none'; picsEl.innerHTML = '';
+            vaEl.style.display = 'flex';
+            optEl.classList.remove('wide');
+            hintUsed = false;
+            hintBtn.textContent = currentSubject === 'math' ? '💡 Помоги мне посчитать!' : '💡 Помоги мне с буквой!';
+
+            if (currentSubject === 'letters') { generateLetterQuestion(); return; }
 
             let max = currentLessonObj.max;
             let type = currentLessonObj.type;
@@ -1185,8 +1436,8 @@
             correctAnswer = op === '+' ? num1 + num2 : num1 - num2;
             renderVisuals(num1, num2, op);
 
-            document.getElementById('question-text').textContent = `${num1} ${op} ${num2} = ?`;
-            const optContainer = document.getElementById('options-container'); optContainer.innerHTML = '';
+            qEl.textContent = `${num1} ${op} ${num2} = ?`;
+            optEl.innerHTML = ''; optEl.style.gridTemplateColumns = '';
 
             let options = [correctAnswer];
             while (options.length < 4) {
@@ -1201,10 +1452,108 @@
                 btn.textContent = opt;
                 btn.onmouseenter = () => playSound('hover');
                 btn.onclick = () => checkAnswer(opt, btn);
-                optContainer.appendChild(btn);
+                optEl.appendChild(btn);
             });
 
             document.getElementById('game-speech').textContent = `${currentPetName} просит: посчитай яблочки!`;
+        }
+
+        // ================= ВОПРОСЫ БУКВОЗНАЙКИ =================
+        // Принцип простоты: ОДИН большой объект на экране + 4 крупных варианта. Никаких лишних знаков.
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+        function makeLetterOptions(correct, pool, count = 4) {
+            const opts = [correct];
+            const similar = { 'И':'Ш','Ш':'И','Л':'М','М':'Л','Т':'Г','Г':'Т','Р':' Ы'.trim(),'В':'Б','Б':'В','Ь':'Ъ','Ъ':'Ь','Ы':'И','У':'Ц','Ч':'Ц','Е':'Э','Э':'Е','Ю':'Я','Я':'Ю' };
+            const near = similar[correct];
+            if (near && pool.includes(near) && !opts.includes(near)) opts.push(near);
+            while (opts.length < count) {
+                const c = pick(pool);
+                if (!opts.includes(c)) opts.push(c);
+            }
+            return shuffle(opts);
+        }
+
+        function renderLetterOptions(options, onPick) {
+            const optEl = document.getElementById('options-container');
+            optEl.innerHTML = '';
+            optEl.classList.add('wide');
+            const isWord = String(options[0]).length > 1;
+            if (isWord) optEl.style.gridTemplateColumns = `repeat(${Math.min(options.length, 2)}, 1fr)`;
+            else if (options.length === 3) optEl.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            else optEl.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            options.forEach((c, idx) => {
+                const btn = document.createElement('button');
+                btn.classList.add('btn-option', String(c).length > 1 ? 'word-btn' : 'letter-btn', 'opt-' + (idx % 4));
+                btn.textContent = c;
+                btn.onmouseenter = () => playSound('hover');
+                btn.onclick = () => onPick(c, btn);
+                optEl.appendChild(btn);
+            });
+        }
+
+        function generateLetterQuestion() {
+            const lesson = currentLessonObj;
+            const qEl = document.getElementById('question-text');
+            const vaEl = document.getElementById('visual-aid');
+            const introEl = document.getElementById('lesson-intro');
+            const picsEl = document.getElementById('word-pics');
+            const t = lesson.type;
+
+            if (t === 'intro') {
+                // Знакомство: большая буква + слово + картинка. Ответ: «какая это буква?» среди 3 вариантов
+                const letter = pick(lesson.letters);
+                correctAnswer = letter;
+                const d = LETTER_DATA[letter];
+                vaEl.style.display = 'none';
+                introEl.style.display = 'block';
+                introEl.innerHTML = `Это буква <span style="display:inline-block;font-size:64px;color:#e0559a;font-family:'Baloo 2',cursive;vertical-align:middle;margin:0 8px;">${letter}</span> ${d.pics}<br><span style="font-size:26px;color:#2f9fd8;">«${d.word}»</span>`;
+                qEl.textContent = 'Какая это буква?';
+                const others = shuffle(Object.keys(LETTER_DATA).filter(x => x !== letter)).slice(0, 2);
+                renderLetterOptions(shuffle([letter, ...others]), (c, btn) => checkAnswer(c, btn));
+                document.getElementById('game-speech').textContent = `Запомни: «${d.word}» начинается на ${letter}!`;
+            } else if (t === 'find') {
+                // Найди букву: показываем большую букву — найди её среди похожих
+                const letter = pick(lesson.pool);
+                correctAnswer = letter;
+                vaEl.style.display = 'none';
+                introEl.style.display = 'block';
+                introEl.innerHTML = `Найди такую же букву:<div class="letter-big lb-${Math.floor(Math.random()*5)}" style="margin:10px auto;">${letter}</div>`;
+                qEl.textContent = `${LETTER_DATA[letter].pics} ${LETTER_DATA[letter].word}`;
+                renderLetterOptions(makeLetterOptions(letter, lesson.pool), (c, btn) => checkAnswer(c, btn));
+                document.getElementById('game-speech').textContent = `Это ${LETTER_DATA[letter].word} ${LETTER_DATA[letter].pics}. Нажми на такую же букву!`;
+            } else if (t === 'first') {
+                // Какая буква начала слово: картинка + слово со спрятанной первой буквой
+                const letter = pick(lesson.pool);
+                correctAnswer = letter;
+                const d = LETTER_DATA[letter];
+                vaEl.style.display = 'none';
+                picsEl.style.display = 'block';
+                picsEl.innerHTML = `<span class="wp-word">${d.pics}</span>`;
+                qEl.innerHTML = `<span style="color:#e0559a;">❓</span>${d.word.slice(1).toUpperCase()}<span style="font-size:26px;color:#8a83b8;"> (${d.word})</span>`;
+                renderLetterOptions(makeLetterOptions(letter, lesson.pool), (c, btn) => checkAnswer(c, btn));
+                document.getElementById('game-speech').textContent = `Слово «${d.word}». С какой буквы оно начинается?`;
+            } else if (t === 'word') {
+                // Собери слово из букв (крупные плитки) — ребёнок ПОНIMAЕТ слово через картинки
+                const word = pick(lesson.words);
+                correctWordIdx = lesson.words.indexOf(word);
+                correctAnswer = word;
+                picsEl.style.display = 'block';
+                picsEl.innerHTML = `<span class="wp-word">${word.split('').map(ch => LETTER_DATA[ch] ? LETTER_DATA[ch].pics : '❓').join(' ')}</span>`;
+                vaEl.style.display = 'none';
+                qEl.textContent = word.replace(/./g, '❓ ');
+                // Варианты: перестановки букв слова
+                const opts = new Set([word]);
+                let guard = 0;
+                while (opts.size < Math.min(3, word.length) && guard < 60) {
+                    guard++;
+                    const shuffled = shuffle(word.split('')).join('');
+                    if (shuffled !== word) opts.add(shuffled);
+                }
+                renderLetterOptions(shuffle([...opts]), (c, btn) => checkAnswer(c, btn));
+                document.getElementById('game-speech').textContent = `Что за слово? Собери его из букв!`;
+            }
         }
 
         function checkAnswer(selected, btnElement) {
@@ -1230,7 +1579,12 @@
                 btnElement.classList.add('wrong-flash');
                 btnElement.dataset.dead = '1';
                 btnElement.style.pointerEvents = 'none';
-                say("Ой, не так. Нажми на лампочку 💡 — я помогу посчитать!");
+                if (currentSubject === 'letters') {
+                    const tries = ['Почти! Посмотри на большую букву ещё раз 👀', 'Не та буква — найди похожую!', 'Сравни варианты — нужная буква где-то тут!'];
+                    say(tries[Math.floor(Math.random()*tries.length)]);
+                } else {
+                    say("Ой, не так. Нажми на лампочку 💡 — покажу ряды без лишних цифр!");
+                }
 
                 setTimeout(() => {
                     allButtons.forEach(b => { if (!b.dataset.dead) b.style.pointerEvents = 'auto'; });
@@ -1251,35 +1605,36 @@
             // Звёзды за урок: 3 — без ошибок, 2 — 1-2 ошибки, 1 — больше
             const stars = wrongAttempts === 0 ? 3 : wrongAttempts <= 2 ? 2 : 1;
             const lvl = currentLessonObj.id;
-            if ((levelStars[lvl] || 0) < stars) {
-                levelStars[lvl] = stars;
+            const sKey = starKey(lvl);
+            if ((levelStars[sKey] || 0) < stars) {
+                levelStars[sKey] = stars;
                 localStorage.setItem('mathLevelStars', JSON.stringify(levelStars));
             }
 
-            // Рекорд времени урока
-            const prevBest = bestTimes[lvl];
+            // Рекорд времени урока (по предметам)
+            const tKey = sKey;
+            const prevBest = bestTimes[tKey];
             let recordText = '';
             if (prevBest === undefined || elapsed < prevBest) {
-                bestTimes[lvl] = elapsed;
+                bestTimes[tKey] = elapsed;
                 localStorage.setItem('mathBestTimes', JSON.stringify(bestTimes));
                 recordText = prevBest === undefined ? '' : ' 🏅 Новый рекорд скорости!';
             }
 
-            const wasMod2Locked = unlockedLevel <= 10;
-            if (unlockedLevel === lvl && unlockedLevel < 20) {
-                unlockedLevel++;
-                localStorage.setItem('mathUnlockedLevel', unlockedLevel);
+            const wasMod2Locked = unlockedForSubject() <= 10;
+            if (unlockedForSubject() === lvl && unlockedForSubject() < 20) {
+                setUnlocked(lvl + 1);
             }
 
             document.getElementById('reward-coins').textContent = earnedCoins;
             document.getElementById('time-result').innerHTML =
                 `⏱️ Время: <b>${fmtTime(elapsed)}</b>${recordText}` +
-                `<div class="best-time">🏁 Рекорд урока: ${fmtTime(bestTimes[lvl])}</div>`;
+                `<div class="best-time">🏁 Рекорд урока: ${fmtTime(bestTimes[tKey])}</div>`;
             document.getElementById('result-stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
 
             // Празднуем открытие Модуля 2!
             const unlockBanner = document.getElementById('unlock-banner');
-            if (wasMod2Locked && unlockedLevel === 11) {
+            if (wasMod2Locked && unlockedForSubject() === 11) {
                 unlockBanner.style.display = 'block';
                 setTimeout(() => launchConfetti(), 600);
             } else {
@@ -1381,12 +1736,32 @@
             jt.style.animation = 'none'; void jt.offsetWidth; jt.style.animation = '';
         }
 
-        // --- МОДУЛИ ---
-        function isModule2Open() { return unlockedLevel >= 11; }
+        // --- МОДУЛИ И ПРЕДМЕТЫ ---
+        function isModule2Open() { return unlockedForSubject() >= 11; }
+
+        function renderSubjectSwitcher() {
+            const sw = document.getElementById('subject-switcher'); sw.innerHTML = '';
+            [{id:'math', label:'🧮 Математика'}, {id:'letters', label:'🔤 Буквы'}].forEach(sdef => {
+                const b = document.createElement('div');
+                b.className = 'subj-btn' + (currentSubject === sdef.id ? (' active-' + (sdef.id === 'math' ? 'math' : 'letters')) : '');
+                b.textContent = sdef.label;
+                b.onmouseenter = () => playSound('hover');
+                b.onclick = () => {
+                    if (currentSubject === sdef.id) return;
+                    playSound('click');
+                    currentSubject = sdef.id;
+                    localStorage.setItem('tkSubject', currentSubject);
+                    currentModule = unlockedForSubject() >= 11 ? 2 : 1;
+                    say(currentSubject === 'math' ? "Ура, считалочки! 🧮" : "Ура, буквознайка! 🔤");
+                    renderMap();
+                };
+                sw.appendChild(b);
+            });
+        }
 
         function renderModuleSwitcher() {
             const sw = document.getElementById('module-switcher'); sw.innerHTML = '';
-            MODULES.forEach(m => {
+            getModules().forEach(m => {
                 const b = document.createElement('div');
                 b.className = 'mod-btn' + (currentModule === m.num ? ' active-mod' : '');
                 const locked = m.num === 2 && !isModule2Open();
@@ -1394,7 +1769,7 @@
                 b.textContent = locked ? `🔒 Модуль ${m.num}` : `${m.icon} Модуль ${m.num}`;
                 b.onmouseenter = () => playSound('hover');
                 b.onclick = () => {
-                    if (locked) { playSound('wrong'); say("Сначала пройди все 10 уроков первого модуля! 😉"); return; }
+                    if (locked) { playSound('wrong'); say(currentSubject === 'math' ? "Сначала пройди все 10 уроков Солнечной поляны! 😉" : "Сначала пройди все 10 весёлых буквок! 😉"); return; }
                     playSound('click'); currentModule = m.num; renderMap();
                 };
                 sw.appendChild(b);
