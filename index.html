@@ -249,6 +249,101 @@
             100% { transform: translateY(105vh) rotateZ(720deg) rotateX(360deg); opacity: 0.7; }
         }
 
+        /* --- ТАЙМЕР --- */
+        #timer-box {
+            position: fixed; top: 74px; right: 20px; z-index: 100;
+            background: linear-gradient(180deg, #ffffff, #eef7ff);
+            padding: 8px 20px; border-radius: 999px;
+            font-size: 21px; font-weight: 900; color: #2b8cc4;
+            box-shadow: 0 5px 0 rgba(43,140,196,0.25), 0 8px 20px rgba(0,0,0,0.1);
+            border: 3px solid var(--blue); display: none; align-items: center; gap: 8px;
+            transition: transform 0.2s;
+        }
+        #timer-box.pulse { animation: timerPulse 1s infinite ease-in-out; }
+        @keyframes timerPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .best-time { font-size: 15px; color: #9a8fd0; margin-top: 4px; font-weight: 800; }
+
+        /* --- ВКЛАДКИ МАГАЗИНА --- */
+        .shop-tabs { display: flex; gap: 12px; justify-content: center; width: 100%; margin-top: 10px; }
+        .shop-tab {
+            padding: 11px 26px; border-radius: 999px; font-size: 18px; font-weight: 900; cursor: pointer;
+            background: linear-gradient(180deg, #ffffff, #eceaf7); color: #8d84c0; border: 3px solid #cfc6ea;
+            box-shadow: 0 5px 0 #c3b8e6; transition: transform 0.15s;
+        }
+        .shop-tab:hover { transform: scale(1.06) rotate(-1deg); }
+        .shop-tab.active-pets { background: linear-gradient(180deg, #ffd6ea, #ff9ecb); color: #b0246e; border-color: #ff6b9d; box-shadow: 0 5px 0 #d84470; }
+        .shop-tab.active-themes { background: linear-gradient(180deg, #d8f3ff, #9adcff); color: #14638f; border-color: #45b6ef; box-shadow: 0 5px 0 #2b8cc4; }
+
+        .theme-preview {
+            height: 58px; border-radius: 16px; margin-bottom: 10px; border: 3px dashed rgba(255,255,255,0.85);
+            background: var(--t-bg, linear-gradient(180deg,#a8e6ff,#b8ecc0));
+            box-shadow: inset 0 0 18px rgba(0,0,0,0.12); position: relative; overflow: hidden;
+        }
+        .theme-preview::after { content: attr(data-icon); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .theme-desc { font-size: 12px; font-weight: 800; color: #8d84c0; margin-bottom: 8px; min-height: 15px; }
+        .rarity { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .r-common { color: #4cbf5f; } .r-rare { color: #2b8cc4; } .r-epic { color: #7a44d4; } .r-legendary { color: #d99a12; }
+
+        /* --- МОДУЛИ --- */
+        .module-banner {
+            width: 100%; text-align: center; padding: 14px 20px; border-radius: 26px; margin-bottom: 18px;
+            font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 900; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            box-shadow: 0 8px 0 rgba(0,0,0,0.18), 0 12px 25px rgba(0,0,0,0.15); border: 4px solid rgba(255,255,255,0.7);
+            position: relative; overflow: hidden;
+        }
+        .module-banner::after { content: ''; position: absolute; top: -60%; left: -20%; width: 60%; height: 220%; background: rgba(255,255,255,0.25); transform: rotate(25deg); animation: shine 3.5s ease-in-out infinite; }
+        @keyframes shine { 0% { left: -30%; } 55%, 100% { left: 130%; } }
+        .mb-1 { background: linear-gradient(135deg, #ff9a9e, #ffa62b 45%, #ffd93d); }
+        .mb-2 { background: linear-gradient(135deg, #6a5cff, #3aa7e0 55%, #43e0c8); }
+        .module-switcher { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+        .mod-btn {
+            padding: 10px 22px; border-radius: 999px; font-size: 18px; font-weight: 900; cursor: pointer;
+            background: linear-gradient(180deg, #fff, #eceaf7); color: #6b63a0; border: 3px solid #cfc6ea; box-shadow: 0 5px 0 #c3b8e6;
+            transition: transform 0.15s; font-family: 'Baloo 2', cursive;
+        }
+        .mod-btn:hover { transform: scale(1.07) rotate(-1deg); }
+        .mod-btn.active-mod { background: linear-gradient(180deg, #ffe28a, #ffc23d); color: #a35f00; border-color: #ff9e2f; box-shadow: 0 5px 0 #d97b12; }
+        .mod-btn.locked-mod { opacity: 0.6; cursor: not-allowed; }
+
+        /* --- АНЕКДОТНИК --- */
+        .joke-box { cursor: pointer; transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .joke-box:hover { transform: scale(1.03) rotate(-0.5deg); }
+        .joke-text { animation: jokeIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes jokeIn { 0% { opacity: 0; transform: translateY(12px) scale(0.95); } 100% { opacity: 1; transform: none; } }
+        .joke-hint { font-size: 13px; color: #2f9fd8; margin-top: 8px; font-weight: 800; opacity: 0.75; }
+
+        /* --- ТЕМЫ --- */
+        body[data-theme="ocean"]  { background: linear-gradient(180deg, #8ed0ff 0%, #bfe6ff 35%, #dff5ff 70%, #a8e6cf 100%); }
+        body[data-theme="sunset"]  { background: linear-gradient(180deg, #ffb56b 0%, #ffd6a0 35%, #ffe9d6 70%, #ffc2d1 100%); }
+        body[data-theme="night"]   { background: linear-gradient(180deg, #1b2560 0%, #2c3a7f 40%, #46378c 75%, #6a4c93 100%); }
+        body[data-theme="forest"]  { background: linear-gradient(180deg, #bfe9ff 0%, #d8f3d0 35%, #a5dfa0 70%, #6cc47a 100%); }
+        body[data-theme="candy"]   { background: linear-gradient(180deg, #ffd1ec 0%, #ffe6f6 35%, #e6d4ff 70%, #ffd6e8 100%); }
+        body[data-theme="space"]   { background: linear-gradient(180deg, #0d1030 0%, #1d2350 45%, #33265e 75%, #4a2c6b 100%); }
+
+        body[data-theme="night"] .game-board, body[data-theme="space"] .game-board { background: linear-gradient(180deg, #2a3570, #232c5e); border-color: #6fd3ff; outline-color: #4a5aa8; }
+        body[data-theme="night"] .question-display, body[data-theme="space"] .question-display { background: linear-gradient(90deg, #8ddcff, #c9a6ff, #ffe066); -webkit-background-clip: text; background-clip: text; }
+        body[data-theme="night"] .result-board, body[data-theme="space"] .result-board { background: linear-gradient(180deg, #2a3570, #25306a); border-color: #8a52e0; }
+        body[data-theme="night"] .result-board h2, body[data-theme="space"] .result-board h2 { color: #7ee081 !important; }
+        body[data-theme="night"] .speech-bubble, body[data-theme="space"] .speech-bubble { background: linear-gradient(180deg, #313e80, #2b3670); color: #ffe066; border-color: #6fd3ff; }
+        body[data-theme="night"] .speech-bubble::before, body[data-theme="space"] .speech-bubble::before { border-bottom-color: #313e80; }
+        body[data-theme="night"] .visual-aid, body[data-theme="space"] .visual-aid { background: #26305f; border-color: #4a5aa8; }
+        body[data-theme="night"] .joke-box, body[data-theme="space"] .joke-box { background: linear-gradient(180deg, #2c3a7f, #25306a); border-left-color: #6fd3ff; }
+        body[data-theme="night"] .joke-text, body[data-theme="space"] .joke-text { color: #dfe8ff; }
+        body[data-theme="night"] .joke-title, body[data-theme="space"] .joke-title { color: #6fd3ff; }
+        body[data-theme="night"] .joke-hint, body[data-theme="space"] .joke-hint { color: #8ddcff; }
+        body[data-theme="night"] .map-hint, body[data-theme="space"] .map-hint { color: #cfc6ff; }
+        body[data-theme="night"] .subtitle, body[data-theme="space"] .subtitle { color: #bfe0ff; }
+        body[data-theme="night"] .logo-title, body[data-theme="space"] .logo-title { background: linear-gradient(90deg, #ffd93d, #ff8fc0, #6fd3ff, #b07fe8); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.5)); }
+        body[data-theme="night"] .btn-nav, body[data-theme="space"] .btn-nav { background: linear-gradient(160deg, #3a478f, #2d3873); color: #e8e4ff; border-color: #5a6ac0; box-shadow: 0 5px 0 #232c5e; }
+        body[data-theme="night"] #sun, body[data-theme="space"] #sun { background: radial-gradient(circle, #fdf6e3 25%, #e8f4ff 55%, transparent 72%); filter: drop-shadow(0 0 30px rgba(220,230,255,0.6)); }
+        body[data-theme="night"] .shop-item, body[data-theme="space"] .shop-item { background: linear-gradient(180deg, #2c3a7f, #25306a); border-color: #5a6ac0; }
+        body[data-theme="night"] .shop-item .name, body[data-theme="space"] .shop-item .name { color: #ffd6ea; }
+        body[data-theme="night"] .reward-box, body[data-theme="space"] .reward-box { background: linear-gradient(180deg, #3a478f, #2d3873); color: #ffe066; border-color: #ffd93d; }
+        body[data-theme="night"] .theme-desc, body[data-theme="space"] .theme-desc { color: #bfe0ff; }
+
+        .bg-star { position: absolute; color: #fff; opacity: 0.85; animation: twinkle 2.5s ease-in-out infinite alternate; }
+        @keyframes twinkle { from { opacity: 0.25; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
+
         /* --- Логотип --- */
         .logo-title {
             font-family: 'Baloo 2', cursive; text-align: center; margin: 6px 0 26px; font-size: 42px; line-height: 1.1;
@@ -270,6 +365,7 @@
 
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
     <div id="top-bar"><span id="coin-icon">🪙</span> <span id="coin-display">0</span></div>
+    <div id="timer-box">⏱️ <span id="timer-display">0:00</span></div>
 
     <div id="map-screen" class="screen active">
         <div class="character-container">
@@ -278,6 +374,8 @@
         </div>
         <h1 class="logo-title">🌈 Тропинка Знаний ✨</h1>
         <div class="subtitle">Учимся считать играя! 🎈</div>
+        <div class="module-switcher" id="module-switcher"></div>
+        <div class="module-banner mb-1" id="module-banner">☀️ МОДУЛЬ 1 · Солнечная поляна</div>
         <div class="map-wrap">
             <svg id="path-svg"></svg>
             <div class="map-container" id="map-container"></div>
@@ -314,10 +412,15 @@
             <div style="font-size: 34px; letter-spacing: 4px; margin-top: 6px;" id="result-stars"></div>
             
             <div class="reward-box" id="reward-box">Награда: <span id="reward-coins">0</span> 🪙</div>
+            <div id="time-result" style="font-size:20px; font-weight:900; color:#2b8cc4; margin:-6px 0 10px;"></div>
+            <div id="unlock-banner" style="display:none; background:linear-gradient(135deg,#6a5cff,#3aa7e0); color:white; padding:14px; border-radius:18px; font-weight:900; font-size:19px; margin:10px 0; border:3px solid #fff; box-shadow:0 6px 0 rgba(60,50,150,0.35);">
+                🌙 УРА! Открылся <b>МОДУЛЬ 2 — Лунная долина</b>!<br>Выбирай его на тропинке! ✨
+            </div>
 
             <div class="joke-box" id="joke-box">
-                <div class="joke-title" id="joke-title">Шутка от Мишутки:</div>
+                <div class="joke-title" id="joke-title">Анекдот от Мишутки:</div>
                 <div class="joke-text" id="joke-text"></div>
+                <div class="joke-hint">👆 Нажми на анекдот — будет ещё смешнее!</div>
             </div>
 
             <button class="btn-nav btn-big" style="margin-top: 20px;" onmouseenter="playSound('hover')" onclick="backToMap()">🚀 На тропинку!</button>
@@ -325,8 +428,12 @@
     </div>
 
     <div id="shop-screen" class="screen">
-        <h1 class="logo-title" style="font-size: 36px;">🛍️ Магазин питомцев</h1>
-        <p class="subtitle">Копи монетки и покупай новых друзей! 💜</p>
+        <h1 class="logo-title" style="font-size: 36px;">🛍️ Волшебный магазин</h1>
+        <p class="subtitle">Копи монетки — покупай друзей и целые миры! 💜</p>
+        <div class="shop-tabs">
+            <div class="shop-tab" id="tab-pets" onclick="switchShopTab('pets')">🐾 Питомцы</div>
+            <div class="shop-tab" id="tab-themes" onclick="switchShopTab('themes')">🎨 Темы и ауры</div>
+        </div>
         <div class="shop-grid" id="shop-grid"></div>
         <button class="btn-nav" style="margin-top: 30px;" onmouseenter="playSound('hover')" onclick="backToMap()">🏡 Назад</button>
     </div>
@@ -357,49 +464,120 @@
             document.getElementById('bg-animations').appendChild(cl);
         }
 
-        // --- ДЕТСКИЕ ШУТКИ (Простые и понятные) ---
+        // --- ДЕТСКИЕ АНЕКДОТЫ (большой сборник!) ---
         const jokes = [
-            "— Почему у слона такие большие уши?\n— Чтобы лучше слышать, как растет трава!",
-            "— Какая обувь никогда не промокает?\n— Резиновая!",
-            "— Встречаются две коровы. Одна говорит:\n— Му!\nВторая:\n— Я тоже тебе му!",
-            "— Что всегда стучит, а с места не сходит?\n— Сердце!",
-            "— Почему грибы похожи на зонтики?\n— Потому что они прячутся от дождя!",
-            "— Кто быстрее всех бегает?\n— Страус! Потому что он не летает, а бегает.",
-            "— Почему у зайца длинные уши?\n— Чтобы слышать, как шепчутся морковки!",
-            "— Что говорит чайник, когда закипает?\n— Пых-пых!",
-            "— Почему рыбы молчат?\n— Потому что у них полный рот воды!",
-            "— Кто всегда говорит правду, но его никто не слышит?\n— Зеркало!"
+            "— Почему у слона такие большие уши?\n— Чтобы лучше слышать, как растёт трава!",
+            "— Встречаются две коровы. Одна говорит:\n— Му!\nВторая:\n— Я тоже тебе «му»!",
+            "— Что говорит чайник, когда закипает?\n— Пых-пых-пых!",
+            "— Почему рыбы никогда не разговаривают?\n— Потому что у них полный рот воды!",
+            "— Знаешь, почему математика грустит?\n— Потому что у неё слишком много проблем!",
+            "— Учитель спрашивает: «Сколько будет 2 плюс 2?»\nУченик: «А складывать или умножать?»",
+            "— Колобок повесился…\nНа нотной линейке между до и ре.",
+            "— Штирлиц шёл по лесу и увидел: горят деревья.\n«Как красиво», — подумал Штирлиц и пошёл дальше.",
+            "— Почему зайца зовут Зая?\n— А попробуй догнать и спросить!",
+            "— Заходит улитка в кафе…\nОфициант выгоняет её. Через год улитка возвращается: «Ну и зачем ты так резко?!»",
+            "— Что делает повар на кухне?\n— Всё, что умеет!",
+            "— Почему помидор покраснел?\n— Потому что увидел заправку для салата!",
+            "— Висят два огурца. Один говорит:\n— Ох, студент…\n— Ты кто?! — испугался второй.",
+            "— Кот кричит в трубку: «Ёжик!»\nА ёжик не берёт трубку — у него лапки.",
+            "— Сколько нужно программистов, чтобы вкрутить лампочку?\n— Ни одного, это аппаратная проблема!",
+            "— Идут два утёнка через дорогу.\nМама кричит: «Кря-кря!» — то есть «Два-два, осторожно!»",
+            "— Два гектара кукурузы спорили.\nТретий молчал — он был с початками.",
+            "— Почему динозавры не ходили в кино?\n— Потому что ещё не придумали попкорн!",
+            "— В комнате 4 угла. В каждом углу по кошке, напротив каждой кошки по 3 кошки.\nСколько всего кошек? — Четыре! Обманка!",
+            "— Почему скелеты не дерутся?\n— У них кишка тонка!",
+            "— Апельсин опоздал на автобус.\nПришлось… выдавить его соком.",
+            "— Как называется пингвин без обуви?\n— Просто пингвин.",
+            "— Что общего между ежом и телефоном?\n— Оба делают «дрррр»!",
+            "— Медведь надел очки.\nВсе думают — панда! А он просто умный.",
+            "— Учитель: «Назови пять животных!»\nУченик: «Корова, корова, корова, корова и корова!»\nУчитель: «Они же одинаковые!»\nУченик: «Зато чёрные и белые!»",
+            "— Почему паук не дружит с ноутбуком?\n— Потому что ноутбук уже весь в сети!",
+            "— Ананас — это фрукт, который носит чешую и считает себя рыбой.",
+            "— — Алло! Это прачечная?\n— Нет, это баня.\n— А где мыло?\n— Парься — найдёшь!",
+            "— Что ждёт тебя впереди и позади, но никогда не ловит?\n— Хвост ящерицы… ой, это загадка! Не перепутай!",
+            "— Почему книга не хочет идти гулять?\n— Потому что её не дочитали до конца!",
+            "— Самый вежливый овощ — артишок: его надо суметь достать!",
+            "— Сидят два кита. Один говорит:\n— Мне холодно.\n— Ого, кит заговорил!\n— А мне тепло стало — от удивления.",
+            "— — Доктор, я буду жить?\n— А в чём смысл?\n— Вот! Смысл появился — живите!",
+            "— Ложка сказала вилке:\n— Ты с зубами, а всё равно есть не можешь!",
+            "— Почему облако не играет в футбол?\n— Боится удара… молнией по голове!"
         ];
 
         const pets = [
-            { id: 'bear', name: 'Мишутка', emoji: '🐻', price: 0 },
-            { id: 'cat', name: 'Котик', emoji: '🐱', price: 50 },
-            { id: 'dog', name: 'Собачка', emoji: '🐶', price: 50 },
-            { id: 'bunny', name: 'Зайка', emoji: '🐰', price: 80 },
-            { id: 'fox', name: 'Лисичка', emoji: '🦊', price: 80 },
-            { id: 'panda', name: 'Панда', emoji: '🐼', price: 120 },
-            { id: 'dragon', name: 'Дракончик', emoji: '🐲', price: 200 }
+            { id: 'bear',    name: 'Мишутка',     emoji: '🐻', price: 0 },
+            { id: 'cat',     name: 'Котик',       emoji: '🐱', price: 50 },
+            { id: 'dog',     name: 'Собачка',     emoji: '🐶', price: 50 },
+            { id: 'bunny',   name: 'Зайка',       emoji: '🐰', price: 80 },
+            { id: 'fox',     name: 'Лисичка',     emoji: '🦊', price: 80 },
+            { id: 'frog',    name: 'Лягушоня',    emoji: '🐸', price: 100 },
+            { id: 'panda',   name: 'Панда',       emoji: '🐼', price: 120 },
+            { id: 'koala',   name: 'Коала',       emoji: '🐨', price: 130 },
+            { id: 'tiger',   name: 'Тигрёнок',    emoji: '🐯', price: 150 },
+            { id: 'unicorn', name: 'Единорожек',  emoji: '🦄', price: 180 },
+            { id: 'owl',     name: 'Сова-профи',  emoji: '🦉', price: 200 },
+            { id: 'penguin', name: 'Пингвинчик',  emoji: '🐧', price: 220 },
+            { id: 'monkey',  name: 'Обезьянка',   emoji: '🐵', price: 240 },
+            { id: 'chick',   name: 'Цыплёнок',    emoji: '🐥', price: 250 },
+            { id: 'dragon',  name: 'Дракончик',   emoji: '🐲', price: 300 },
+            { id: 'robot',   name: 'Робо-друг',   emoji: '🤖', price: 350 },
+            { id: 'alien',   name: 'Лунтик',      emoji: '👽', price: 400 },
+            { id: 'wizard',  name: 'Маг',         emoji: '🧙', price: 450 },
+            { id: 'ghost',   name: 'Привидение',  emoji: '👻', price: 500 }
         ];
 
-        const lessons = [
-            { id: 1, title: "1", max: 5, type: 'add' },
-            { id: 2, title: "2", max: 10, type: 'add' },
-            { id: 3, title: "3", max: 5, type: 'sub' },
-            { id: 4, title: "4", max: 10, type: 'sub' },
-            { id: 5, title: "5", max: 15, type: 'add' },
-            { id: 6, title: "6", max: 15, type: 'sub' },
-            { id: 7, title: "7", max: 20, type: 'add' },
-            { id: 8, title: "8", max: 20, type: 'sub' },
-            { id: 9, title: "9", max: 20, type: 'mix' },
-            { id: 10, title: "🏆", max: 20, type: 'mix' }
+        const themes = [
+            { id: 'meadow',  name: 'Луговина',     icon: '🌼', price: 0,   rarity: 'common',    desc: 'Солнечная поляна — как дома', grad: 'linear-gradient(180deg,#a8e6ff,#b8ecc0)' },
+            { id: 'ocean',   name: 'Океан',        icon: '🌊', price: 100, rarity: 'common',    desc: 'Свежесть морского бриза',     grad: 'linear-gradient(180deg,#8ed0ff,#a8e6cf)' },
+            { id: 'sunset',  name: 'Закат',        icon: '🌅', price: 150, rarity: 'rare',      desc: 'Тёплое оранжевое чудо',       grad: 'linear-gradient(180deg,#ffb56b,#ffc2d1)' },
+            { id: 'forest',  name: 'Лесная сказка',icon: '🌲', price: 200, rarity: 'rare',      desc: 'Зелёный волшебный лес',       grad: 'linear-gradient(180deg,#bfe9ff,#6cc47a)' },
+            { id: 'candy',   name: 'Конфетти-мир', icon: '🍬', price: 250, rarity: 'epic',      desc: 'Розово-сиреневая сладость',   grad: 'linear-gradient(180deg,#ffd1ec,#e6d4ff)' },
+            { id: 'night',   name: 'Ночная аура',  icon: '🌙', price: 350, rarity: 'epic',      desc: 'Сияние звёздного неба',       grad: 'linear-gradient(180deg,#1b2560,#6a4c93)' },
+            { id: 'space',   name: 'Космо-аура',   icon: '🪐', price: 500, rarity: 'legendary', desc: 'Пурпур далёких галактик',     grad: 'linear-gradient(180deg,#0d1030,#4a2c6b)' }
+        ];
+
+        // Модуль 1 — Солнечная поляна: сначала очень легко, потом понемногу сложнее
+        const lessons1 = [
+            { id: 1,  title: "1", max: 3,  type: 'add' },
+            { id: 2,  title: "2", max: 4,  type: 'add' },
+            { id: 3,  title: "3", max: 5,  type: 'sub' },
+            { id: 4,  title: "4", max: 6,  type: 'add' },
+            { id: 5,  title: "5", max: 7,  type: 'sub' },
+            { id: 6,  title: "6", max: 8,  type: 'mix' },
+            { id: 7,  title: "7", max: 10, type: 'add' },
+            { id: 8,  title: "8", max: 10, type: 'sub' },
+            { id: 9,  title: "9", max: 12, type: 'mix' },
+            { id: 10, title: "🏆", max: 12, type: 'mix' }
+        ];
+        // Модуль 2 — Лунная долина: открывается, когда пройден весь модуль 1
+        const lessons2 = [
+            { id: 11, title: "1", max: 10, type: 'add' },
+            { id: 12, title: "2", max: 12, type: 'sub' },
+            { id: 13, title: "3", max: 14, type: 'mix' },
+            { id: 14, title: "4", max: 15, type: 'add' },
+            { id: 15, title: "5", max: 15, type: 'sub' },
+            { id: 16, title: "6", max: 18, type: 'mix' },
+            { id: 17, title: "7", max: 20, type: 'add' },
+            { id: 18, title: "8", max: 20, type: 'sub' },
+            { id: 19, title: "9", max: 20, type: 'mix' },
+            { id: 20, title: "👑", max: 20, type: 'mix' }
+        ];
+        const MODULES = [
+            { num: 1, name: 'Солнечная поляна', icon: '☀️', cls: 'mb-1', lessons: lessons1 },
+            { num: 2, name: 'Лунная долина',    icon: '🌙', cls: 'mb-2', lessons: lessons2 }
         ];
 
         // --- СОСТОЯНИЕ ---
         let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
         let currentPetId = localStorage.getItem('mathPet') || 'bear';
         let ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear'];
-        let unlockedLevel = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1;
+        let unlockedLevel = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1; // глобальный уровень 1..20
         let levelStars = JSON.parse(localStorage.getItem('mathLevelStars')) || {};
+        let bestTimes = JSON.parse(localStorage.getItem('mathBestTimes')) || {};
+        let currentTheme = localStorage.getItem('mathTheme') || 'meadow';
+        let ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow'];
+        let currentModule = (parseInt(localStorage.getItem('mathUnlockedLevel')) || 1) >= 11 ? 2 : 1;
+        if (currentModule === 2 && (parseInt(localStorage.getItem('mathUnlockedLevel')) || 1) < 11) currentModule = 1;
+        let shopTab = 'pets';
         let currentPetName = "Мишутка"; 
 
         // --- ЭЛЕМЕНТЫ ---
@@ -420,9 +598,35 @@
             charEmoji.textContent = pet.emoji;
             gameChar.textContent = pet.emoji;
             document.getElementById('result-char').textContent = pet.emoji;
-            
-            // Меняем заголовок шутки
-            document.getElementById('joke-title').textContent = `Шутка от ${currentPetName}:`;
+
+            // Меняем заголовок анекдота
+            document.getElementById('joke-title').textContent = `Анекдот от ${currentPetName}:`;
+
+            // Тема оформления
+            if (currentTheme === 'meadow') document.body.removeAttribute('data-theme');
+            else document.body.setAttribute('data-theme', currentTheme);
+            applyThemeFX();
+        }
+
+        // Ночные темы: добавляем мерцающие звёзды, приглушаем облака
+        let starsBuilt = false;
+        function applyThemeFX() {
+            const dark = (currentTheme === 'night' || currentTheme === 'space');
+            const bg = document.getElementById('bg-animations');
+            if (dark && !starsBuilt) {
+                for (let i = 0; i < 26; i++) {
+                    const st = document.createElement('div');
+                    st.classList.add('bg-star');
+                    st.textContent = Math.random() > 0.5 ? '✦' : '✧';
+                    st.style.left = Math.random() * 98 + 'vw';
+                    st.style.top = Math.random() * 90 + 'vh';
+                    st.style.fontSize = (10 + Math.random() * 22) + 'px';
+                    st.style.animationDelay = (Math.random() * 2.5) + 's';
+                    bg.appendChild(st);
+                }
+                starsBuilt = true;
+            }
+            bg.querySelectorAll('.cloud').forEach(c => c.style.opacity = dark ? '0.25' : '0.85');
         }
 
         // --- ЗВУКИ ---
@@ -480,29 +684,37 @@
         }
 
         function backToMap() {
-            playSound('click'); switchScreen('map-screen'); say("Выбирай следующий урок!"); renderMap(); updateUI();
+            playSound('click'); hideTimer(); switchScreen('map-screen'); say("Выбирай следующий урок!"); renderMap(); updateUI();
         }
 
         // --- ОТРИСОВКА КАРТЫ ---
-        const nodeOffsets = [0, 120, -120, 60, -150, 150, -60, 110, -110, 0];
+        const nodeOffsets = [0, 120, -120, 60, -150, 150, -60, 110, -110, 0, 130, -130, 70, -90, 150, -150, 60, -120, 120, 0];
 
         function renderMap() {
             const container = document.getElementById('map-container');
             container.innerHTML = '';
 
-            lessons.forEach((lesson, index) => {
+            // Переключатель модулей и баннер
+            renderModuleSwitcher();
+            const mod = MODULES[currentModule - 1];
+            const banner = document.getElementById('module-banner');
+            banner.className = 'module-banner ' + mod.cls;
+            banner.textContent = `${mod.icon} МОДУЛЬ ${mod.num} · ${mod.name}`;
+
+            mod.lessons.forEach((lesson, index) => {
+                const globalLevel = (currentModule - 1) * 10 + index + 1;
                 const node = document.createElement('div');
                 node.classList.add('map-node');
                 node.style.setProperty('--off', nodeOffsets[index] + 'px');
-                node.classList.add('node-c' + (index % 5));
-                node.dataset.level = index + 1;
+                node.classList.add('node-c' + ((currentModule === 2 ? (index + 2) % 5 : index % 5)));
+                node.dataset.level = globalLevel;
 
-                const stars = levelStars[index + 1] || 0;
-                if (index + 1 < unlockedLevel) {
+                const stars = levelStars[globalLevel] || 0;
+                if (globalLevel < unlockedLevel) {
                     node.classList.add('completed');
                     node.innerHTML = '<span>' + lesson.title + '</span><div class="node-stars">' + ('⭐'.repeat(stars) || '✅') + '</div>';
                     node.onclick = () => startLesson(lesson, index + 1);
-                } else if (index + 1 === unlockedLevel) {
+                } else if (globalLevel === unlockedLevel) {
                     node.classList.add('current');
                     node.innerHTML = '<span>' + lesson.title + '</span><div class="node-stars">▶️</div>';
                     node.onclick = () => startLesson(lesson, index + 1);
@@ -550,40 +762,84 @@
             if (document.getElementById('map-screen').classList.contains('active')) drawPath();
         });
 
-        // --- МАГАЗИН ---
+        // --- МАГАЗИН (питомцы + темы) ---
+        // --- МАГАЗИН (питомцы + темы) ---
         function openShop() {
-            playSound('click'); switchScreen('shop-screen'); renderShop(); speechText.textContent = "Хочешь нового друга? 🥰";
+            playSound('click'); switchScreen('shop-screen'); renderShop(); speechText.textContent = "Хочешь нового друга или новую тему? 🥰";
+        }
+
+        function switchShopTab(tab) {
+            playSound('click'); shopTab = tab; renderShop();
         }
 
         function renderShop() {
             const grid = document.getElementById('shop-grid'); grid.innerHTML = '';
-            pets.forEach(pet => {
-                const isOwned = ownedPets.includes(pet.id);
-                const isEquipped = currentPetId === pet.id;
-                const card = document.createElement('div'); card.classList.add('shop-item');
-                card.onmouseenter = () => playSound('hover');
-                
-                let btnHtml = '';
-                if (isEquipped) { card.classList.add('equipped-card'); btnHtml = `<button class="shop-btn equipped">✨ Надето</button>`; }
-                else if (isOwned) btnHtml = `<button class="shop-btn" onclick="equipPet('${pet.id}')">Надеть</button>`;
-                else btnHtml = `<button class="shop-btn" style="background: linear-gradient(160deg,#ffe28a,#ffc23d); box-shadow: 0 4px 0 #d99a12;" onclick="buyPet('${pet.id}', ${pet.price})">🪙 ${pet.price}</button>`;
+            document.getElementById('tab-pets').className = 'shop-tab' + (shopTab === 'pets' ? ' active-pets' : '');
+            document.getElementById('tab-themes').className = 'shop-tab' + (shopTab === 'themes' ? ' active-themes' : '');
 
-                card.innerHTML = `${isEquipped ? '<div class="badge">ДРУГ</div>' : ''}<div class="emoji">${pet.emoji}</div><div class="name">${pet.name}</div>${btnHtml}`;
-                grid.appendChild(card);
-            });
+            if (shopTab === 'pets') {
+                pets.forEach(pet => {
+                    const isOwned = ownedPets.includes(pet.id);
+                    const isEquipped = currentPetId === pet.id;
+                    const card = document.createElement('div'); card.classList.add('shop-item');
+                    card.onmouseenter = () => playSound('hover');
+
+                    let btnHtml = '';
+                    if (isEquipped) { card.classList.add('equipped-card'); btnHtml = `<button class="shop-btn equipped">✨ Надето</button>`; }
+                    else if (isOwned) btnHtml = `<button class="shop-btn" onclick="equipPet('${pet.id}')">Надеть</button>`;
+                    else btnHtml = `<button class="shop-btn" style="background: linear-gradient(160deg,#ffe28a,#ffc23d); box-shadow: 0 4px 0 #d99a12;" onclick="buyPet('${pet.id}', ${pet.price})">🪙 ${pet.price}</button>`;
+
+                    card.innerHTML = `${isEquipped ? '<div class="badge">ДРУГ</div>' : ''}<div class="emoji">${pet.emoji}</div><div class="name">${pet.name}</div>${btnHtml}`;
+                    grid.appendChild(card);
+                });
+            } else {
+                themes.forEach(th => {
+                    const isOwned = ownedThemes.includes(th.id);
+                    const isActive = currentTheme === th.id;
+                    const card = document.createElement('div'); card.classList.add('shop-item');
+                    card.onmouseenter = () => playSound('hover');
+
+                    let btnHtml = '';
+                    if (isActive) { card.classList.add('equipped-card'); btnHtml = `<button class="shop-btn equipped">🌟 Включена</button>`; }
+                    else if (isOwned) btnHtml = `<button class="shop-btn" onclick="equipTheme('${th.id}')">Включить</button>`;
+                    else btnHtml = `<button class="shop-btn" style="background: linear-gradient(160deg,#ffe28a,#ffc23d); box-shadow: 0 4px 0 #d99a12;" onclick="buyTheme('${th.id}', ${th.price})">🪙 ${th.price}</button>`;
+
+                    card.innerHTML = `
+                        ${isActive ? '<div class="badge">МИР</div>' : ''}
+                        <div class="theme-preview" data-icon="${th.icon}" style="--t-bg: ${th.grad}"></div>
+                        <div class="rarity r-${th.rarity}">${{common:'Обычная',rare:'Редкая',epic:'Эпическая',legendary:'Легендарная'}[th.rarity]}</div>
+                        <div class="name">${th.name}</div>
+                        <div class="theme-desc">${th.desc}</div>${btnHtml}`;
+                    grid.appendChild(card);
+                });
+            }
         }
 
         function buyPet(petId, price) {
             if (coins >= price) {
                 coins -= price; ownedPets.push(petId); currentPetId = petId;
                 localStorage.setItem('mathCoins', coins); localStorage.setItem('mathPet', currentPetId); localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
-                playSound('coin'); launchConfetti(); say(`Ура! ${currentPetName} теперь с тобой! 🎉`); updateUI(); renderShop();
+                playSound('coin'); launchConfetti(); updateUI(); say(`Ура! ${currentPetName} теперь с тобой! 🎉`); renderShop();
             } else { playSound('wrong'); say("Не хватает монеток! Играй еще!"); }
         }
 
         function equipPet(petId) {
             playSound('click'); currentPetId = petId; localStorage.setItem('mathPet', currentPetId);
             updateUI(); renderShop(); say("Классный выбор!");
+        }
+
+        function buyTheme(themeId, price) {
+            const th = themes.find(t => t.id === themeId);
+            if (coins >= price) {
+                coins -= price; ownedThemes.push(themeId); currentTheme = themeId;
+                localStorage.setItem('mathCoins', coins); localStorage.setItem('mathOwnedThemes', JSON.stringify(ownedThemes)); localStorage.setItem('mathTheme', currentTheme);
+                playSound('coin'); launchConfetti(); updateUI(); say(`Вау! Мир «${th.name}» включён! ✨`); renderShop();
+            } else { playSound('wrong'); say("Не хватает монеток! Играй еще!"); }
+        }
+
+        function equipTheme(themeId) {
+            playSound('click'); currentTheme = themeId; localStorage.setItem('mathTheme', currentTheme);
+            updateUI(); renderShop(); say("Как красиво вокруг! 🤩");
         }
 
         // --- ИГРОВАЯ ЛОГИКА ---
@@ -604,6 +860,7 @@
             wrongAttempts = 0;
             
             switchScreen('game-screen');
+            startTimer();
             say([`Урок ${levelIndex}! Поехали! 🚀`, `Урок ${levelIndex}. Давай учиться!`, `Время математики! Урок ${levelIndex} ✨`][Math.floor(Math.random() * 3)]);
             generateQuestion();
         }
@@ -735,10 +992,12 @@
         }
 
         function finishLesson() {
+            stopTimer();
+            const elapsed = getTimerSeconds();
             switchScreen('result-screen');
             playSound('win');
 
-            const earnedCoins = lessonCorrectCount * 10 + (wrongAttempts === 0 ? 20 : 0);
+            const earnedCoins = lessonCorrectCount * 10 + (wrongAttempts === 0 ? 20 : 0) + timeBonus(elapsed);
             coins += earnedCoins;
             localStorage.setItem('mathCoins', coins);
 
@@ -750,17 +1009,37 @@
                 localStorage.setItem('mathLevelStars', JSON.stringify(levelStars));
             }
 
-            if (unlockedLevel === lvl && unlockedLevel < 10) {
+            // Рекорд времени урока
+            const prevBest = bestTimes[lvl];
+            let recordText = '';
+            if (prevBest === undefined || elapsed < prevBest) {
+                bestTimes[lvl] = elapsed;
+                localStorage.setItem('mathBestTimes', JSON.stringify(bestTimes));
+                recordText = prevBest === undefined ? '' : ' 🏅 Новый рекорд скорости!';
+            }
+
+            const wasMod2Locked = unlockedLevel <= 10;
+            if (unlockedLevel === lvl && unlockedLevel < 20) {
                 unlockedLevel++;
                 localStorage.setItem('mathUnlockedLevel', unlockedLevel);
             }
 
             document.getElementById('reward-coins').textContent = earnedCoins;
+            document.getElementById('time-result').innerHTML =
+                `⏱️ Время: <b>${fmtTime(elapsed)}</b>${recordText}` +
+                `<div class="best-time">🏁 Рекорд урока: ${fmtTime(bestTimes[lvl])}</div>`;
             document.getElementById('result-stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
 
-            // Заменяем перенос строки \n на <br> для красивого отображения
-            document.getElementById('joke-text').innerHTML = randomJoke.replace(/\n/g, '<br>');
+            // Празднуем открытие Модуля 2!
+            const unlockBanner = document.getElementById('unlock-banner');
+            if (wasMod2Locked && unlockedLevel === 11) {
+                unlockBanner.style.display = 'block';
+                setTimeout(() => launchConfetti(), 600);
+            } else {
+                unlockBanner.style.display = 'none';
+            }
+
+            showRandomJoke();
 
             const winEmojis = ['🏆✨', '🥇🎊', '🌟🏅', '👑🎉'];
             document.getElementById('result-emoji').textContent = winEmojis[Math.floor(Math.random() * winEmojis.length)];
@@ -770,6 +1049,43 @@
             createFireworks(document.body, 30);
             launchConfetti();
             updateUI();
+        }
+
+        // --- ТАЙМЕР ---
+        let timerStart = null, timerInterval = null;
+        const timerBox = document.getElementById('timer-box');
+        const timerDisplay = document.getElementById('timer-display');
+
+        function fmtTime(sec) {
+            const m = Math.floor(sec / 60), s = sec % 60;
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+        function getTimerSeconds() {
+            if (!timerStart) return 0;
+            return Math.max(1, Math.round((Date.now() - timerStart) / 1000));
+        }
+        function startTimer() {
+            stopTimer();
+            timerStart = Date.now();
+            timerBox.style.display = 'flex';
+            timerDisplay.textContent = '0:00';
+            timerInterval = setInterval(() => {
+                const sec = Math.round((Date.now() - timerStart) / 1000);
+                timerDisplay.textContent = fmtTime(sec);
+                timerBox.classList.toggle('pulse', sec >= 60);
+            }, 500);
+        }
+        function stopTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+            timerBox.classList.remove('pulse');
+        }
+        function hideTimer() { timerBox.style.display = 'none'; }
+        function timeBonus(sec) {
+            if (sec <= 30) return 30;
+            if (sec <= 60) return 20;
+            if (sec <= 90) return 10;
+            return 0;
         }
 
         function launchConfetti() {
@@ -802,6 +1118,40 @@
                 particle.style.animationDelay = Math.random() * 0.2 + 's';
                 container.appendChild(particle); setTimeout(() => particle.remove(), 1500);
             }
+        }
+
+        // --- Анекдотник: клик по коробке — новый анекдот! ---
+        document.getElementById('joke-box').addEventListener('click', () => {
+            playSound('click'); showRandomJoke();
+            const box = document.getElementById('joke-box');
+            box.style.transform = 'scale(1.06)';
+            setTimeout(() => box.style.transform = '', 200);
+        });
+        function showRandomJoke() {
+            const j = jokes[Math.floor(Math.random() * jokes.length)];
+            const jt = document.getElementById('joke-text');
+            jt.innerHTML = j.replace(/\n/g, '<br>');
+            jt.style.animation = 'none'; void jt.offsetWidth; jt.style.animation = '';
+        }
+
+        // --- МОДУЛИ ---
+        function isModule2Open() { return unlockedLevel >= 11; }
+
+        function renderModuleSwitcher() {
+            const sw = document.getElementById('module-switcher'); sw.innerHTML = '';
+            MODULES.forEach(m => {
+                const b = document.createElement('div');
+                b.className = 'mod-btn' + (currentModule === m.num ? ' active-mod' : '');
+                const locked = m.num === 2 && !isModule2Open();
+                if (locked) b.classList.add('locked-mod');
+                b.textContent = locked ? `🔒 Модуль ${m.num}` : `${m.icon} Модуль ${m.num}`;
+                b.onmouseenter = () => playSound('hover');
+                b.onclick = () => {
+                    if (locked) { playSound('wrong'); say("Сначала пройди все 10 уроков первого модуля! 😉"); return; }
+                    playSound('click'); currentModule = m.num; renderMap();
+                };
+                sw.appendChild(b);
+            });
         }
 
         // Инициализация
