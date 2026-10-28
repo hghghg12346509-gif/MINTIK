@@ -62,6 +62,105 @@
             100% { transform: translate(30px, -40px) rotate(15deg) scale(1.1); }
         }
 
+        /* ================= АНТИСТРЕССЫ по бокам ================= */
+        .stress-zone { position: fixed; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 18px; z-index: 96; }
+        .stress-left  { left: 14px; }
+        .stress-right { right: 14px; }
+        .stress-item {
+            width: 62px; height: 62px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 34px; cursor: pointer; user-select: none;
+            background: radial-gradient(circle at 32% 26%, #ffffff, #ffe9f6 45%, #ffc6e0 100%);
+            border: 3px solid #fff;
+            box-shadow: 0 6px 0 rgba(200,80,140,0.3), 0 10px 22px rgba(0,0,0,0.14);
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .stress-item:hover { transform: scale(1.12); }
+        .stress-item:active { transform: scale(0.82); }
+        @keyframes stPopAnim { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 70% { transform: scale(0.2); opacity: 0.3; } 100% { transform: scale(1); opacity: 1; } }
+        .stress-item.popping { animation: stPopAnim 0.55s ease; }
+        @keyframes stSquishAnim { 0% { transform: scale(1,1); } 30% { transform: scale(1.35,0.6); } 60% { transform: scale(0.8,1.2); } 100% { transform: scale(1,1); } }
+        .stress-item.squishing { animation: stSquishAnim 0.5s ease; }
+        @keyframes stSpinAnim { from { transform: rotate(0deg) scale(1.1); } to { transform: rotate(720deg) scale(1); } }
+        .stress-item.spinning { animation: stSpinAnim 0.9s cubic-bezier(0.2,0.8,0.3,1); }
+        @keyframes stBoingAnim { 0% { transform: translateY(0); } 30% { transform: translateY(-34px) scaleY(1.15); } 55% { transform: translateY(6px) scaleY(0.85); } 75% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
+        .stress-item.boinging { animation: stBoingAnim 0.8s ease; }
+        .stress-item.bubble-wrap span { transition: transform 0.2s; }
+        @keyframes stBubbleBurst { 0% { transform: scale(1); } 50% { transform: scale(1.5); opacity: 0.4; } 100% { transform: scale(0.1); opacity: 0; } }
+        .stress-item.bursting span { animation: stBubbleBurst 0.45s ease forwards; }
+        @media (max-width: 900px) { .stress-zone { display: none; } }
+
+        /* ================= ШАХМАТЫ ================= */
+        .chess-tabs { display: flex; gap: 16px; justify-content: center; margin: 14px 0 20px; flex-wrap: wrap; }
+        .chess-tab {
+            padding: 14px 30px; border-radius: 999px; cursor: pointer; user-select: none;
+            font-weight: 900; font-size: 21px; font-family: 'Baloo 2', cursive; color: #6a4fa4;
+            background: linear-gradient(180deg, #fff, #eee9ff); border: 3px solid #d8ccff;
+            box-shadow: 0 6px 0 #c3b8e6; transition: transform 0.12s; position: relative; overflow: hidden;
+        }
+        .chess-tab::after { content: ''; position: absolute; top: -70%; left: -25%; width: 40%; height: 240%; background: rgba(255,255,255,0.4); transform: rotate(25deg); animation: shine 4.5s ease-in-out infinite; }
+        .chess-tab:hover { transform: scale(1.05) rotate(-1deg); }
+        .chess-tab.active-chess { background: linear-gradient(160deg, #ffe28a, #ffb02e); color: #7a4500; border-color: #fff; box-shadow: 0 6px 0 #d97b12, 0 0 24px rgba(255,180,60,0.6); }
+        .chess-board {
+            display: grid; grid-template-columns: repeat(8, minmax(38px, 62px)); grid-template-rows: repeat(8, minmax(38px, 62px));
+            border: 8px solid #fff; border-radius: 14px; overflow: hidden; margin: 0 auto; width: fit-content;
+            box-shadow: 0 12px 0 rgba(120,90,40,0.25), 0 18px 40px rgba(0,0,0,0.2);
+        }
+        .chess-cell { display: flex; align-items: center; justify-content: center; font-size: clamp(24px, 4.5vw, 42px); cursor: pointer; position: relative; user-select: none; }
+        .chess-cell.light { background: #f4dfb8; }
+        .chess-cell.dark  { background: #b8875b; }
+        .chess-cell.sel { outline: 4px solid #ffd93d; outline-offset: -4px; box-shadow: inset 0 0 18px rgba(255,180,0,0.65); }
+        .chess-cell.move-hint::after { content: '🟡'; position: absolute; font-size: 16px; opacity: 0.85; animation: bounceMap 0.8s infinite; }
+        .chess-cell.target-hint::after { content: '🎯'; position: absolute; font-size: 20px; animation: bounceMap 0.7s infinite; }
+        .chess-cell.last-move { box-shadow: inset 0 0 0 4px rgba(90,200,90,0.8); }
+        .chess-status { text-align: center; font-weight: 900; font-size: 21px; color: #5a3ea1; margin: 12px 0; min-height: 30px; }
+        .diff-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 10px 0 16px; }
+        .diff-btn {
+            padding: 12px 22px; border-radius: 999px; cursor: pointer; font-weight: 900; font-size: 19px;
+            font-family: 'Baloo 2', cursive; background: #fff; border: 3px solid #ddd; box-shadow: 0 5px 0 rgba(0,0,0,0.12);
+            transition: transform 0.12s; user-select: none;
+        }
+        .diff-btn:hover { transform: scale(1.07); }
+        .diff-btn.sel-diff { background: linear-gradient(160deg, #b07fe8, #7b4fd8); color: #fff; border-color: #fff; box-shadow: 0 5px 0 #5533aa; }
+        .piece-card {
+            background: rgba(255,255,255,0.92); border: 4px solid #fff; border-radius: 22px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12); padding: 20px 26px; max-width: 640px; margin: 0 auto; text-align: center;
+        }
+        .piece-big { font-size: 96px; line-height: 1.1; animation: bounceMap 1.4s infinite ease-in-out; display: inline-block; }
+        .mini-board { display: grid; grid-template-columns: repeat(8, 26px); grid-template-rows: repeat(8, 26px); margin: 12px auto; width: fit-content; border: 4px solid #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 6px 14px rgba(0,0,0,0.15); }
+        .mini-cell { display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .mini-cell.light { background: #f4dfb8; } .mini-cell.dark { background: #b8875b; }
+        .mini-cell.hl { background: #ffe066 !important; }
+
+        /* ================= ЯЙЦА В МАГАЗИНЕ ================= */
+        .egg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
+        .egg-card {
+            background: rgba(255,255,255,0.93); border: 4px solid #fff; border-radius: 24px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12); padding: 20px; text-align: center; position: relative; transition: transform 0.2s;
+        }
+        .egg-card:hover { transform: translateY(-6px) scale(1.03) rotate(-1deg); }
+        .egg-emoji { font-size: 74px; display: inline-block; animation: eggWobble 2.2s ease-in-out infinite; cursor: pointer; }
+        @keyframes eggWobble { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+        .egg-rainbow .egg-emoji { filter: drop-shadow(0 0 10px rgba(255,120,200,0.8)); }
+        @keyframes eggShake { 0%,100% { transform: translateX(0) rotate(0); } 15% { transform: translateX(-6px) rotate(-10deg); } 30% { transform: translateX(6px) rotate(10deg); } 45% { transform: translateX(-6px) rotate(-8deg); } 60% { transform: translateX(6px) rotate(8deg); } 75% { transform: translateX(-4px) rotate(-5deg); } }
+        .hatching .egg-emoji { animation: eggShake 0.7s ease 2; }
+        @keyframes hatchCrack { 0% { transform: scale(1); } 40% { transform: scale(1.4) rotate(-10deg); } 100% { transform: scale(1) rotate(0); } }
+        .hatched-pet { font-size: 92px; animation: hatchCrack 0.8s cubic-bezier(0.34,1.56,0.64,1); display: inline-block; }
+        .boost-tag { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-weight: 900; font-size: 15px; background: #eaffdd; color: #2f8f3f; border: 2px solid #9fdf9f; }
+        .boost-tag.epic { background: #f3e8ff; color: #7b3fc4; border-color: #d8b4fe; }
+        .boost-tag.legend { background: #fff4d1; color: #b07800; border-color: #ffd66b; }
+
+        /* Питомцы в коллекции — крупные понятные кнопки */
+        .pet-collect { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 14px 0; }
+        .pet-chip {
+            background: rgba(255,255,255,0.92); border: 3px solid #e6dcff; border-radius: 18px;
+            padding: 8px 12px; font-size: 30px; cursor: pointer; transition: transform 0.12s; box-shadow: 0 5px 0 rgba(150,120,220,0.25);
+            display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 74px;
+        }
+        .pet-chip small { font-size: 12px; font-weight: 900; color: #7a5fb8; }
+        .pet-chip:hover { transform: scale(1.1) rotate(-2deg); }
+        .pet-chip.equipped-chip { border-color: #ffd93d; background: #fffbe0; box-shadow: 0 5px 0 #d4a017, 0 0 18px rgba(255,215,61,0.7); }
+
         /* --- ПАНЕЛИ --- */
         #top-bar {
             position: fixed; top: 15px; right: 20px;
@@ -221,7 +320,8 @@
         .joke-text { font-size: 21px; line-height: 1.5; font-weight: 700; color: #3a3560; }
 
         /* --- МАГАЗИН (крупные карточки и кнопки — видно всё!) --- */
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; width: 100%; margin-top: 22px; }
+        .shop-grid, .egg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; width: 100%; margin-top: 22px; }
+        .egg-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
         .shop-item {
             background: linear-gradient(180deg, #ffffff, #faf4ff); padding: 20px 16px; border-radius: 26px; text-align: center;
             border: 4px solid #e3c8ff; box-shadow: 0 8px 0 #d3aef7, 0 14px 26px rgba(120,80,200,0.14);
@@ -438,6 +538,12 @@
         body[data-theme="night"] .subj-btn.active-math, body[data-theme="space"] .subj-btn.active-math { background: linear-gradient(160deg, #ffcf8a, #ff9e2f); color: #5c2d00; }
         body[data-theme="night"] .subj-btn.active-letters, body[data-theme="space"] .subj-btn.active-letters { background: linear-gradient(160deg, #ffc2e0, #ff6b9d); color: #5c0d30; }
 
+        .subj-btn.active-chess {
+            background: linear-gradient(160deg, #cdb4ff, #8f6bff 60%, #7446ff); color: #2a1165;
+            border-color: #fff; box-shadow: 0 7px 0 #5b3fc4, 0 0 30px rgba(143,107,255,0.65);
+        }
+        body[data-theme="night"] .subj-btn.active-chess, body[data-theme="space"] .subj-btn.active-chess { background: linear-gradient(160deg, #cdb4ff, #8f6bff); color: #2a1165; }
+
         /* --- БУКВОЗНАЙКА: крупные буквы --- */
         .letter-big {
             width: 84px; height: 84px; border-radius: 22px; display: flex; align-items: center; justify-content: center;
@@ -489,6 +595,27 @@
     <div id="particles-container"></div>
 
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
+
+    <!-- АНТИСТРЕССЫ по бокам: нажми — и что-то происходит! -->
+    <div class="stress-zone stress-left">
+        <div class="stress-item pop-toy"  title="Лопни шарик!" onclick="stPop(this)">🎈</div>
+        <div class="stress-item squish"   title="Помни мякиш!" onclick="stSquish(this)">🍞</div>
+        <div class="stress-item bubble-wrap" title="Лопни пузырик!" onclick="stBubble(this)"><span>🫧</span></div>
+    </div>
+    <div class="stress-zone stress-right">
+        <div class="stress-item spinny" title="Крути волчок!" onclick="stSpin(this)">🌀</div>
+        <div class="stress-item boing"  title="Подпрыгни со мной!" onclick="stBoing(this)">🦘</div>
+        <div class="stress-item sparkle-tap" title="Посыплются искры!" onclick="stSparkle(this)">✨</div>
+    </div>
+    <!-- ШАХМАТЫ -->
+    <div id="chess-screen" class="screen">
+        <h1 class="logo-title" style="font-size: 36px;">♟️ Шахматная школа</h1>
+        <p class="subtitle" id="chess-subtitle">От лёгкого к сложному — и вперёд, играть с ботом! 🤖</p>
+        <div class="chess-tabs" id="chess-tabs"></div>
+        <div id="chess-content"></div>
+        <button class="btn-nav" style="margin-top: 24px;" onmouseenter="playSound('hover')" onclick="backToMap()">🏡 Назад на тропинку</button>
+    </div>
+
     <div id="top-bar"><span id="coin-icon">🪙</span> <span id="coin-display">0</span></div>
     <div id="timer-box">⏱️ <span id="timer-display">0:00</span></div>
     <div id="music-btn" title="Спокойная фоновая песенка">🎵 Песенка</div>
@@ -541,6 +668,7 @@
             <div style="font-size: 34px; letter-spacing: 4px; margin-top: 6px;" id="result-stars"></div>
 
             <div class="reward-box" id="reward-box">Награда: <span id="reward-coins">0</span> 🪙</div>
+            <div id="reward-boost" style="display:none; font-weight:900; color:#7b3fc4; font-size:18px; margin:-4px 0 8px;"></div>
             <div id="time-result" style="font-size:20px; font-weight:900; color:#2b8cc4; margin:-6px 0 10px;"></div>
             <div id="unlock-banner" style="display:none; background:linear-gradient(135deg,#6a5cff,#3aa7e0); color:white; padding:14px; border-radius:18px; font-weight:900; font-size:19px; margin:10px 0; border:3px solid #fff; box-shadow:0 6px 0 rgba(60,50,150,0.35);">
                 🌙 УРА! Открылся <b>МОДУЛЬ 2 — Лунная долина</b>!<br>Выбирай его на тропинке! ✨
@@ -560,7 +688,8 @@
         <h1 class="logo-title" style="font-size: 36px;">🛍️ Волшебный магазин</h1>
         <p class="subtitle">Копи монетки — покупай друзей и целые миры! 💜</p>
         <div class="shop-tabs">
-            <div class="shop-tab" id="tab-pets" onclick="switchShopTab('pets')">🐾 Питомцы</div>
+            <div class="shop-tab" id="tab-pets" onclick="switchShopTab('pets')">🥚 Яйца с питомцами</div>
+            <div class="shop-tab" id="tab-collect" onclick="switchShopTab('collect')" style="display:none;">🐾 Моя коллекция</div>
             <div class="shop-tab" id="tab-themes" onclick="switchShopTab('themes')">🎨 Темы и ауры</div>
         </div>
         <div class="shop-grid" id="shop-grid"></div>
@@ -624,7 +753,7 @@
             ['w1', 'w2', 'w3'].forEach(cls => {
                 const w = document.createElement('div');
                 w.className = 'wave ' + cls;
-                w.style.backgroundImage = `url("image/svg+xml,${WAVE_SVG}")`;
+                w.style.backgroundImage = `url("data:image/svg+xml,${WAVE_SVG}")`;
                 bg.appendChild(w);
             });
         })();
@@ -702,27 +831,59 @@
             "— Почему облако не играет в футбол?\n— Боится удара… молнией по голове!"
         ];
 
+        // ================= ПИТОМЦЫ ТЕПЕРЬ ВОЗВРАЩАЮТСЯ ИЗ ЯИЦ! 🥚 =================
+        // Питомцев нельзя купить напрямую — только яйца. Из яйца вылупляется случайный друг.
+        // У каждого питомца есть БУСТ ДОХОДА (multiplier): награда за урок умножается!
         const pets = [
-            { id: 'bear',    name: 'Мишутка',     emoji: '🐻', price: 0 },
-            { id: 'cat',     name: 'Котик',       emoji: '🐱', price: 50 },
-            { id: 'dog',     name: 'Собачка',     emoji: '🐶', price: 50 },
-            { id: 'bunny',   name: 'Зайка',       emoji: '🐰', price: 80 },
-            { id: 'fox',     name: 'Лисичка',     emoji: '🦊', price: 80 },
-            { id: 'frog',    name: 'Лягушоня',    emoji: '🐸', price: 100 },
-            { id: 'panda',   name: 'Панда',       emoji: '🐼', price: 120 },
-            { id: 'koala',   name: 'Коала',       emoji: '🐨', price: 130 },
-            { id: 'tiger',   name: 'Тигрёнок',    emoji: '🐯', price: 150 },
-            { id: 'unicorn', name: 'Единорожек',  emoji: '🦄', price: 180 },
-            { id: 'owl',     name: 'Сова-профи',  emoji: '🦉', price: 200 },
-            { id: 'penguin', name: 'Пингвинчик',  emoji: '🐧', price: 220 },
-            { id: 'monkey',  name: 'Обезьянка',   emoji: '🐵', price: 240 },
-            { id: 'chick',   name: 'Цыплёнок',    emoji: '🐥', price: 250 },
-            { id: 'dragon',  name: 'Дракончик',   emoji: '🐲', price: 300 },
-            { id: 'robot',   name: 'Робо-друг',   emoji: '🤖', price: 350 },
-            { id: 'alien',   name: 'Лунтик',      emoji: '👽', price: 400 },
-            { id: 'wizard',  name: 'Маг',         emoji: '🧙', price: 450 },
-            { id: 'ghost',   name: 'Привидение',  emoji: '👻', price: 500 }
+            { id: 'bear',    name: 'Мишутка',      emoji: '🐻', mult: 1.0,   tier: 'common' },
+            { id: 'cat',     name: 'Котик',        emoji: '🐱', mult: 1.1,   tier: 'common' },
+            { id: 'dog',     name: 'Собачка',      emoji: '🐶', mult: 1.1,   tier: 'common' },
+            { id: 'bunny',   name: 'Зайка',        emoji: '🐰', mult: 1.2,   tier: 'common' },
+            { id: 'fox',     name: 'Лисичка',      emoji: '🦊', mult: 1.2,   tier: 'common' },
+            { id: 'frog',    name: 'Лягушоня',     emoji: '🐸', mult: 1.3,   tier: 'uncommon' },
+            { id: 'panda',   name: 'Панда',        emoji: '🐼', mult: 1.3,   tier: 'uncommon' },
+            { id: 'koala',   name: 'Коала',        emoji: '🐨', mult: 1.4,   tier: 'uncommon' },
+            { id: 'tiger',   name: 'Тигрёнок',     emoji: '🐯', mult: 1.4,   tier: 'uncommon' },
+            { id: 'hedgehog',name: 'Ёжик',         emoji: '🦔', mult: 1.5,   tier: 'uncommon' },
+            { id: 'owl',     name: 'Сова-профи',   emoji: '🦉', mult: 1.5,   tier: 'rare' },
+            { id: 'penguin', name: 'Пингвинчик',   emoji: '🐧', mult: 1.6,   tier: 'rare' },
+            { id: 'monkey',  name: 'Обезьянка',    emoji: '🐵', mult: 1.6,   tier: 'rare' },
+            { id: 'chick',   name: 'Цыплёнок',     emoji: '🐥', mult: 1.7,   tier: 'rare' },
+            { id: 'wolf',    name: 'Волчонок',     emoji: '🐺', mult: 1.7,   tier: 'rare' },
+            { id: 'deer',    name: 'Оленёнок',     emoji: '🦌', mult: 1.8,   tier: 'rare' },
+            { id: 'whale',   name: 'Китик',        emoji: '🐳', mult: 1.8,   tier: 'epic' },
+            { id: 'octo',    name: 'Восьмилап',    emoji: '🐙', mult: 1.9,   tier: 'epic' },
+            { id: 'bug',     name: 'Жучок',        emoji: '🐞', mult: 1.9,   tier: 'epic' },
+            { id: 'snail',   name: 'Улитка',       emoji: '🐌', mult: 2.0,   tier: 'epic' },
+            { id: 'bee',     name: 'Пчёлка',       emoji: '🐝', mult: 2.0,   tier: 'epic' },
+            { id: 'dino',    name: 'Динозаврик',   emoji: '🦖', mult: 2.1,   tier: 'epic' },
+            { id: 'dragon',  name: 'Дракончик',    emoji: '🐲', mult: 2.2,   tier: 'legend' },
+            { id: 'robot',   name: 'Робо-друг',    emoji: '🤖', mult: 2.3,   tier: 'legend' },
+            { id: 'alien',   name: 'Лунтик',       emoji: '👽', mult: 2.4,   tier: 'legend' },
+            { id: 'wizard',  name: 'Маг',          emoji: '🧙', mult: 2.5,   tier: 'legend' },
+            { id: 'ghost',   name: 'Привидение',   emoji: '👻', mult: 2.5,   tier: 'legend' },
+            { id: 'unicorn', name: 'Единорожек',   emoji: '🦄', mult: 3.0,   tier: 'mythic' },
+            { id: 'phoenix', name: 'Феникс',       emoji: '🐦‍🔥', mult: 3.5, tier: 'mythic' }
         ];
+        const TIER_NAMES = { common: 'Обычный', uncommon: 'Необычный', rare: 'Редкий', epic: 'Эпический', legend: 'Легендарный', mythic: 'МИФИЧЕСКИЙ!' };
+
+        // --- ЯЙЦА: покупаешь яйцо → оно трясётся → вылупляется случайный питомец ---
+        const eggs = [
+            { id: 'wood',    name: 'Деревянное яичко', emoji: '🥚', price: 120, pool: ['common','uncommon'],                desc: 'Простые и необычные друзья' },
+            { id: 'sea',     name: 'Морское яйцо',     emoji: '🐚', price: 250, pool: ['uncommon','rare'],                  desc: 'Из волн приплывает редкий друг' },
+            { id: 'golden',  name: 'Золотое яйцо',     emoji: '🌟', price: 450, pool: ['rare','epic'],                      desc: 'Сияет! Редкие и эпические' },
+            { id: 'dino',    name: 'Яйцо динозавра',   emoji: '🦕', price: 650, pool: ['epic','legend'],                    desc: 'Древняя магия: эпики и легенды' },
+            { id: 'rainbow', name: 'Радужное яйцо',    emoji: '🌈', price: 900, pool: ['legend','mythic'], rainbow: true,   desc: 'ДЖЕКПОТ! Легенды и мифические!' }
+        ];
+        function rollPetFromEgg(egg) {
+            const pool = pets.filter(p => egg.pool.includes(p.tier));
+            // взвешиваем: чем круче тир внутри яйца — тем реже
+            const w = { common: 40, uncommon: 26, rare: 18, epic: 10, legend: 5, mythic: 2 };
+            let total = pool.reduce((s, p) => s + (w[p.tier] || 1), 0);
+            let r = Math.random() * total;
+            for (const p of pool) { r -= (w[p.tier] || 1); if (r <= 0) return p; }
+            return pool[pool.length - 1];
+        }
 
         const themes = [
             { id: 'meadow',  name: 'Луговина',     icon: '🌼', price: 0,   rarity: 'common',    desc: 'Солнечная поляна — как дома', grad: 'linear-gradient(180deg,#a8e6ff,#b8ecc0)' },
@@ -734,31 +895,31 @@
             { id: 'space',   name: 'Космо-аура',   icon: '🪐', price: 500, rarity: 'legendary', desc: 'Пурпур далёких галактик',     grad: 'linear-gradient(180deg,#0d1030,#4a2c6b)' }
         ];
 
-        // Модуль 1 — Солнечная поляна: сначала очень легко, потом понемногу сложнее
+        // Модуль 1 — Солнечная поляна: сначала очень легко, потом понемногу сложнее (награды скуднее — монетки в цене!)
         const lessons1 = [
-            { id: 1,  title: "1", max: 3,  type: 'add' },
-            { id: 2,  title: "2", max: 4,  type: 'add' },
-            { id: 3,  title: "3", max: 5,  type: 'sub' },
-            { id: 4,  title: "4", max: 6,  type: 'add' },
-            { id: 5,  title: "5", max: 7,  type: 'sub' },
-            { id: 6,  title: "6", max: 8,  type: 'mix' },
-            { id: 7,  title: "7", max: 10, type: 'add' },
-            { id: 8,  title: "8", max: 10, type: 'sub' },
-            { id: 9,  title: "9", max: 12, type: 'mix' },
-            { id: 10, title: "🏆", max: 12, type: 'mix' }
+            { id: 1,  title: "1", max: 3,  type: 'add', reward: 6 },
+            { id: 2,  title: "2", max: 4,  type: 'add', reward: 6 },
+            { id: 3,  title: "3", max: 5,  type: 'sub', reward: 7 },
+            { id: 4,  title: "4", max: 6,  type: 'add', reward: 7 },
+            { id: 5,  title: "5", max: 7,  type: 'sub', reward: 8 },
+            { id: 6,  title: "6", max: 8,  type: 'mix', reward: 8 },
+            { id: 7,  title: "7", max: 10, type: 'add', reward: 9 },
+            { id: 8,  title: "8", max: 10, type: 'sub', reward: 9 },
+            { id: 9,  title: "9", max: 12, type: 'mix', reward: 10 },
+            { id: 10, title: "🏆", max: 12, type: 'mix', reward: 12 }
         ];
         // Модуль 2 — Лунная долина: открывается, когда пройден весь модуль 1
         const lessons2 = [
-            { id: 11, title: "1", max: 10, type: 'add' },
-            { id: 12, title: "2", max: 12, type: 'sub' },
-            { id: 13, title: "3", max: 14, type: 'mix' },
-            { id: 14, title: "4", max: 15, type: 'add' },
-            { id: 15, title: "5", max: 15, type: 'sub' },
-            { id: 16, title: "6", max: 18, type: 'mix' },
-            { id: 17, title: "7", max: 20, type: 'add' },
-            { id: 18, title: "8", max: 20, type: 'sub' },
-            { id: 19, title: "9", max: 20, type: 'mix' },
-            { id: 20, title: "👑", max: 20, type: 'mix' }
+            { id: 11, title: "1", max: 10, type: 'add', reward: 8 },
+            { id: 12, title: "2", max: 12, type: 'sub', reward: 8 },
+            { id: 13, title: "3", max: 14, type: 'mix', reward: 9 },
+            { id: 14, title: "4", max: 15, type: 'add', reward: 9 },
+            { id: 15, title: "5", max: 15, type: 'sub', reward: 10 },
+            { id: 16, title: "6", max: 18, type: 'mix', reward: 10 },
+            { id: 17, title: "7", max: 20, type: 'add', reward: 11 },
+            { id: 18, title: "8", max: 20, type: 'sub', reward: 11 },
+            { id: 19, title: "9", max: 20, type: 'mix', reward: 12 },
+            { id: 20, title: "👑", max: 20, type: 'mix', reward: 15 }
         ];
         const MODULES_MATH = [
             { num: 1, name: 'Солнечная поляна', icon: '☀️', cls: 'mb-1', lessons: lessons1 },
@@ -787,29 +948,29 @@
         };
         // Модуль 1 — весёлые буквы: сначала знакомство, потом поиск и сборка слов (максимально просто!)
         const letterLessons1 = [
-            { id: 1,  title: '🌟', type: 'intro', letters: ['А','У','М'] },
-            { id: 2,  title: '1',  type: 'find', pool: ['А','У','М','О','Х'] },
-            { id: 3,  title: '2',  type: 'first', pool: ['А','У','М','О','Х'] },
-            { id: 4,  title: '3',  type: 'word', words: ['МАМА','МУХА','СОКИ','УДАВ'] },
-            { id: 5,  title: '4',  type: 'find', pool: ['Н','Р','С','Т','К','А','У','М','О'] },
-            { id: 6,  title: '5',  type: 'first', pool: ['Н','Р','С','Т','К','А','У','М','О'] },
-            { id: 7,  title: '6',  type: 'word', words: ['НОС','РУКА','УХО','ТОРТ'] },
-            { id: 8,  title: '7',  type: 'find', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] },
-            { id: 9,  title: '8',  type: 'first', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] },
-            { id: 10, title: '🏆', type: 'word', words: ['ЛИСА','КОЗА','КНИГА','МАЛЬВА'] }
+            { id: 1,  title: '🌟', type: 'intro', letters: ['А','У','М'] , reward: 6 },
+            { id: 2,  title: '1',  type: 'find', pool: ['А','У','М','О','Х'] , reward: 7 },
+            { id: 3,  title: '2',  type: 'first', pool: ['А','У','М','О','Х'] , reward: 7 },
+            { id: 4,  title: '3',  type: 'word', words: ['МАМА','МУХА','СОКИ','УДАВ'] , reward: 8 },
+            { id: 5,  title: '4',  type: 'find', pool: ['Н','Р','С','Т','К','А','У','М','О'] , reward: 8 },
+            { id: 6,  title: '5',  type: 'first', pool: ['Н','Р','С','Т','К','А','У','М','О'] , reward: 9 },
+            { id: 7,  title: '6',  type: 'word', words: ['НОС','РУКА','УХО','ТОРТ'] , reward: 9 },
+            { id: 8,  title: '7',  type: 'find', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] , reward: 10 },
+            { id: 9,  title: '8',  type: 'first', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] , reward: 10 },
+            { id: 10, title: '🏆', type: 'word', words: ['ЛИСА','КОЗА','КНИГА','МАЛЬВА'] , reward: 11 }
         ];
         // Модуль 2 — буквы посерьёзнее, открывается после всего модуля 1
         const letterLessons2 = [
-            { id: 11, title: '🌟', type: 'intro', letters: ['Ё','Ж','Й','Ц','Ч','Щ','Э','Ю','Я','Ы','Ь','Ъ'] },
-            { id: 12, title: '1',  type: 'find', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'] },
-            { id: 13, title: '2',  type: 'first', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ы','Э','Ю','Я'] },
-            { id: 14, title: '3',  type: 'word', words: ['ЕЖИК','ЁРШИК','ЧАЙ','ЮЛА'] },
-            { id: 15, title: '4',  type: 'find', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] },
-            { id: 16, title: '5',  type: 'first', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] },
-            { id: 17, title: '6',  type: 'word', words: ['Флаг'.toUpperCase(),'ЗАБОР','ХИТРИНА','ВОДА'] },
-            { id: 18, title: '7',  type: 'find', pool: Object.keys(LETTER_DATA) },
-            { id: 19, title: '8',  type: 'first', pool: Object.keys(LETTER_DATA) },
-            { id: 20, title: '👑', type: 'word', words: ['РАКЕТА','ЩИТУХА','ЦЫПЛЁНОК','ЯГОДА'] }
+            { id: 11, title: '🌟', type: 'intro', letters: ['Ё','Ж','Й','Ц','Ч','Щ','Э','Ю','Я','Ы','Ь','Ъ'] , reward: 9 },
+            { id: 12, title: '1',  type: 'find', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'] , reward: 10 },
+            { id: 13, title: '2',  type: 'first', pool: ['Е','Ё','Ж','Й','Ц','Ч','Ш','Щ','Ы','Э','Ю','Я'] , reward: 11 },
+            { id: 14, title: '3',  type: 'word', words: ['ЕЖИК','ЁРШИК','ЧАЙ','ЮЛА'] , reward: 12 },
+            { id: 15, title: '4',  type: 'find', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] , reward: 13 },
+            { id: 16, title: '5',  type: 'first', pool: ['Б','Г','Д','В','Ф','Х','П','З','Э','Щ','Ц','Ч','Ж','Ю','Я','Ы'] , reward: 14 },
+            { id: 17, title: '6',  type: 'word', words: ['Флаг'.toUpperCase(),'ЗАБОР','ХИТРИНА','ВОДА'] , reward: 15 },
+            { id: 18, title: '7',  type: 'find', pool: Object.keys(LETTER_DATA) , reward: 16 },
+            { id: 19, title: '8',  type: 'first', pool: Object.keys(LETTER_DATA) , reward: 17 },
+            { id: 20, title: '👑', type: 'word', words: ['РАКЕТА','ЩИТУХА','ЦЫПЛЁНОК','ЯГОДА'] , reward: 18 }
         ];
         const MODULES_LETTERS = [
             { num: 1, name: 'Весёлые буквы',    icon: '🌈', cls: 'mb-1', lessons: letterLessons1 },
@@ -820,6 +981,9 @@
         let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
         let currentPetId = localStorage.getItem('mathPet') || 'bear';
         let ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear'];
+        // шахматный прогресс: уроки 1..7 и победы над ботом по сложностям
+        let chessLessonsDone = parseInt(localStorage.getItem('chessLvl')) || 0;   // сколько уроков пройдено (0..7)
+        let chessBeaten = JSON.parse(localStorage.getItem('chessBeaten')) || {};   // {easy:3, medium:1, hard:0}
         // currentTheme уже объявлен в начале скрипта (до функций, которые его используют)
         let ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow'];
         // Прогресс по предметам: математика (глобальный уровень 1..20) и буквы (1..20)
@@ -1161,10 +1325,9 @@
             if (document.getElementById('map-screen').classList.contains('active')) drawPath();
         });
 
-        // --- МАГАЗИН (питомцы + темы) ---
-        // --- МАГАЗИН (питомцы + темы) ---
+        // --- МАГАЗИН (яйца с питомцами + темы) ---
         function openShop() {
-            playSound('click'); switchScreen('shop-screen'); renderShop(); speechText.textContent = "Хочешь нового друга или новую тему? 🥰";
+            playSound('click'); switchScreen('shop-screen'); renderShop(); speechText.textContent = "Хочешь нового друга из яичка или новую тему? 🥰";
         }
 
         function switchShopTab(tab) {
@@ -1174,24 +1337,45 @@
         function renderShop() {
             const grid = document.getElementById('shop-grid'); grid.innerHTML = '';
             document.getElementById('tab-pets').className = 'shop-tab' + (shopTab === 'pets' ? ' active-pets' : '');
+            const collectTab = document.getElementById('tab-collect');
+            collectTab.style.display = ownedPets.length > 1 ? '' : 'none';
+            collectTab.className = 'shop-tab' + (shopTab === 'collect' ? ' active-themes' : '');
             document.getElementById('tab-themes').className = 'shop-tab' + (shopTab === 'themes' ? ' active-themes' : '');
 
             if (shopTab === 'pets') {
-                pets.forEach(pet => {
-                    const isOwned = ownedPets.includes(pet.id);
+                grid.className = 'egg-grid';
+                eggs.forEach(egg => {
+                    const card = document.createElement('div'); card.classList.add('egg-card');
+                    if (egg.rainbow) card.classList.add('egg-rainbow');
+                    card.onmouseenter = () => playSound('hover');
+                    card.innerHTML = `
+                        <div class="egg-emoji">${egg.emoji}</div>
+                        <div class="name" style="font-size:20px;">${egg.name}</div>
+                        <div class="theme-desc">${egg.desc}</div>
+                        <button class="shop-btn" style="background: linear-gradient(160deg,#ffe28a,#ffc23d); box-shadow: 0 4px 0 #d99a12;" onclick="buyEgg('${egg.id}', this)">🪙 ${egg.price} — купить!</button>`;
+                    grid.appendChild(card);
+                });
+                // коллекция уже вылупившихся
+                if (ownedPets.length > 1) {
+                    const info = document.createElement('div');
+                    info.style.cssText = 'grid-column: 1/-1; text-align:center; font-weight:900; color:#7a5fb8; font-size:18px;';
+                    info.innerHTML = `🐾 Уже с тобой: ${ownedPets.map(id => (pets.find(p => p.id === id) || {}).emoji).join(' ')} — выбирай в «Моей коллекции»!`;
+                    grid.appendChild(info);
+                }
+            } else if (shopTab === 'collect') {
+                grid.className = 'shop-grid';
+                ownedPets.forEach(pid => {
+                    const pet = pets.find(p => p.id === pid); if (!pet) return;
                     const isEquipped = currentPetId === pet.id;
                     const card = document.createElement('div'); card.classList.add('shop-item');
                     card.onmouseenter = () => playSound('hover');
-
-                    let btnHtml = '';
-                    if (isEquipped) { card.classList.add('equipped-card'); btnHtml = `<button class="shop-btn equipped">✨ Надето</button>`; }
-                    else if (isOwned) btnHtml = `<button class="shop-btn" onclick="equipPet('${pet.id}')">Надеть</button>`;
-                    else btnHtml = `<button class="shop-btn" style="background: linear-gradient(160deg,#ffe28a,#ffc23d); box-shadow: 0 4px 0 #d99a12;" onclick="buyPet('${pet.id}', ${pet.price})">🪙 ${pet.price}</button>`;
-
-                    card.innerHTML = `${isEquipped ? '<div class="badge">ДРУГ</div>' : ''}<div class="emoji">${pet.emoji}</div><div class="name">${pet.name}</div>${btnHtml}`;
+                    let btnHtml = isEquipped ? `<button class="shop-btn equipped">✨ С тобой</button>`
+                                             : `<button class="shop-btn" onclick="equipPet('${pet.id}')">Взять друга</button>`;
+                    card.innerHTML = `${isEquipped ? '<div class="badge">ДРУГ</div>' : ''}<div class="emoji">${pet.emoji}</div><div class="name">${pet.name}</div><div class="boost-tag ${pet.tier === 'mythic' || pet.tier === 'legend' ? 'legend' : pet.tier === 'epic' || pet.tier === 'rare' ? 'epic' : ''}💰 Монетки ×${pet.mult.toFixed(1)}</div>${btnHtml}`;
                     grid.appendChild(card);
                 });
             } else {
+                grid.className = 'shop-grid';
                 themes.forEach(th => {
                     const isOwned = ownedThemes.includes(th.id);
                     const isActive = currentTheme === th.id;
@@ -1214,12 +1398,33 @@
             }
         }
 
-        function buyPet(petId, price) {
-            if (coins >= price) {
-                coins -= price; ownedPets.push(petId); currentPetId = petId;
-                localStorage.setItem('mathCoins', coins); localStorage.setItem('mathPet', currentPetId); localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
-                playSound('coin'); launchConfetti(); updateUI(); say(`Ура! ${currentPetName} теперь с тобой! 🎉`); renderShop();
-            } else { playSound('wrong'); say("Не хватает монеток! Играй еще!"); }
+        // ПОКУПКА ЯЙЦА: списываем монетки → яйцо трясётся → БУМ, питомец!
+        function buyEgg(eggId, btnEl) {
+            const egg = eggs.find(e => e.id === eggId);
+            if (!egg) return;
+            if (coins < egg.price) { playSound('wrong'); say("Не хватает монеток! Проходи уроки и копи! 💪"); return; }
+            coins -= egg.price; localStorage.setItem('mathCoins', coins); updateUI();
+            const card = btnEl.closest('.egg-card');
+            card.classList.add('hatching');
+            playSound('coin');
+            setTimeout(() => {
+                const pet = rollPetFromEgg(egg);
+                const isNew = !ownedPets.includes(pet.id);
+                if (isNew) ownedPets.push(pet.id);
+                currentPetId = pet.id;
+                localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
+                localStorage.setItem('mathPet', currentPetId);
+                card.classList.remove('hatching');
+                card.innerHTML = `
+                    <div class="hatched-pet">${pet.emoji}</div>
+                    <div class="name" style="font-size:20px;">${pet.name}</div>
+                    <div class="boost-tag ${pet.tier === 'mythic' || pet.tier === 'legend' ? 'legend' : pet.tier === 'epic' || pet.tier === 'rare' ? 'epic' : ''}💰 Доход ×${pet.mult.toFixed(1)} · ${TIER_NAMES[pet.tier]}</div>
+                    <div class="theme-desc">${isNew ? 'НОВЫЙ друг в коллекции!' : 'Такой друг уже есть — но пусть будет!'}</div>
+                    <button class="shop-btn" onclick="openShop()">Ура! В магазин</button>`;
+                playSound('win'); launchConfetti(); createFireworks(card, 24);
+                updateUI(); renderShop();
+                say(`🐣 Из яйца вылупился ${pet.name}! Монетки теперь ×${pet.mult.toFixed(1)}!`);
+            }, 1500);
         }
 
         function equipPet(petId) {
@@ -1611,7 +1816,10 @@
             switchScreen('result-screen');
             playSound('win');
 
-            const earnedCoins = lessonCorrectCount * 10 + (wrongAttempts === 0 ? 20 : 0) + timeBonus(elapsed);
+            // НАГРАДА: база урока (скудная!) + бонус за скорость, ВСЁ умножаем на БУСТ ПИТОМЦА!
+            const pet = pets.find(p => p.id === currentPetId) || pets[0];
+            const baseReward = currentLessonObj.reward || 8;
+            const earnedCoins = Math.round((baseReward + timeBonus(elapsed)) * pet.mult);
             coins += earnedCoins;
             localStorage.setItem('mathCoins', coins);
 
@@ -1640,6 +1848,9 @@
             }
 
             document.getElementById('reward-coins').textContent = earnedCoins;
+            const boostLine = document.getElementById('reward-boost');
+            if (pet.mult > 1) { boostLine.style.display = 'block'; boostLine.innerHTML = `${pet.emoji} ${pet.name} умножил награду: ×${pet.mult.toFixed(1)}!`; }
+            else boostLine.style.display = 'none';
             document.getElementById('time-result').innerHTML =
                 `⏱️ Время: <b>${fmtTime(elapsed)}</b>${recordText}` +
                 `<div class="best-time">🏁 Рекорд урока: ${fmtTime(bestTimes[tKey])}</div>`;
@@ -1752,17 +1963,21 @@
         // --- МОДУЛИ И ПРЕДМЕТЫ ---
         function isModule2Open() { return unlockedForSubject() >= 11; }
 
+        // --- ПРЕДМЕТЫ НА ТРОПИНКЕ: математика, буквы и ШАХМАТЫ! ♟️ ---
         function renderSubjectSwitcher() {
             const sw = document.getElementById('subject-switcher'); sw.innerHTML = '';
             [{id:'math', icon:'🧮', label:'Математика', hint:'считаем и играем'},
-             {id:'letters', icon:'🔤', label:'Буквы', hint:'буквознайка'}].forEach(sdef => {
+             {id:'letters', icon:'🔤', label:'Буквы', hint:'буквознайка'},
+             {id:'chess', icon:'♟️', label:'Шахматы', hint:'учимся и играем с ботом'}].forEach(sdef => {
                 const b = document.createElement('div');
                 const isActive = currentSubject === sdef.id;
-                b.className = 'subj-btn' + (isActive ? (' active-' + (sdef.id === 'math' ? 'math' : 'letters')) : '');
+                const activeCls = sdef.id === 'math' ? 'active-math' : sdef.id === 'letters' ? 'active-letters' : 'active-chess';
+                b.className = 'subj-btn' + (isActive ? (' ' + activeCls) : '');
                 b.innerHTML = `<span class="sb-icon">${sdef.icon}</span><span class="sb-label">${sdef.label}</span>` +
                     (isActive ? `<span class="sb-hint">👆 выбрано — жми!</span>` : `<span class="sb-hint">👆 нажми, чтобы играть!</span>`);
                 b.onmouseenter = () => playSound('hover');
                 b.onclick = () => {
+                    if (sdef.id === 'chess') { playSound('click'); openChess(); return; }
                     if (currentSubject === sdef.id) return;
                     playSound('click');
                     currentSubject = sdef.id;
@@ -1790,6 +2005,414 @@
                 };
                 sw.appendChild(b);
             });
+        }
+
+        // ================= ШАХМАТЫ: уроки от лёгкого к сложному + боты с настройками сложности! =================
+        const CHESS_PIECES = { wK:'♔', wQ:'♕', wR:'♖', wB:'♗', wN:'♘', wP:'♙', bK:'♚', bQ:'♛', bR:'♜', bB:'♝', bN:'♞', bP:'♟' };
+        const PIECE_VALUE = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 100 };
+
+        function newChessBoard() {
+            const back = ['R','N','B','Q','K','B','N','R'];
+            const b = [];
+            for (let r = 0; r < 8; r++) b.push([]);
+            for (let c = 0; c < 8; c++) {
+                b[0][c] = 'b' + back[c]; b[1][c] = 'bP';
+                b[6][c] = 'wP';          b[7][c] = 'w' + back[c];
+                b[2][c] = b[3][c] = b[4][c] = b[5][c] = null;
+            }
+            return b;
+        }
+        const pieceColor = p => p ? p[0] : null;
+        const inB = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
+
+        // Псевдо-легальные ходы (без проверки шаха — достаточно для детской игры)
+        function pseudoMoves(board, r, c, epTarget) {
+            const p = board[r][c]; if (!p) return [];
+            const col = p[0], t = p[1], moves = [], enemy = col === 'w' ? 'b' : 'w';
+            const add = (rr, cc, capOnly, quietOnly) => {
+                if (!inB(rr, cc)) return false;
+                const q = board[rr][cc];
+                if (q && pieceColor(q) === col) return false;
+                if (q) { if (!capOnly && !quietOnly) moves.push([rr, cc]); }
+                else if (!capOnly) moves.push([rr, cc]);
+                return !q; // продолжать луч, если клетка пустая
+            };
+            if (t === 'P') {
+                const dir = col === 'w' ? -1 : 1, start = col === 'w' ? 6 : 1;
+                if (inB(r + dir, c) && !board[r + dir][c]) {
+                    moves.push([r + dir, c]);
+                    if (r === start && !board[r + 2 * dir][c]) moves.push([r + 2 * dir, c]);
+                }
+                [[dir, -1], [dir, 1]].forEach(([dr, dc]) => {
+                    const rr = r + dr, cc = c + dc;
+                    if (!inB(rr, cc)) return;
+                    if (board[rr][cc] && pieceColor(board[rr][cc]) === enemy) moves.push([rr, cc]);
+                    if (epTarget && epTarget[0] === rr && epTarget[1] === cc) moves.push([rr, cc, true]);
+                });
+            } else if (t === 'N') {
+                [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]].forEach(([dr,dc]) => add(r+dr, c+dc));
+            } else if (t === 'K') {
+                [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([dr,dc]) => add(r+dr, c+dc));
+            } else {
+                const dirs = [];
+                if (t === 'R' || t === 'Q') dirs.push([1,0],[-1,0],[0,1],[0,-1]);
+                if (t === 'B' || t === 'Q') dirs.push([1,1],[1,-1],[-1,1],[-1,-1]);
+                dirs.forEach(([dr,dc]) => { let rr = r+dr, cc = c+dc; while (add(rr, cc)) { rr += dr; cc += dc; } });
+            }
+            return moves;
+        }
+
+        function findKing(board, col) {
+            for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++)
+                if (board[r][c] === col + 'K') return [r, c];
+            return null;
+        }
+        function isSquareAttacked(board, r, c, byCol, enPassant) {
+            for (let rr = 0; rr < 8; rr++) for (let cc = 0; cc < 8; cc++) {
+                const p = board[rr][cc];
+                if (p && pieceColor(p) === byCol) {
+                    const mv = pseudoMoves(board, rr, cc, enPassant);
+                    if (mv.some(m => m[0] === r && m[1] === c)) return true;
+                }
+            }
+            return false;
+        }
+        function allLegalMoves(board, col, enPassant) {
+            const list = [];
+            for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+                const p = board[r][c];
+                if (!p || pieceColor(p) !== col) continue;
+                pseudoMoves(board, r, c, enPassant).forEach(([rr, cc, ep]) => {
+                    // симулируем и проверяем, не подставляем ли короля
+                    const copy = board.map(row => row.slice());
+                    copy[r][c] = null;
+                    if (ep) copy[r][cc] = null;               // взятие на проходе
+                    copy[rr][cc] = p;                          // сам ход
+                    if (copy[rr][cc] === col + 'P' && (rr === 0 || rr === 7)) copy[rr][cc] = col + 'Q'; // автопревращение пешки в ферзя
+                    const k = findKing(copy, col);
+                    if (!k || !isSquareAttacked(copy, k[0], k[1], col === 'w' ? 'b' : 'w', null)) {
+                        list.push({ from: [r, c], to: [rr, cc], ep });
+                    }
+                });
+            }
+            return list;
+        }
+
+        // --- БОТ: три сложности ---
+        function botMove(board, level) {
+            const moves = allLegalMoves(board, 'b', null);
+            if (!moves.length) return null;
+            let chosen;
+            if (level === 'easy') {
+                // малыш: часто ходит случайно, иногда берёт фигуру
+                if (Math.random() < 0.6) chosen = moves[Math.floor(Math.random() * moves.length)];
+                else {
+                    const caps = moves.filter(m => board[m.to[0]][m.to[1]]);
+                    chosen = caps.length ? caps[Math.floor(Math.random() * caps.length)] : moves[Math.floor(Math.random() * moves.length)];
+                }
+            } else if (level === 'medium') {
+                // средний: жадный — берёт самое ценное, иначе случайный ход в центр
+                let best = null, bestScore = -1;
+                moves.forEach(m => {
+                    const tgt = board[m.to[0]][m.to[1]];
+                    let sc = tgt ? PIECE_VALUE[tgt[1]] * 10 : 0;
+                    sc += (m.to[0] >= 2 && m.to[0] <= 5 && m.to[1] >= 2 && m.to[1] <= 5) ? 3 : 0;
+                    sc += Math.random() * 4;
+                    if (sc > bestScore) { bestScore = sc; best = m; }
+                });
+                chosen = best;
+            } else {
+                // сложный: минимакс на 2 хода + материал + центр
+                const scoreBoard = (b) => {
+                    let s = 0;
+                    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+                        const p = b[r][c]; if (!p) continue;
+                        const v = PIECE_VALUE[p[1]] + ((r >= 2 && r <= 5 && c >= 2 && c <= 5) ? 0.5 : 0);
+                        s += p[0] === 'b' ? v : -v;
+                    }
+                    return s;
+                };
+                let best = null, bestScore = -Infinity;
+                moves.forEach(m => {
+                    const copy = board.map(row => row.slice());
+                    copy[m.to[0]][m.to[1]] = copy[m.from[0]][m.from[1]];
+                    if (m.ep) copy[m.from[0]][m.to[1]] = null;
+                    copy[m.from[0]][m.from[1]] = null;
+                    if (copy[m.to[0]][m.to[1]] === 'bP' && m.to[0] === 0) copy[m.to[0]][m.to[1]] = 'bQ';
+                    // ответ соперника — лучший для него (минимум для нас)
+                    const replies = allLegalMoves(copy, 'w', null);
+                    let worst = scoreBoard(copy);
+                    replies.forEach(rp => {
+                        const c2 = copy.map(row => row.slice());
+                        c2[rp.to[0]][rp.to[1]] = c2[rp.from[0]][rp.from[1]];
+                        c2[rp.from[0]][rp.from[1]] = null;
+                        const sc = scoreBoard(c2);
+                        if (sc < worst) worst = sc;
+                    });
+                    if (worst > bestScore) { bestScore = worst; best = m; }
+                });
+                chosen = best || moves[0];
+            }
+            return chosen;
+        }
+
+        function applyMove(board, m) {
+            const p = board[m.from[0]][m.from[1]];
+            const captured = board[m.to[0]][m.to[1]];
+            board[m.to[0]][m.to[1]] = p;
+            if (m.ep) board[m.from[0]][m.to[1]] = null;
+            board[m.from[0]][m.from[1]] = null;
+            if (p === 'wP' && m.to[0] === 0) board[m.to[0]][m.to[1]] = 'wQ';
+            if (p === 'bP' && m.to[0] === 7) board[m.to[0]][m.to[1]] = 'bQ';
+            return captured;
+        }
+
+        // Состояние шахматной партии
+        let chState = null;      // { board, sel, legal, myTurn, over, lastMove, level }
+        let chessTab = 'learn';  // 'learn' | 'play'
+        let botThinkTimer = null;
+
+        function openChess() { switchScreen('chess-screen'); renderChess(); }
+
+        function renderChess() {
+            document.getElementById('chess-tabs').innerHTML =
+                `<div class="chess-tab ${chessTab==='learn'?'active-chess':''}" onclick="setChessTab('learn')">🎓 Учимся играть</div>` +
+                `<div class="chess-tab ${chessTab==='play'?'active-chess':''}" onclick="setChessTab('play')">🤖 Играть с ботом</div>`;
+            const content = document.getElementById('chess-content');
+            if (chessTab === 'learn') renderChessLearn(content);
+            else renderChessPlay(content);
+        }
+        function setChessTab(t) { playSound('click'); chessTab = t; if (botThinkTimer) { clearTimeout(botThinkTimer); botThinkTimer = null; } chState = null; renderChess(); }
+
+        // ---------- УРОКИ ШАХМАТ: от простого к сложному ----------
+        const chessLessons = [
+            { icon: '♙', name: 'Пешка — солдатик', text: 'Пешка ходит ВПЕРЁД на 1 клетку (а с старта может на 2!). Бьёт по диагонали. Дойдёт до конца — превратится в ферзя!' },
+            { icon: '♖', name: 'Ладья — башня',     text: 'Ладья ходит как ракета: прямо по линиям на любое число клеток! Не перепрыгивает через фигуры.' },
+            { icon: '♗', name: 'Слон — хитрец',    text: 'Слон любит диагонали! Ходит по косым линиям далеко-далеко. Бывает «белополый» и «чернополый».' },
+            { icon: '♘', name: 'Конь — прыгунок',  text: 'Конь скачет буквой «Г»: 2 клетки прямо + 1 вбок! Единственная фигура, которая перепрыгивает через других.' },
+            { icon: '♕', name: 'Ферзь — королева', text: 'Самая сильная! Ходит как ладья И как слон — куда угодно по прямой и диагонали. Береги её!' },
+            { icon: '♔', name: 'Король — главный', text: 'Король ходит на 1 шажок в любую сторону. Если его назовут («шах!») — спасай! Если не спасти — «мат», игра окончена.' },
+            { icon: '🏁', name: 'Правила боя и шах!', text: 'Бей фигуры соперника, становясь на его клетку. «ШАХ» — нападение на короля, нужно закрыться. «МАТ» — королю некуда деться. Победа!' }
+        ];
+        function miniDemo(kind) {
+            // маленькая доска 8x8 с подсветкой ходов одной фигуры
+            const b = Array.from({length:8}, () => Array(8).fill(null));
+            const pos = [4, 4];
+            b[pos[0]][pos[1]] = kind;
+            const hl = pseudoMoves(b, pos[0], pos[1], null).map(m => m[0] + ',' + m[1]);
+            let html = '<div class="mini-board">';
+            for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+                const light = (r + c) % 2 === 0;
+                const key = r + ',' + c;
+                let cell = '';
+                if (r === pos[0] && c === pos[1]) cell = CHESS_PIECES[kind];
+                else if (hl.includes(key)) cell = '•';
+                html += `<div class="mini-cell ${light ? 'light' : 'dark'} ${hl.includes(key) ? 'hl' : ''}">${cell}</div>`;
+            }
+            return html + '</div>';
+        }
+        function renderChessLearn(el) {
+            let html = '';
+            chessLessons.forEach((ls, i) => {
+                const done = i < chessLessonsDone;
+                const available = i === chessLessonsDone;
+                const locked = i > chessLessonsDone;
+                html += `<div class="piece-card" style="margin-bottom:16px; ${locked ? 'opacity:0.55;' : ''}">
+                    <div style="display:flex; align-items:center; gap:16px; justify-content:center; flex-wrap:wrap;">
+                        <span class="piece-big">${ls.icon}</span>
+                        <div style="text-align:left; max-width:340px;">
+                            <div style="font-size:22px; font-weight:900; color:#5a3ea1;">${done ? '✅ ' : locked ? '🔒 ' : (i + 1) + '. '}${ls.name}</div>
+                            <div style="font-size:17px; color:#6b6390; font-weight:700;">${ls.text}</div>
+                        </div>
+                    </div>
+                    ${locked ? '' : miniDemo(ls.icon === '🏁' ? 'wQ' : ('w' + ls.icon === undefined ? '' : ({'♙':'wP','♖':'wR','♗':'wB','♘':'wN','♕':'wQ','♔':'wK'})[ls.icon]))}
+                    ${available ? `<button class="shop-btn" style="max-width:260px; margin-top:10px;" onclick="passChessLesson(${i})">🌟 Запомнил! Дальше</button>` : ''}
+                    ${done ? '<div style="color:#2f8f3f; font-weight:900; margin-top:8px;">Урок пройден!</div>' : ''}
+                    ${locked ? '<div style="color:#9a9aa8; font-weight:900; margin-top:8px;">Сначала пройди предыдущий урок 😉</div>' : ''}
+                </div>`;
+            });
+            if (chessLessonsDone >= chessLessons.length) {
+                html += `<div class="piece-card" style="border-color:#ffd93d;"><div style="font-size:24px;font-weight:900;color:#b07800;">👑 Все уроки пройдены! Теперь — бой с ботами! Жми «Играть с ботом»!</div></div>`;
+            }
+            el.innerHTML = html;
+        }
+        function passChessLesson(i) {
+            if (i !== chessLessonsDone) return;
+            chessLessonsDone++;
+            localStorage.setItem('chessLvl', chessLessonsDone);
+            playSound('win'); createFireworks(event.target, 14);
+            coins += 10; localStorage.setItem('mathCoins', coins); updateUI();
+            say(chessLessonsDone >= chessLessons.length ? 'Ты знаешь все правила! 🏆 Можно +10 монеток!' : 'Молодец! +10 монеток за урок! 🪙');
+            renderChess();
+        }
+
+        // ---------- ИГРА С БОТОМ: выбор сложности ----------
+        const DIFFS = [
+            { id: 'easy',   label: '😊 Малыш-бот',    desc: 'Ходит просто — легко победить!' },
+            { id: 'medium', label: '🙂 Хитрый бот',   desc: 'Старается бить твои фигуры!' },
+            { id: 'hard',   label: '😈 Бот-чемпион',  desc: 'Думает на 2 хода вперёд!' }
+        ];
+        function renderChessPlay(el) {
+            if (!chState) {
+                const needAll = chessLessonsDone >= 2; // минимум выучили пешку и ладью
+                let html = `<div class="piece-card"><div style="font-size:22px;font-weight:900;color:#5a3ea1;margin-bottom:10px;">🤖 Выбери противника!</div>`;
+                if (!needAll) {
+                    html += `<div style="color:#c2554f;font-weight:900;">Пройди хотя бы первые 2 урока во вкладке «🎓 Учимся играть»! 📚</div>`;
+                } else {
+                    html += `<div class="diff-row">` + DIFFS.map(d =>
+                        `<div class="diff-btn" onclick="startBotGame('${d.id}')"><b>${d.label}</b><br><small style="font-size:13px;">${d.desc}</small><br><small>Побед: ${chessBeaten[d.id] || 0} 🏆</small></div>`
+                    ).join('') + `</div>`;
+                    html += `<div style="font-size:15px; color:#8a83b8; font-weight:800;">Ты играешь белыми ♙ — ходи вниз доски! За победу — монетки 🪙</div>`;
+                }
+                el.innerHTML = html + '</div>';
+                return;
+            }
+            const st = chState;
+            let boardHtml = '<div class="chess-board">';
+            const legalSet = new Set(st.sel ? st.legal.map(m => m.to[0] + ',' + m.to[1]) : []);
+            for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+                const light = (r + c) % 2 === 0;
+                const key = r + ',' + c;
+                const cls = ['chess-cell', light ? 'light' : 'dark'];
+                if (st.sel && st.sel[0] === r && st.sel[1] === c) cls.push('sel');
+                if (legalSet.has(key)) cls.push(st.board[r][c] ? 'target-hint' : 'move-hint');
+                if (st.lastMove && ((st.lastMove.from[0] === r && st.lastMove.from[1] === c) || (st.lastMove.to[0] === r && st.lastMove.to[1] === c))) cls.push('last-move');
+                boardHtml += `<div class="${cls.join(' ')}" onclick="clickCell(${r},${c})">${st.board[r][c] ? CHESS_PIECES[st.board[r][c]] : ''}</div>`;
+            }
+            boardHtml += '</div>';
+            const diffLabel = (DIFFS.find(d => d.id === st.level) || {}).label || '';
+            el.innerHTML = `
+                <div class="diff-row"><div class="diff-btn sel-diff">${diffLabel}</div>
+                <div class="diff-btn" onclick="resignGame()">🏳️ Сдаться</div>
+                <div class="diff-btn" onclick="chState=null;renderChess()">🔄 Другой бот</div></div>
+                ${boardHtml}
+                <div class="chess-status" id="chess-status">${st.status}</div>`;
+        }
+
+        function startBotGame(level) {
+            playSound('click');
+            chState = { board: newChessBoard(), sel: null, legal: [], myTurn: true, over: false, lastMove: null, level, status: 'Твой ход! Нажми на свою белую фигурку 👇' };
+            renderChess();
+            say('Игра началась! Ты — белые. Ходи аккуратно! ♟️');
+        }
+        function resignGame() {
+            if (!chState || chState.over) { chState = null; renderChess(); return; }
+            chState.over = true;
+            chState.status = 'Ничего страшного! Попробуй ещё раз 💪';
+            renderChess();
+        }
+        function clickCell(r, c) {
+            const st = chState;
+            if (!st || st.over || !st.myTurn) return;
+            const p = st.board[r][c];
+            if (st.sel) {
+                const move = st.legal.find(m => m.to[0] === r && m.to[1] === c);
+                if (move) { doPlayerMove(move); return; }
+            }
+            if (p && pieceColor(p) === 'w') {
+                playSound('click');
+                st.sel = [r, c];
+                st.legal = allLegalMoves(st.board, 'w', null).filter(m => m.from[0] === r && m.from[1] === c);
+                renderChess();
+            } else {
+                st.sel = null; st.legal = []; renderChess();
+            }
+        }
+        function doPlayerMove(move) {
+            const st = chState;
+            const wasCapture = !!st.board[move.to[0]][move.to[1]] || move.ep;
+            applyMove(st.board, move);
+            st.lastMove = move; st.sel = null; st.legal = [];
+            playSound(wasCapture ? 'coin' : 'click');
+            // мат или пат для бота?
+            const botMoves = allLegalMoves(st.board, 'b', null);
+            const bKing = findKing(st.board, 'b');
+            const inCheck = bKing && isSquareAttacked(st.board, bKing[0], bKing[1], 'w', null);
+            if (!botMoves.length) {
+                st.over = true; st.myTurn = false;
+                if (inCheck) return winGame('ШАХ и МАТ! 🎉 Ты победил бота!');
+                st.status = 'Пат! Ничья 😮'; renderChess(); return;
+            }
+            st.myTurn = false;
+            st.status = inCheck ? 'Шах боту! 🤖 думает…' : '🤖 Бот думает…';
+            renderChess();
+            botThinkTimer = setTimeout(botPlays, 700 + Math.random() * 700);
+        }
+        function botPlays() {
+            const st = chState; if (!st || st.over) return;
+            const m = botMove(st.board, st.level);
+            if (!m) { winPlayerLoss('У бота нет ходов — пат! 😮'); return; }
+            const cap = applyMove(st.board, m);
+            st.lastMove = m;
+            if (cap) playSound('wrong');
+            const wKing = findKing(st.board, 'w');
+            const check = wKing && isSquareAttacked(st.board, wKing[0], wKing[1], 'b', null);
+            const playerMoves = allLegalMoves(st.board, 'w', null);
+            if (!playerMoves.length) {
+                st.over = true;
+                if (check) loseGame();
+                else { st.status = 'Пат! Ничья 😮'; renderChess(); }
+                return;
+            }
+            st.myTurn = true;
+            st.status = check ? '⚠️ ШАХ твоему королю! Спасай его!' : 'Твой ход!' + (cap ? ' Бот съел фигурку — отомсти!' : '');
+            renderChess();
+        }
+        function winGame(msg) {
+            const st = chState; st.over = true; st.status = msg;
+            const reward = { easy: 25, medium: 60, hard: 120 }[st.level] || 25;
+            chessBeaten[st.level] = (chessBeaten[st.level] || 0) + 1;
+            localStorage.setItem('chessBeaten', JSON.stringify(chessBeaten));
+            coins += reward; localStorage.setItem('mathCoins', coins);
+            playSound('win'); launchConfetti(); updateUI();
+            st.status = msg + ` +${reward} 🪙`;
+            renderChess();
+            say('Ура! Победа в шахматах! Ты гений! 🧠🏆');
+        }
+        function loseGame() {
+            const st = chState; st.over = true;
+            st.status = 'Мат… Бот победил 🤖 Но ты не сдавайся — попробуй ещё!';
+            playSound('wrong'); renderChess();
+            say('Не расстраивайся! Проиграй ещё раз — и станешь сильнее! 💪');
+        }
+        function winPlayerLoss(msg) { const st = chState; st.over = true; st.status = msg; renderChess(); }
+
+        // ================= АНТИСТРЕССЫ: клик по боковым игрушкам =================
+        function stPop(el) {
+            el.classList.remove('popping'); void el.offsetWidth; el.classList.add('popping');
+            playSound('correct'); burstAt(el, ['💨', '⭐']); say('ЛОП! 🎈 Весело же!');
+        }
+        function stSquish(el) {
+            el.classList.remove('squishing'); void el.offsetWidth; el.classList.add('squishing');
+            playSound('click'); burstAt(el, ['🍞', '💛']);
+        }
+        function stBubble(el) {
+            el.classList.remove('bursting'); void el.offsetWidth; el.classList.add('bursting');
+            playSound('coin'); burstAt(el, ['🫧', '💧']);
+            setTimeout(() => { el.classList.remove('bursting'); }, 700);
+        }
+        function stSpin(el) {
+            el.classList.remove('spinning'); void el.offsetWidth; el.classList.add('spinning');
+            playSound('hover'); burstAt(el, ['🌀', '💫']);
+        }
+        function stBoing(el) {
+            el.classList.remove('boinging'); void el.offsetWidth; el.classList.add('boinging');
+            playSound('correct'); burstAt(el, ['🎉', '⭐']);
+        }
+        function stSparkle(el) { createFireworks(el, 12); playSound('coin'); }
+        function burstAt(el, emojis) {
+            const rect = el.getBoundingClientRect();
+            for (let i = 0; i < 6; i++) {
+                const s = document.createElement('div');
+                s.style.cssText = `position:fixed;left:${rect.left + rect.width / 2}px;top:${rect.top + rect.height / 2}px;font-size:22px;z-index:999;pointer-events:none;transition:all 0.7s ease-out;`;
+                s.textContent = emojis[i % emojis.length];
+                document.body.appendChild(s);
+                requestAnimationFrame(() => {
+                    s.style.transform = `translate(${(Math.random() - 0.5) * 160}px, ${(Math.random() - 0.8) * 140}px) scale(${0.5 + Math.random()})`;
+                    s.style.opacity = '0';
+                });
+                setTimeout(() => s.remove(), 750);
+            }
         }
 
         // Инициализация
