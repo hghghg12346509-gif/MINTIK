@@ -163,13 +163,13 @@
 
         /* --- ПАНЕЛИ --- */
         #top-bar {
-            position: fixed; top: 15px; right: 20px;
+            position: fixed; top: 92px; right: 20px; z-index: 102;
             background: linear-gradient(180deg, #fffbe6, #fff3c4);
             padding: 10px 22px; border-radius: 999px;
             font-size: 24px; font-weight: 900; color: #c98a00;
             box-shadow: 0 6px 0 rgba(201,138,0,0.25), 0 10px 25px rgba(0,0,0,0.12);
             border: 3px solid var(--gold);
-            display: flex; align-items: center; gap: 10px; z-index: 100;
+            display: flex; align-items: center; gap: 10px;
         }
         #coin-display { transition: transform 0.2s; display: inline-block; }
         #coin-display.pop { animation: coinPop 0.5s ease; }
@@ -178,18 +178,19 @@
         @keyframes coinSpin { 0%, 70%, 100% { transform: rotateY(0deg); } 80% { transform: rotateY(360deg); } }
 
         #shop-btn {
-            position: fixed; top: 15px; left: 20px;
+            position: fixed; top: 15px; right: 20px; z-index: 102;
             background: linear-gradient(180deg, #f6e6ff, #e8ccff);
-            padding: 10px 22px; border-radius: 999px;
-            font-size: 20px; font-weight: 900; color: #7b3fbf;
+            padding: 12px 26px; border-radius: 999px;
+            font-size: 24px; font-weight: 900; color: #7b3fbf;
             box-shadow: 0 6px 0 rgba(123,63,191,0.25), 0 10px 25px rgba(0,0,0,0.12);
-            border: 3px solid var(--purple);
-            cursor: pointer; z-index: 100; transition: transform 0.15s;
+            border: 4px solid var(--purple);
+            cursor: pointer; transition: transform 0.15s; user-select: none;
+            font-family: 'Baloo 2', cursive;
         }
         #shop-btn:hover { transform: scale(1.07) rotate(-2deg); }
         #shop-btn:active { transform: scale(0.95); }
 
-        .screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 700px; padding: 20px; z-index: 10; animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); margin-top: 60px; }
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 700px; padding: 20px; z-index: 10; animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); margin-top: 96px; }
         .screen.active { display: flex; }
         @keyframes popIn { 0% { opacity: 0; transform: translateY(25px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
@@ -352,7 +353,7 @@
 
         /* --- ТАЙМЕР --- */
         #timer-box {
-            position: fixed; top: 74px; right: 20px; z-index: 100;
+            position: fixed; top: 168px; right: 20px; z-index: 100;
             background: linear-gradient(180deg, #ffffff, #eef7ff);
             padding: 8px 20px; border-radius: 999px;
             font-size: 21px; font-weight: 900; color: #2b8cc4;
@@ -570,12 +571,12 @@
         body[data-theme="night"] .lesson-intro, body[data-theme="space"] .lesson-intro { color: #bfe0ff; }
         body[data-theme="night"] .letter-gap, body[data-theme="space"] .letter-gap { border-bottom-color: #5a6ac0; color: #5a6ac0; }
 
-        /* --- МУЗЫКАЛЬНАЯ КНОПКА --- */
+        /* --- МУЗЫКАЛЬНАЯ КНОПКА (крупная, рядом с магазинчиком) --- */
         #music-btn {
-            position: fixed; top: 118px; right: 20px; z-index: 100; cursor: pointer;
+            position: fixed; top: 92px; right: 20px; z-index: 101; cursor: pointer;
             background: linear-gradient(180deg, #ffe6f4, #ffc9e6);
-            padding: 8px 18px; border-radius: 999px;
-            font-size: 18px; font-weight: 900; color: #b0246e;
+            padding: 10px 22px; border-radius: 999px;
+            font-size: 20px; font-weight: 900; color: #b0246e;
             box-shadow: 0 5px 0 rgba(176,36,110,0.25), 0 8px 20px rgba(0,0,0,0.1);
             border: 3px solid #ff8fc0; user-select: none; transition: transform 0.15s;
         }
@@ -583,6 +584,123 @@
         #music-btn.muted { background: linear-gradient(180deg, #eee, #ddd); color: #999; border-color: #bbb; box-shadow: 0 5px 0 rgba(0,0,0,0.12); }
         .note-float { position: absolute; font-size: 26px; animation: noteUp 2.2s ease-out forwards; pointer-events: none; }
         @keyframes noteUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-90px) scale(1.3) rotate(20deg); } }
+
+        /* ================= ЗВУКИ ПРИРОДЫ (панель слева сверху) ================= */
+        #nature-btn {
+            position: fixed; top: 15px; left: 20px; z-index: 101; cursor: pointer; user-select: none;
+            background: linear-gradient(180deg, #e8fff0, #c4f2d2);
+            padding: 10px 20px; border-radius: 999px;
+            font-size: 19px; font-weight: 900; color: #1e7a41;
+            box-shadow: 0 5px 0 rgba(30,122,65,0.25), 0 8px 18px rgba(0,0,0,0.1);
+            border: 3px solid #5cc87a; transition: transform 0.15s;
+        }
+        #nature-btn:hover { transform: scale(1.06) rotate(-2deg); }
+        #nature-btn.on { background: linear-gradient(180deg, #b6f2c8, #7fe0a0); }
+        #nature-panel {
+            position: fixed; top: 74px; left: 20px; z-index: 101; display: none;
+            flex-direction: column; gap: 10px; width: 260px;
+            background: linear-gradient(180deg, #ffffff, #eefaf1);
+            border: 3px solid #8fdcae; border-radius: 22px; padding: 14px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+        }
+        #nature-panel.show { display: flex; animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .nat-title { font-weight: 900; font-size: 14px; color: #2f7a4c; text-transform: uppercase; letter-spacing: 1px; }
+        .nat-btn {
+            min-height: 54px; display: flex; align-items: center; gap: 10px; padding: 8px 14px;
+            border-radius: 16px; cursor: pointer; font-weight: 900; font-size: 18px; color: #2b6b44;
+            background: linear-gradient(180deg, #f2fbf5, #ddf3e3); border: 3px solid #b4e3c4;
+            box-shadow: 0 4px 0 #a8d8ba; transition: transform 0.12s; user-select: none;
+        }
+        .nat-btn:hover { transform: scale(1.04); }
+        .nat-btn:active { transform: translateY(4px); box-shadow: none; }
+        .nat-btn.nat-on { background: linear-gradient(160deg, #ffe28a, #ffb02e); color: #7a4500; border-color: #fff; box-shadow: 0 4px 0 #d97b12; }
+        .nat-btn small { font-size: 12px; opacity: 0.7; font-weight: 800; }
+        .vol-row { display: flex; align-items: center; gap: 8px; font-weight: 900; color: #2f7a4c; font-size: 14px; }
+        .vol-row input[type=range] { flex: 1; accent-color: #35a046; height: 26px; cursor: pointer; }
+
+        /* ================= ПОЛЯ ИМЕНИ РЕБЁНКА ================= */
+        #name-bar {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 101;
+            display: flex; align-items: center; gap: 8px;
+            background: linear-gradient(180deg, #fff, #efe6ff);
+            padding: 8px 16px; border-radius: 999px; border: 3px solid #c9a6ff;
+            box-shadow: 0 5px 0 rgba(160,107,255,0.25), 0 8px 18px rgba(0,0,0,0.1);
+        }
+        #name-bar .nb-emoji { font-size: 22px; }
+        #player-name {
+            border: 3px dashed #c9a6ff; border-radius: 999px; background: #faf6ff;
+            font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 900; color: #7b3fbf;
+            padding: 4px 14px; width: 170px; outline: none; text-align: center; user-select: text;
+        }
+        #player-name:focus { border-color: #ff8fc0; background: #fff; box-shadow: 0 0 14px rgba(255,143,192,0.5); }
+        #player-name::placeholder { color: #c3aee8; font-size: 15px; }
+        body[data-theme="night"] #name-bar, body[data-theme="space"] #name-bar { background: linear-gradient(180deg, #2c3a7f, #25306a); border-color: #6fd3ff; }
+        body[data-theme="night"] #player-name, body[data-theme="space"] #player-name { background: #1b2560; color: #ffe066; border-color: #5a6ac0; }
+
+        /* ================= КРУПНЫЕ БОЛЬШИЕ НАВИГАЦИОННЫЕ КНОПКИ «НАВЕРХУ» ================= */
+        .btn-top {
+            margin-top: 4px; margin-bottom: 20px; width: 100%; max-width: 480px;
+            min-height: 64px; display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: linear-gradient(160deg, #8ce98f, #4cbf5f); color: white;
+            border: 4px solid #fff; border-radius: 22px;
+            font-size: 23px; font-weight: 900; cursor: pointer;
+            box-shadow: 0 7px 0 #2f8c3e, 0 12px 24px rgba(0,0,0,0.15);
+            transition: transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
+            font-family: 'Baloo 2', cursive; text-shadow: 0 2px 3px rgba(0,0,0,0.25);
+            position: relative; overflow: hidden;
+        }
+        .btn-top::after { content: ''; position: absolute; top: -70%; left: -25%; width: 40%; height: 240%; background: rgba(255,255,255,0.4); transform: rotate(25deg); animation: shine 3.5s ease-in-out infinite; }
+        .btn-top:hover { transform: scale(1.04) rotate(-1deg); filter: brightness(1.06); }
+        .btn-top:active { transform: translateY(6px); box-shadow: 0 1px 0 #2f8c3e; }
+        .btn-top.blue { background: linear-gradient(160deg, #8ddcff, #45b6ef); box-shadow: 0 7px 0 #2b8cc4, 0 12px 24px rgba(0,0,0,0.15); border-color: #fff; }
+        .btn-top.blue:active { box-shadow: 0 1px 0 #2b8cc4; }
+        body[data-theme="night"] .btn-top, body[data-theme="space"] .btn-top { border-color: #5a6ac0; }
+
+        /* ================= ОБЛАКО-ЛОТЕРЕЯ и СОЛНЫШКО-ИГУМЕН ================= */
+        .cloud.lottery { pointer-events: auto; cursor: pointer; filter: drop-shadow(0 6px 10px rgba(80,60,150,0.25)); transition: transform 0.15s; }
+        .cloud.lottery:hover { transform: scale(1.18); }
+        .cloud.lottery.zzz { animation: cloudDrift linear infinite, cloudShake 0.4s ease; }
+        @keyframes cloudShake { 0%,100% { margin-left: 0; } 25% { margin-left: -8px; } 75% { margin-left: 8px; } }
+        #sun { pointer-events: auto; cursor: pointer; }
+        #sun.grumpy { animation: sunPulse 4s ease-in-out infinite alternate, sunShake 0.45s ease; }
+        @keyframes sunShake { 0%,100% { margin-right: 0; } 25% { margin-right: -10px; } 75% { margin-right: 10px; } }
+        .float-text {
+            position: fixed; z-index: 300; pointer-events: none; font-family: 'Baloo 2', cursive;
+            font-size: 30px; font-weight: 900; color: #d99a12; text-shadow: 0 2px 0 #fff, 0 4px 10px rgba(0,0,0,0.25);
+            animation: floatUpText 1.6s ease-out forwards; white-space: nowrap;
+        }
+        .float-text.bad { color: #d84470; }
+        .float-text.egg { color: #7b3fbf; }
+        @keyframes floatUpText { 0% { opacity: 0; transform: translateY(10px) scale(0.6); } 15% { opacity: 1; transform: scale(1.15); } 100% { opacity: 0; transform: translateY(-110px) scale(1); } }
+
+        /* ================= ОКНО СБРОСА ПРОГРЕССА ================= */
+        #reset-modal {
+            position: fixed; inset: 0; z-index: 400; display: none;
+            align-items: center; justify-content: center; background: rgba(40,30,80,0.55);
+        }
+        #reset-modal.show { display: flex; animation: fadeModal 0.25s ease; }
+        @keyframes fadeModal { from { opacity: 0; } to { opacity: 1; } }
+        .modal-box {
+            background: linear-gradient(180deg, #ffffff, #fdf4ff); border: 5px solid #ff8fc0;
+            border-radius: 30px; padding: 28px; max-width: 440px; width: 92%; text-align: center;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.35); animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .modal-q { font-size: 22px; font-weight: 900; color: #6b63a0; margin: 12px 0 18px; line-height: 1.4; }
+        .modal-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .m-btn { min-height: 58px; padding: 10px 26px; border-radius: 18px; border: 3px solid #fff; cursor: pointer;
+            font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 900; color: white;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2); transition: transform 0.12s; }
+        .m-btn:hover { transform: scale(1.05); }
+        .m-btn:active { transform: translateY(5px); box-shadow: none; }
+        .m-btn.no { background: linear-gradient(160deg, #8ce98f, #4cbf5f); }
+        .m-btn.yes { background: linear-gradient(160deg, #ff9d9d, #e94b4b); }
+        #reset-btn {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 101; cursor: pointer;
+            background: linear-gradient(180deg, #fff, #ffe1e1); color: #c2554f; border: 3px solid #f0a8a4;
+            padding: 7px 18px; border-radius: 999px; font-size: 14px; font-weight: 900;
+            box-shadow: 0 4px 0 rgba(194,85,79,0.25); opacity: 0.85; transition: transform 0.12s; user-select: none;
+        }
+        #reset-btn:hover { transform: translateX(-50%) scale(1.06); opacity: 1; }
     </style>
 </head>
 <body>
@@ -594,7 +712,37 @@
     </div>
     <div id="particles-container"></div>
 
+    <!-- ПОЛЯ ИМЕНИ: питомцы будут обращаться к тебе по имени! -->
+    <div id="name-bar">
+        <span class="nb-emoji">👤</span>
+        <input id="player-name" maxlength="14" placeholder="Напиши имя…" autocomplete="off">
+    </div>
+
+    <!-- ЗВУКИ ПРИРОДЫ: шум моря, огня, ветра, колокольчики -->
+    <div id="nature-btn" title="Тихие звуки природы">🌿 Шумики</div>
+    <div id="nature-panel">
+        <div class="nat-title">🍃 Тихие звуки природы</div>
+        <div class="nat-btn" data-snd="sea" onclick="toggleNature('sea')">🌊 Шум моря <small>бу-бу…</small></div>
+        <div class="nat-btn" data-snd="fire" onclick="toggleNature('fire')">🔥 Шум огня <small>тр-тр…</small></div>
+        <div class="nat-btn" data-snd="wind" onclick="toggleNature('wind')">💨 Шум ветра <small>шу-у…</small></div>
+        <div class="nat-btn" data-snd="bells" onclick="toggleNature('bells')">🔔 Колокольчики <small>динь-динь</small></div>
+        <div class="vol-row">🔉 громкость <input type="range" id="nat-vol" min="0" max="100" value="35" oninput="setNatureVol(this.value)"> 🔊</div>
+    </div>
+
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
+
+    <!-- КНОПКА СБРОСА ПРОГРЕССА -->
+    <div id="reset-btn" onclick="openResetModal()" title="Начать всё заново">🗑️ Сбросить весь прогресс</div>
+    <div id="reset-modal">
+        <div class="modal-box">
+            <div style="font-size:64px;">😲🧐</div>
+            <div class="modal-q" id="reset-q">Ты ТОЧНО хочешь сбросить весь прогресс?<br>Монетки, уровни и питомцы исчезнут — будет всё заново!</div>
+            <div class="modal-btns">
+                <button class="m-btn no" onclick="closeResetModal()">🛡 Нет, не надо!</button>
+                <button class="m-btn yes" onclick="confirmResetStep()">💣 Да, да, сбрасывай!</button>
+            </div>
+        </div>
+    </div>
 
     <!-- АНТИСТРЕССЫ по бокам: нажми — и что-то происходит! -->
     <div class="stress-zone stress-left">
@@ -733,16 +881,89 @@
         buildBgEmojis();
 
         // Плывущие облака (в океане уплывают за горизонт)
+        // ОБЛАКА-ЛОТЕРЕЯ: нажми на облачко — и выпадет приз! 🎁
+        function hitCloud(cl) {
+            if (cl.dataset.cool === '1') return;
+            cl.dataset.cool = '1';
+            cl.classList.add('zzz');
+            const r = Math.random();
+            let msg, cls = '';
+            if (r < 0.32) {
+                coins += 10; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
+                msg = pickOne([`+10 монеток из облачка! ☁️💰`, `Облачко сыплет монетки: +10!`]);
+                burstAtEl(cl, ['🪙', '✨']); floatText(cl, '+10 🪙');
+            } else if (r < 0.54) {
+                const loss = Math.min(coins, 10);
+                coins -= loss; localStorage.setItem('mathCoins', coins); updateUI(); playSound('wrong');
+                msg = pickOne([`Ой! Тучка забрала ${loss} монеток… 😅`, `Зато в следующем уроке заработаешь больше!`]);
+                burstAtEl(cl, ['🌧️', '💧']); floatText(cl, `-${loss} 🪙`, 'bad');
+            } else if (r < 0.76) {
+                const egg = eggs[Math.floor(Math.random() * eggs.length)];
+                coins += egg.price; localStorage.setItem('mathCoins', coins); updateUI(); playSound('win');
+                msg = pickOne([`🎁 Облачко подарило яйцо «${egg.name}» — ${egg.price} монеток!`, `Дождь из подарков! Яичко в копилку!`]);
+                launchConfetti(); burstAtEl(cl, ['🥚', '🎁']); floatText(cl, `🎁 ${egg.emoji}`, 'egg');
+            } else {
+                const owned = ownedPets.filter(p => p !== currentPetId);
+                if (owned.length > 1 && Math.random() < 0.5) {
+                    const pid = owned[Math.floor(Math.random() * owned.length)];
+                    const taken = pets.find(p => p.id === pid);
+                    ownedPets = ownedPets.filter(x => x !== pid);
+                    localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
+                    updateUI(); renderShop(); playSound('wrong');
+                    msg = `☁️ Загадочное облачко утащило друга: ${taken ? taken.emoji + ' ' + taken.name : 'кого-то'}!`;
+                    burstAtEl(cl, ['☁️', '💨']); floatText(cl, `${taken ? taken.emoji : '☁️'} —`, 'bad');
+                } else {
+                    coins += 5; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
+                    msg = pickOne(['Пустое облачко… но нашло 5 монеток! ☁️', 'Из тучки капнуло +5!']);
+                    floatText(cl, '+5 🪙');
+                }
+            }
+            say(msg);
+            setTimeout(() => { cl.classList.remove('zzz'); cl.dataset.cool = '0'; }, 900);
+        }
         for (let i = 0; i < 4; i++) {
             const cl = document.createElement('div');
-            cl.classList.add('cloud');
+            cl.classList.add('cloud', 'lottery');
             cl.textContent = '☁️';
+            cl.title = 'Нажми на облачко — лотерея! 🎁';
             cl.style.top = (3 + Math.random() * 25) + 'vh';
             cl.style.fontSize = (50 + Math.random() * 50) + 'px';
             cl.style.animationDuration = (40 + Math.random() * 40) + 's';
             cl.style.animationDelay = (-Math.random() * 40) + 's';
+            cl.onclick = () => hitCloud(cl);
             document.getElementById('bg-animations').appendChild(cl);
         }
+
+        // СОЛНЫШКО-ИГУМЕН: тоже любит, когда его трогают! ☀️😄
+        function tapSun() {
+            initAudio();
+            if (sunBusy) return;
+            sunBusy = true;
+            const sun = document.getElementById('sun');
+            const r = Math.random();
+            if (r < 0.3) {
+                playSound('wrong'); sun.classList.add('grumpy');
+                say(pickOne(["Не мешай мне светить! 😤", "А-а-ай! Не щекоти солнышко! 😝", "Я считаю звёзды, подожди чуть-чуть! 🌟"]));
+                floatText(sun, 'Не мешай! 😤', 'bad');
+            } else if (r < 0.62) {
+                coins += 10; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
+                say("Вот тебе подарок — 10 монеток, светлю для тебя! ☀️💛");
+                createFireworks(sun, 10); floatText(sun, '+10 🪙');
+            } else if (r < 0.82) {
+                const loss = Math.min(coins, 10);
+                coins -= loss; localStorage.setItem('mathCoins', coins); updateUI(); playSound('wrong'); sun.classList.add('grumpy');
+                say(`Отбираю ${loss} монеток — ты помешал мне освещать территорию! 😤☀️`);
+                floatText(sun, `-${loss} 🪙`, 'bad');
+            } else {
+                const egg = eggs[Math.floor(Math.random() * eggs.length)];
+                coins += egg.price; localStorage.setItem('mathCoins', coins); updateUI(); playSound('win');
+                say(`☀️ Солнышко растопило сундучок: подарок — яичко «${egg.name}» (${egg.price} монеток)!`);
+                launchConfetti(); createFireworks(sun, 14); floatText(sun, `🎁 ${egg.emoji}`, 'egg');
+            }
+            setTimeout(() => { sun.classList.remove('grumpy'); sunBusy = false; }, 900);
+        }
+        document.getElementById('sun').onclick = tapSun;
+        let sunBusy = false;
 
         // --- МИР ОКЕАНА: волны, декор донышка, пузырьки ---
         const WAVE_SVG = encodeURIComponent(
@@ -1218,6 +1439,25 @@
             if (musicOn && !musicTimer) startMusic();
         }, { once: true });
 
+        // Питомцы обращаются к игроку по ИМЕНИ из поля наверху!
+        let playerName = localStorage.getItem('tkPlayerName') || '';
+        function hello() { return playerName ? playerName : 'дружок'; }
+        function pickOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function withName(text) { return playerName ? `${text}, ${playerName}!` : `${text}!`; }
+
+        const nameInput = document.getElementById('player-name');
+        nameInput.value = playerName;
+        nameInput.addEventListener('input', () => {
+            playerName = nameInput.value.trim().replace(/\s+/g, ' ').slice(0, 14);
+            localStorage.setItem('tkPlayerName', playerName);
+        });
+        nameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                nameInput.blur();
+                if (playerName) { playSound('correct'); say(`Привет, ${playerName}! Теперь все питомцы знают твоё имя! 🎉`); }
+            }
+        });
+
         function say(text) {
             const activeScreen = document.querySelector('.screen.active');
             if (activeScreen && activeScreen.id === 'game-screen') {
@@ -1226,6 +1466,168 @@
                 speechText.textContent = text;
             }
         }
+
+        // ================= ЗВУКИ ПРИРОДЫ: тихий шум моря / огня / ветра / колокольчики =================
+        // Всё синтезируется через Web Audio — никаких mp3, никаких «песенок», только мягкий природный шум.
+        let natureOn = {};                 // { sea:true, fire:false, ... }
+        let natureNodes = {};              // живые аудио-узлы по каждому звуку
+        let natureVol = (parseInt(localStorage.getItem('tkNatureVol')) || 35) / 100;
+        try { natureOn = JSON.parse(localStorage.getItem('tkNatureOn')) || {}; } catch (e) { natureOn = {}; }
+
+        function makePinkNoise(seconds) {
+            const len = audioCtx.sampleRate * seconds;
+            const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+            const d = buf.getChannelData(0);
+            let b0 = 0, b1 = 0, b2 = 0;
+            for (let i = 0; i < len; i++) {
+                const w = Math.random() * 2 - 1;
+                b0 = 0.997 * b0 + 0.029 * w; b1 = 0.985 * b1 + 0.032 * w; b2 = 0.95 * b2 + 0.048 * w;
+                d[i] = (b0 + b1 + b2 + w * 0.05) * 0.18;
+            }
+            return buf;
+        }
+        function natureStart(kind) {
+            if (!audioCtx) return;
+            natureStop(kind);
+            const master = getMaster();
+            if (kind === 'sea' || kind === 'wind') {
+                const src = audioCtx.createBufferSource();
+                src.buffer = makePinkNoise(3); src.loop = true;
+                const lp = audioCtx.createBiquadFilter(); lp.type = 'lowpass';
+                lp.frequency.value = kind === 'sea' ? 480 : 700; lp.Q.value = 0.6;
+                const g = audioCtx.createGain(); g.gain.value = 0.0001;
+                // «дыхание»: плавный LFO громкости (море накатывает, ветер воет)
+                const lfo = audioCtx.createOscillator(); lfo.frequency.value = kind === 'sea' ? 0.09 : 0.17;
+                const lfoAmt = audioCtx.createGain(); lfoAmt.gain.value = kind === 'sea' ? 0.03 : 0.018;
+                const base = kind === 'sea' ? 0.045 : 0.035;
+                lfo.connect(lfoAmt); lfoAmt.connect(g.gain);
+                src.connect(lp); lp.connect(g); g.connect(master);
+                g.gain.linearRampToValueAtTime(base * natureVol * 2, audioCtx.currentTime + 1.5); // плавный вход
+                src.start(); lfo.start();
+                natureNodes[kind] = { stop: [src, lfo], gain: g };
+            } else if (kind === 'fire') {
+                const src = audioCtx.createBufferSource();
+                src.buffer = makePinkNoise(3); src.loop = true;
+                const bp = audioCtx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 950; bp.Q.value = 0.8;
+                const g = audioCtx.createGain(); g.gain.value = 0.0001;
+                src.connect(bp); bp.connect(g); g.connect(master);
+                g.gain.linearRampToValueAtTime(0.05 * natureVol * 2, audioCtx.currentTime + 1.5);
+                src.start();
+                // редкие мягкие потрескивания
+                const crackle = () => {
+                    if (!natureNodes.fire) return;
+                    const t = audioCtx.currentTime;
+                    const o = audioCtx.createOscillator(), cg = audioCtx.createGain();
+                    o.type = 'triangle'; o.frequency.setValueAtTime(1200 + Math.random() * 1800, t);
+                    o.frequency.exponentialRampToValueAtTime(300, t + 0.05);
+                    cg.gain.setValueAtTime(0.02 * natureVol * 2, t);
+                    cg.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+                    o.connect(cg); cg.connect(getMaster()); o.start(t); o.stop(t + 0.1);
+                    natureNodes.fire.timer = setTimeout(crackle, 300 + Math.random() * 1500);
+                };
+                natureNodes.fire = { stop: [src], gain: g, timer: setTimeout(crackle, 600) };
+            } else if (kind === 'bells') {
+                const state = { stop: [], gain: null, timer: null };
+                const scale = [1046.5, 1244.5, 1396.9, 1567.98, 1760, 2093];
+                const chime = () => {
+                    if (!natureOn.bells || !audioCtx) return;
+                    const t = audioCtx.currentTime;
+                    const f = scale[Math.floor(Math.random() * scale.length)];
+                    [f, f * 2.0].forEach((fr, i) => {
+                        const o = audioCtx.createOscillator(), g2 = audioCtx.createGain();
+                        o.type = 'sine'; o.frequency.value = fr;
+                        g2.gain.setValueAtTime(0.0001, t);
+                        g2.gain.linearRampToValueAtTime((i ? 0.012 : 0.03) * natureVol * 2, t + 0.01);
+                        g2.gain.exponentialRampToValueAtTime(0.0001, t + 2.2);
+                        o.connect(g2); g2.connect(getMaster()); o.start(t); o.stop(t + 2.3);
+                    });
+                    state.timer = setTimeout(chime, 1200 + Math.random() * 2600);
+                };
+                chime();
+                natureNodes.bells = state;
+            }
+        }
+        function natureStop(kind) {
+            const n = natureNodes[kind];
+            if (!n) return;
+            if (n.timer) clearTimeout(n.timer);
+            if (n.gain && audioCtx) { try { n.gain.gain.cancelScheduledValues(audioCtx.currentTime); n.gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8); } catch (e) {} }
+            setTimeout(() => { n.stop.forEach(s => { try { s.stop(); } catch (e) {} }); }, 900);
+            delete natureNodes[kind];
+        }
+        function toggleNature(kind) {
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            natureOn[kind] = !natureOn[kind];
+            localStorage.setItem('tkNatureOn', JSON.stringify(natureOn));
+            if (natureOn[kind]) natureStart(kind); else natureStop(kind);
+            refreshNatureUI();
+        }
+        function setNatureVol(v) {
+            natureVol = Math.max(0.02, v / 100);
+            localStorage.setItem('tkNatureVol', v);
+            Object.keys(natureNodes).forEach(k => { if (k !== 'bells') natureStart(k); });
+            if (natureOn.bells) { /* колокольчики берут громкость сами при следующем звоне */ }
+        }
+        function refreshNatureUI() {
+            document.querySelectorAll('.nat-btn').forEach(b => b.classList.toggle('nat-on', !!natureOn[b.dataset.snd]));
+            const any = Object.values(natureOn).some(Boolean);
+            document.getElementById('nature-btn').classList.toggle('on', any);
+        }
+        document.getElementById('nature-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const panel = document.getElementById('nature-panel');
+            panel.classList.toggle('show');
+            // если что-то было включено ранее — запускаем после разблокировки аудио
+            if (panel.classList.contains('show')) Object.keys(natureOn).forEach(k => { if (natureOn[k] && !natureNodes[k]) natureStart(k); });
+            refreshNatureUI();
+        });
+        document.getElementById('nat-vol').value = Math.round(natureVol * 100);
+        refreshNatureUI();
+
+        // ================= СБРОС ПРОГРЕССА (с двойным подтверждением) =================
+        let resetConfirmed = false;
+        function openResetModal() {
+            resetConfirmed = false;
+            document.getElementById('reset-q').innerHTML =
+                `Ты ТОЧНО хочешь сбросить весь прогресс?<br>Монетки, пройденные уроки и питомцы исчезнут — будет всё заново!`;
+            document.querySelector('#reset-modal .m-btn.yes').textContent = '💣 Да, да, сбрасывай!';
+            document.getElementById('reset-modal').classList.add('show');
+        }
+        function closeResetModal() { document.getElementById('reset-modal').classList.remove('show'); }
+        function confirmResetStep() {
+            if (!resetConfirmed) {
+                resetConfirmed = true;   // первое «Да» — переспрашиваем
+                document.getElementById('reset-q').innerHTML =
+                    `Точно-точно? 😮 Ещё раз спрошу:<br><b>Удалить ВСЁ</b> и начать с самого начала?`;
+                document.querySelector('#reset-modal .m-btn.yes').textContent = '🧨 Да! Удали всё!';
+                playSound('wrong');
+                return;
+            }
+            // второе «Да» — реально сбрасываем
+            ['mathCoins','mathPet','mathOwnedPets','mathTheme','mathOwnedThemes','mathUnlockedLevel',
+             'letUnlockedLevel','mathLevelStars','mathBestTimes','chessLvl','chessBeaten','tkSubject']
+                .forEach(k => localStorage.removeItem(k));
+            location.reload();   // страница перезагружается — и всё заново!
+        }
+        document.getElementById('reset-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'reset-modal') closeResetModal();
+        });
+
+        // Всплывающий текст у объекта (для облаков и солнышка)
+        function floatText(el, txt, extra) {
+            const rect = el.getBoundingClientRect();
+            const d = document.createElement('div');
+            d.className = 'float-text' + (extra ? ' ' + extra : '');
+            d.textContent = txt;
+            d.style.left = (rect.left + rect.width / 2 - 40) + 'px';
+            d.style.top = (rect.top + rect.height / 2) + 'px';
+            document.body.appendChild(d);
+            setTimeout(() => d.remove(), 1700);
+        }
+        function burstAtEl(el, emojis) { burstAt({ getBoundingClientRect: () => el.getBoundingClientRect() }, emojis); }
 
         // Погладить питомца на тропинке — он радуется!
         charEmoji.addEventListener('click', () => {
