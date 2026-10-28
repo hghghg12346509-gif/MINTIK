@@ -38,7 +38,7 @@
             z-index: -1; pointer-events: none; overflow: hidden;
         }
         #sun {
-            position: absolute; top: -30px; right: -30px; width: 160px; height: 160px;
+            position: absolute; top: -40px; right: -40px; width: 210px; height: 210px;
             background: radial-gradient(circle, #fff7c0 20%, #ffd93d 55%, transparent 70%);
             border-radius: 50%; animation: sunPulse 4s ease-in-out infinite alternate;
             filter: drop-shadow(0 0 40px rgba(255,215,61,0.7));
@@ -504,6 +504,18 @@
             animation: logoFloat 3s ease-in-out infinite alternate;
         }
         @keyframes logoFloat { from { transform: translateY(0) rotate(-1deg); } to { transform: translateY(-6px) rotate(1deg); } }
+        .logo-bonus { cursor: pointer; position: relative; transition: filter 0.2s; }
+        .logo-bonus:hover { filter: brightness(1.15) drop-shadow(0 0 14px rgba(255,215,61,0.8)); }
+        .logo-bonus.taken { animation: logoShake 0.4s ease; }
+        @keyframes logoShake { 0%,100% { margin-left:0; } 25% { margin-left:-10px; } 75% { margin-left:10px; } }
+        .lb-badge {
+            display: inline-block; vertical-align: middle; margin-left: 10px; font-size: 16px;
+            background: linear-gradient(160deg,#ffe28a,#ffb02e); color:#7a4500; border-radius: 999px;
+            padding: 3px 12px; border: 3px solid #fff; box-shadow: 0 4px 0 rgba(160,100,0,0.3);
+            -webkit-text-fill-color: #7a4500; animation: badgeWiggle 1.6s ease-in-out infinite;
+        }
+        .lb-badge.off { opacity: 0.35; animation: none; }
+        @keyframes badgeWiggle { 0%,100% { transform: rotate(-3deg) scale(1); } 50% { transform: rotate(3deg) scale(1.08); } }
         .subtitle { text-align: center; font-weight: 800; color: #6b63a0; margin-top: -18px; margin-bottom: 20px; font-size: 17px; }
 
         /* --- ПЕРЕКЛЮЧАТЕЛЬ ПРЕДМЕТОВ — КРУПНЫЕ ЯРКИЕ КАРТОЧКИ (видно и понятно!) --- */
@@ -695,12 +707,18 @@
         .m-btn.no { background: linear-gradient(160deg, #8ce98f, #4cbf5f); }
         .m-btn.yes { background: linear-gradient(160deg, #ff9d9d, #e94b4b); }
         #reset-btn {
-            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 101; cursor: pointer;
-            background: linear-gradient(180deg, #fff, #ffe1e1); color: #c2554f; border: 3px solid #f0a8a4;
-            padding: 7px 18px; border-radius: 999px; font-size: 14px; font-weight: 900;
-            box-shadow: 0 4px 0 rgba(194,85,79,0.25); opacity: 0.85; transition: transform 0.12s; user-select: none;
+            position: fixed; bottom: 18px; left: 16px; z-index: 101; cursor: pointer;
+            background: linear-gradient(180deg, #fff, #ffdcdc); color: #b8403a; border: 3px solid #ef9a94;
+            padding: 12px 22px; border-radius: 999px; font-size: 19px; font-weight: 900;
+            font-family: 'Baloo 2', cursive;
+            box-shadow: 0 5px 0 rgba(184,64,58,0.3), 0 8px 18px rgba(0,0,0,0.12);
+            transition: transform 0.12s; user-select: none;
         }
-        #reset-btn:hover { transform: translateX(-50%) scale(1.06); opacity: 1; }
+        #reset-btn:hover { transform: scale(1.06) rotate(-1deg); }
+        #reset-btn:active { transform: translateY(4px); box-shadow: none; }
+        /* на тропинке (главной странице) кнопка сброса крупная и заметная */
+        body.on-map #reset-btn { transform: scale(1.0); }
+        body:not(.on-map) #reset-btn { display: none; }
     </style>
 </head>
 <body>
@@ -766,14 +784,13 @@
 
     <div id="top-bar"><span id="coin-icon">🪙</span> <span id="coin-display">0</span></div>
     <div id="timer-box">⏱️ <span id="timer-display">0:00</span></div>
-    <div id="music-btn" title="Спокойная фоновая песенка">🎵 Песенка</div>
 
     <div id="map-screen" class="screen active">
         <div class="character-container">
             <div class="character" id="character-emoji" title="Погладь меня!">🐻</div>
             <div class="speech-bubble" id="speech-text">Привет! Выбирай урок на тропинке!</div>
         </div>
-        <h1 class="logo-title">🌈 Тропинка Знаний ✨</h1>
+        <h1 class="logo-title logo-bonus" id="logo-bonus" title="Нажми на название!">🌈 Тропинка Знаний ✨<span class="lb-badge" id="lb-badge">+50 🪙</span></h1>
         <div class="subtitle" id="map-subtitle">Учимся считать и читать играя! 🎈</div>
         <div class="subject-switcher" id="subject-switcher"></div>
         <div class="module-switcher" id="module-switcher"></div>
@@ -850,6 +867,14 @@
         //  и весь скрипт упадёт — кнопки перестанут работать).
         let currentTheme = localStorage.getItem('mathTheme') || 'meadow';
 
+        // ================= СОСТОЯНИЕ ДОМА (объявляем РАНЬШЕ всего, что его использует) =================
+        // Это чинило главный баг: облака и солнышко трогали переменные coins/eggs/pets,
+        // которые объявлены ниже — скрипт падал ещё до запуска, и кнопки «не нажимались».
+        let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
+        let currentPetId = localStorage.getItem('mathPet') || 'bear';
+        let ownedPets;
+        try { ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear']; } catch (e) { ownedPets = ['bear']; }
+
         // --- ГЕНЕРАЦИЯ ФОНА ---
         const THEME_EMOJIS = {
             meadow: ['🔢', '➕', '⭐', '🎈', '🌈', '🍎', '🧸', '🐱', '🍭', '🦋', '🌼'],
@@ -884,23 +909,25 @@
         // ОБЛАКА-ЛОТЕРЕЯ: нажми на облачко — и выпадет приз! 🎁
         function hitCloud(cl) {
             if (cl.dataset.cool === '1') return;
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             cl.dataset.cool = '1';
             cl.classList.add('zzz');
             const r = Math.random();
             let msg, cls = '';
             if (r < 0.32) {
                 coins += 10; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
-                msg = pickOne([`+10 монеток из облачка! ☁️💰`, `Облачко сыплет монетки: +10!`]);
+                msg = pickOne([withName(`+10 монеток из облачка! ☁️💰`), withName(`Облачко сыплет монетки: +10!`)]);
                 burstAtEl(cl, ['🪙', '✨']); floatText(cl, '+10 🪙');
             } else if (r < 0.54) {
                 const loss = Math.min(coins, 10);
                 coins -= loss; localStorage.setItem('mathCoins', coins); updateUI(); playSound('wrong');
-                msg = pickOne([`Ой! Тучка забрала ${loss} монеток… 😅`, `Зато в следующем уроке заработаешь больше!`]);
+                msg = pickOne([`Ой, ${hello()}! Тучка забрала ${loss} монеток… 😅`, `Зато в следующем уроке ${hello()} заработает больше!`]);
                 burstAtEl(cl, ['🌧️', '💧']); floatText(cl, `-${loss} 🪙`, 'bad');
             } else if (r < 0.76) {
                 const egg = eggs[Math.floor(Math.random() * eggs.length)];
                 coins += egg.price; localStorage.setItem('mathCoins', coins); updateUI(); playSound('win');
-                msg = pickOne([`🎁 Облачко подарило яйцо «${egg.name}» — ${egg.price} монеток!`, `Дождь из подарков! Яичко в копилку!`]);
+                msg = pickOne([`🎁 ${hello()}, облачко подарило яйцо «${egg.name}» — ${egg.price} монеток!`, `Дождь из подарков! ${hello()}, яичко в копилку!`]);
                 launchConfetti(); burstAtEl(cl, ['🥚', '🎁']); floatText(cl, `🎁 ${egg.emoji}`, 'egg');
             } else {
                 const owned = ownedPets.filter(p => p !== currentPetId);
@@ -910,11 +937,11 @@
                     ownedPets = ownedPets.filter(x => x !== pid);
                     localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
                     updateUI(); renderShop(); playSound('wrong');
-                    msg = `☁️ Загадочное облачко утащило друга: ${taken ? taken.emoji + ' ' + taken.name : 'кого-то'}!`;
+                    msg = `☁️ Ой-ой, ${hello()}! Загадочное облачко утащило друга: ${taken ? taken.emoji + ' ' + taken.name : 'кого-то'}!`;
                     burstAtEl(cl, ['☁️', '💨']); floatText(cl, `${taken ? taken.emoji : '☁️'} —`, 'bad');
                 } else {
                     coins += 5; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
-                    msg = pickOne(['Пустое облачко… но нашло 5 монеток! ☁️', 'Из тучки капнуло +5!']);
+                    msg = pickOne([`Пустое облачко… но ${hello()} нашёл 5 монеток! ☁️`, 'Из тучки капнуло +5!']);
                     floatText(cl, '+5 🪙');
                 }
             }
@@ -943,27 +970,56 @@
             const r = Math.random();
             if (r < 0.3) {
                 playSound('wrong'); sun.classList.add('grumpy');
-                say(pickOne(["Не мешай мне светить! 😤", "А-а-ай! Не щекоти солнышко! 😝", "Я считаю звёзды, подожди чуть-чуть! 🌟"]));
+                say(pickOne([`Не мешай мне светить, ${hello()}! 😤`, "А-а-ай! Не щекоти солнышко! 😝", `Я считаю звёзды, ${hello()}, подожди чуть-чуть! 🌟`]));
                 floatText(sun, 'Не мешай! 😤', 'bad');
             } else if (r < 0.62) {
                 coins += 10; localStorage.setItem('mathCoins', coins); updateUI(); playSound('coin');
-                say("Вот тебе подарок — 10 монеток, светлю для тебя! ☀️💛");
+                say(withName("Вот тебе подарок — 10 монеток, светлю для тебя! ☀️💛"));
                 createFireworks(sun, 10); floatText(sun, '+10 🪙');
             } else if (r < 0.82) {
                 const loss = Math.min(coins, 10);
                 coins -= loss; localStorage.setItem('mathCoins', coins); updateUI(); playSound('wrong'); sun.classList.add('grumpy');
-                say(`Отбираю ${loss} монеток — ты помешал мне освещать территорию! 😤☀️`);
+                say(`Отбираю ${loss} монеток, ${hello()} — ты помешал мне освещать территорию! 😤☀️`);
                 floatText(sun, `-${loss} 🪙`, 'bad');
             } else {
                 const egg = eggs[Math.floor(Math.random() * eggs.length)];
                 coins += egg.price; localStorage.setItem('mathCoins', coins); updateUI(); playSound('win');
-                say(`☀️ Солнышко растопило сундучок: подарок — яичко «${egg.name}» (${egg.price} монеток)!`);
+                say(`☀️ ${hello()}, солнышко растопило сундучок: подарок — яичко «${egg.name}» (${egg.price} монеток)!`);
                 launchConfetti(); createFireworks(sun, 14); floatText(sun, `🎁 ${egg.emoji}`, 'egg');
             }
             setTimeout(() => { sun.classList.remove('grumpy'); sunBusy = false; }, 900);
         }
         document.getElementById('sun').onclick = tapSun;
         let sunBusy = false;
+
+        // ================= БОНУС ЗА НАЗВАНИЕ: нажми «Тропинку Знаний» — +50 монеток (раз в день) =================
+        function logoBonusTakenToday() {
+            return localStorage.getItem('tkLogoBonusDay') === new Date().toDateString();
+        }
+        function refreshLogoBonus() {
+            const b = document.getElementById('lb-badge');
+            if (!b) return;
+            if (logoBonusTakenToday()) { b.textContent = '✅ Уже сегодня'; b.classList.add('off'); }
+            else { b.textContent = '+50 🪙'; b.classList.remove('off'); }
+        }
+        function tapLogoBonus() {
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const logo = document.getElementById('logo-bonus');
+            if (logoBonusTakenToday()) {
+                playSound('wrong');
+                say(`Бонус уже забран! Возвращайся за +50 монетками завтра 😉`);
+                logo.classList.add('taken'); setTimeout(() => logo.classList.remove('taken'), 500);
+                return;
+            }
+            localStorage.setItem('tkLogoBonusDay', new Date().toDateString());
+            coins += 50; localStorage.setItem('mathCoins', coins); updateUI();
+            playSound('win'); launchConfetti(); createFireworks(logo, 18); floatText(logo, '+50 🪙');
+            say(withName(`Ура! Ты нашёл подарок на вывеске: +50 монеток! 🎁`));
+            refreshLogoBonus();
+        }
+        document.getElementById('logo-bonus').addEventListener('click', tapLogoBonus);
+        refreshLogoBonus();
 
         // --- МИР ОКЕАНА: волны, декор донышка, пузырьки ---
         const WAVE_SVG = encodeURIComponent(
@@ -1198,15 +1254,13 @@
             { num: 2, name: 'Взрослая азбука',  icon: '📚', cls: 'mb-2', lessons: letterLessons2 }
         ];
 
-        // --- СОСТОЯНИЕ ---
-        let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
-        let currentPetId = localStorage.getItem('mathPet') || 'bear';
-        let ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear'];
+        // --- СОСТОЯНИЕ (coins / currentPetId / ownedPets объявлены в начале скрипта!) ---
         // шахматный прогресс: уроки 1..7 и победы над ботом по сложностям
         let chessLessonsDone = parseInt(localStorage.getItem('chessLvl')) || 0;   // сколько уроков пройдено (0..7)
         let chessBeaten = JSON.parse(localStorage.getItem('chessBeaten')) || {};   // {easy:3, medium:1, hard:0}
         // currentTheme уже объявлен в начале скрипта (до функций, которые его используют)
-        let ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow'];
+        let ownedThemes;
+        try { ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow']; } catch (e) { ownedThemes = ['meadow']; }
         // Прогресс по предметам: математика (глобальный уровень 1..20) и буквы (1..20)
         let mathUnlocked = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1; // совместимость со старым сохранением
         let letterUnlocked = parseInt(localStorage.getItem('letUnlockedLevel')) || 1;
@@ -1252,7 +1306,7 @@
             else document.body.setAttribute('data-theme', currentTheme);
             buildBgEmojis();
             applyThemeFX();
-            updateWavesForTheme();
+            syncSeaWithTheme();
         }
 
         // Ночные темы: добавляем мерцающие звёзды, приглушаем облака;Ocean: облака уплывают
@@ -1311,134 +1365,6 @@
             }
         }
 
-        // --- ТИХАЯ СПОКОЙНАЯ ФОНОВАЯ МУЗЫКА (Web Audio) ---
-        // Никаких «тун-тун-тун»! Медленный мягкий мотив поверх тёплых аккордов,
-        // а в теме «Океан» — ещё и настоящий шум волн.
-        let musicOn = localStorage.getItem('tkMusic') !== 'off';
-        let musicTimer = null, musicStep = 0;
-        let masterGain = null, waveNodes = null;
-
-        function getMaster() {
-            if (!masterGain) {
-                masterGain = audioCtx.createGain();
-                masterGain.gain.value = 1;
-                masterGain.connect(audioCtx.destination);
-            }
-            return masterGain;
-        }
-        // Очень мягкая огибающая: медленное дыхание ноты, без резких атак
-        function softNote(freq, t0, dur, vol, type = 'sine', detune = 0) {
-            const o = audioCtx.createOscillator(), g = audioCtx.createGain(), lp = audioCtx.createBiquadFilter();
-            lp.type = 'lowpass'; lp.frequency.value = 1400;   // срезаем резкость верхов
-            o.type = type; o.frequency.value = freq; o.detune.value = detune;
-            g.gain.setValueAtTime(0.0001, t0);
-            g.gain.linearRampToValueAtTime(vol, t0 + dur * 0.35);      // долгий плавный подъём
-            g.gain.linearRampToValueAtTime(vol * 0.7, t0 + dur * 0.7);
-            g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);     // мягкий уход
-            o.connect(lp); lp.connect(g); g.connect(getMaster());
-            o.start(t0); o.stop(t0 + dur + 0.1);
-        }
-        // Тёплый аккорд-подложка (три чистые ноты, очень тихо)
-        function padChord(root, t0, dur) {
-            [root, root * 1.25, root * 1.5].forEach((f, i) =>
-                softNote(f, t0 + i * 0.06, dur, 0.022, 'triangle', (i - 1) * 4));
-        }
-
-        // Спокойная лесенка в C-dur (ноты низкие, тембр флейты), 0 = пауза
-        const MELODY = [523.25, 0, 659.25, 0, 783.99, 0, 659.25, 0,   587.33, 0, 880.00, 0, 659.25, 523.25, 0, 0,
-                        392.00, 0, 523.25, 0, 659.25, 0, 587.33, 0,   523.25, 0, 392.00, 0, 440.00, 0, 0, 0];
-        // Аккорды меняются каждые 8 шагов: C — Am — F — G — C — Dm — G — C
-        const CHORDS = [261.63, 220.00, 174.61, 196.00, 261.63, 146.83, 196.00, 261.63];
-        const STEP_MS = 780; // неспешно
-
-        function musicTick() {
-            if (!audioCtx || !musicOn) return;
-            const now = audioCtx.currentTime;
-            const i = musicStep % MELODY.length;
-            if (MELODY[i] > 0) softNote(MELODY[i], now, 1.4, 0.05, 'sine');
-            if (i % 8 === 0) padChord(CHORDS[i / 8], now, 6.2);
-            musicStep++;
-        }
-
-        // --- ШУМ ВОЛН (для темы «Океан») — белый шум через «булькающий» фильтр ---
-        function makeNoiseBuffer() {
-            const len = audioCtx.sampleRate * 2;
-            const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-            const data = buf.getChannelData(0);
-            for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
-            return buf;
-        }
-        function startWaves() {
-            if (waveNodes || !audioCtx) return;
-            const src = audioCtx.createBufferSource();
-            src.buffer = makeNoiseBuffer(); src.loop = true;
-            const lp = audioCtx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500; lp.Q.value = 0.7;
-            const swell = audioCtx.createGain(); swell.gain.value = 0.02;
-            const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.11;   // накат волн ~ каждые 9 сек
-            const lfoAmt = audioCtx.createGain(); lfoAmt.gain.value = 0.028;
-            const lfoF = audioCtx.createOscillator(); lfoF.frequency.value = 0.09; // фильтр тоже «дышит»
-            const lfoFAmt = audioCtx.createGain(); lfoFAmt.gain.value = 260;
-            lfo.connect(lfoAmt); lfoAmt.connect(swell.gain);
-            lfoF.connect(lfoFAmt); lfoFAmt.connect(lp.frequency);
-            src.connect(lp); lp.connect(swell); swell.connect(getMaster());
-            src.start(); lfo.start(); lfoF.start();
-            waveNodes = { src, swell, lfo, lfoF };
-        }
-        function stopWaves() {
-            if (!waveNodes) return;
-            try { waveNodes.src.stop(); waveNodes.lfo.stop(); waveNodes.lfoF.stop(); } catch (e) {}
-            waveNodes = null;
-        }
-        function updateWavesForTheme() {
-            if (currentTheme === 'ocean' && musicOn && audioCtx) startWaves();
-            else if (currentTheme !== 'ocean') stopWaves();
-        }
-
-        function startMusic() {
-            initAudio();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            if (musicTimer) clearInterval(musicTimer);
-            musicStep = 0;
-            musicTick();
-            musicTimer = setInterval(musicTick, STEP_MS);
-            updateWavesForTheme();
-            const mb = document.getElementById('music-btn');
-            mb.classList.remove('muted'); mb.innerHTML = '🎵 Песенка';
-            floatNotes(mb);
-        }
-        function stopMusic() {
-            if (musicTimer) clearInterval(musicTimer);
-            musicTimer = null;
-            stopWaves();
-            const mb = document.getElementById('music-btn');
-            mb.classList.add('muted'); mb.innerHTML = '🔇 Тишина';
-        }
-        function toggleMusic() {
-            musicOn = !musicOn;
-            localStorage.setItem('tkMusic', musicOn ? 'on' : 'off');
-            if (musicOn) startMusic(); else stopMusic();
-        }
-        function floatNotes(el) {
-            const notes = ['🎵','🎶','🎼','🎤'];
-            for (let k = 0; k < 3; k++) {
-                const n = document.createElement('div');
-                n.className = 'note-float';
-                n.textContent = notes[Math.floor(Math.random()*notes.length)];
-                n.style.left = (Math.random()*70) + 'px';
-                n.style.top = '-6px';
-                n.style.animationDelay = (k*0.35)+'s';
-                el.appendChild(n);
-                setTimeout(() => n.remove(), 2600);
-            }
-        }
-        document.getElementById('music-btn').addEventListener('click', (e) => { e.stopPropagation(); playSound('click'); toggleMusic(); });
-        // Первый клик по странице разблокирует аудио и тихо включает песенку
-        document.body.addEventListener('click', () => {
-            initAudio();
-            if (audioCtx.state === 'suspended') audioCtx.resume().then(updateWavesForTheme);
-            if (musicOn && !musicTimer) startMusic();
-        }, { once: true });
-
         // Питомцы обращаются к игроку по ИМЕНИ из поля наверху!
         let playerName = localStorage.getItem('tkPlayerName') || '';
         function hello() { return playerName ? playerName : 'дружок'; }
@@ -1469,6 +1395,23 @@
 
         // ================= ЗВУКИ ПРИРОДЫ: тихий шум моря / огня / ветра / колокольчики =================
         // Всё синтезируется через Web Audio — никаких mp3, никаких «песенок», только мягкий природный шум.
+        let masterGain = null;
+        function getMaster() {
+            if (!masterGain) {
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 1;
+                masterGain.connect(audioCtx.destination);
+            }
+            return masterGain;
+        }
+        // Первый клик по странице «разблокирует» звук (требование браузеров).
+        document.body.addEventListener('click', () => {
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume().then(() => {
+                Object.keys(natureOn).forEach(k => { if (natureOn[k] && !natureNodes[k]) natureStart(k); });
+            });
+        }, { once: true });
+
         let natureOn = {};                 // { sea:true, fire:false, ... }
         let natureNodes = {};              // живые аудио-узлы по каждому звуку
         let natureVol = (parseInt(localStorage.getItem('tkNatureVol')) || 35) / 100;
@@ -1574,6 +1517,19 @@
             const any = Object.values(natureOn).some(Boolean);
             document.getElementById('nature-btn').classList.toggle('on', any);
         }
+
+        // Тема «Океан» сама тихо включает шум моря (если он ещё не включён вручную)
+        let seaAutoOn = false;
+        function syncSeaWithTheme() {
+            if (!audioCtx) return;
+            if (currentTheme === 'ocean' && !natureOn.sea && !seaAutoOn) {
+                seaAutoOn = true;
+                natureStart('sea');
+            } else if (currentTheme !== 'ocean' && seaAutoOn) {
+                seaAutoOn = false;
+                if (!natureOn.sea) natureStop('sea');
+            }
+        }
         document.getElementById('nature-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             initAudio();
@@ -1632,7 +1588,7 @@
         // Погладить питомца на тропинке — он радуется!
         charEmoji.addEventListener('click', () => {
             playSound('coin');
-            const joy = ["Как приятно! 😊", "Ещё погладь! 🥰", "Я тебя люблю! 💖", "Хи-хи-хи! 😄", "Пойдём считать? 🧮"][Math.floor(Math.random() * 5)];
+            const joy = pickOne([`Как приятно, ${hello()}! 😊`, "Ещё погладь! 🥰", `${withName('Я тебя люблю')} 💖`, "Хи-хи-хи! 😄", `Пойдём считать, ${hello()}? 🧮`]);
             say(joy);
             createFireworks(charEmoji, 8);
         });
@@ -1641,10 +1597,12 @@
         function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
+            // кнопка сброса прогресса живёт только на главной странице (тропинке), слева внизу
+            document.body.classList.toggle('on-map', screenId === 'map-screen');
         }
 
         function backToMap() {
-            playSound('click'); hideTimer(); switchScreen('map-screen'); say("Выбирай следующий урок!"); renderMap(); updateUI();
+            playSound('click'); hideTimer(); switchScreen('map-screen'); say(`Выбирай следующий урок, ${hello()}!`); renderMap(); updateUI();
         }
 
         // --- ОТРИСОВКА КАРТЫ ---
@@ -1685,7 +1643,7 @@
                 } else {
                     node.classList.add('locked');
                     node.innerHTML = '<span>🔒</span>';
-                    node.onclick = () => { playSound('wrong'); say("Сначала пройди предыдущий урок! 😉"); };
+                    node.onclick = () => { playSound('wrong'); say(`${hello()}, сначала пройди предыдущий урок! 😉`); };
                 }
                 node.classList.add('appear');
                 node.style.animationDelay = (index * 0.09) + 's';
@@ -1729,7 +1687,7 @@
 
         // --- МАГАЗИН (яйца с питомцами + темы) ---
         function openShop() {
-            playSound('click'); switchScreen('shop-screen'); renderShop(); speechText.textContent = "Хочешь нового друга из яичка или новую тему? 🥰";
+            playSound('click'); switchScreen('shop-screen'); renderShop(); say(`Привет, ${hello()}! Хочешь нового друга из яичка или новую тему? 🥰`);
         }
 
         function switchShopTab(tab) {
@@ -1804,7 +1762,7 @@
         function buyEgg(eggId, btnEl) {
             const egg = eggs.find(e => e.id === eggId);
             if (!egg) return;
-            if (coins < egg.price) { playSound('wrong'); say("Не хватает монеток! Проходи уроки и копи! 💪"); return; }
+            if (coins < egg.price) { playSound('wrong'); say(`${hello()}, не хватает монеток! Проходи уроки и копи! 💪`); return; }
             coins -= egg.price; localStorage.setItem('mathCoins', coins); updateUI();
             const card = btnEl.closest('.egg-card');
             card.classList.add('hatching');
@@ -1825,13 +1783,13 @@
                     <button class="shop-btn" onclick="openShop()">Ура! В магазин</button>`;
                 playSound('win'); launchConfetti(); createFireworks(card, 24);
                 updateUI(); renderShop();
-                say(`🐣 Из яйца вылупился ${pet.name}! Монетки теперь ×${pet.mult.toFixed(1)}!`);
+                say(`🐣 ${hello()}, из яйца вылупился ${pet.name}! Монетки теперь ×${pet.mult.toFixed(1)}!`);
             }, 1500);
         }
 
         function equipPet(petId) {
             playSound('click'); currentPetId = petId; localStorage.setItem('mathPet', currentPetId);
-            updateUI(); renderShop(); say("Классный выбор!");
+            updateUI(); renderShop(); say(withName("Классный выбор!"));
         }
 
         function buyTheme(themeId, price) {
@@ -1839,13 +1797,15 @@
             if (coins >= price) {
                 coins -= price; ownedThemes.push(themeId); currentTheme = themeId;
                 localStorage.setItem('mathCoins', coins); localStorage.setItem('mathOwnedThemes', JSON.stringify(ownedThemes)); localStorage.setItem('mathTheme', currentTheme);
-                playSound('coin'); launchConfetti(); updateUI(); say(`Вау! Мир «${th.name}» включён! ✨`); renderShop();
-            } else { playSound('wrong'); say("Не хватает монеток! Играй еще!"); }
+                playSound('coin'); launchConfetti(); updateUI(); renderShop();
+                if (themeId === 'ocean') { say(`Вау, ${hello()}! Теперь вокруг океан — слушай, как шумит море! 🌊`); }
+                else say(withName(`Вау! Мир «${th.name}» включён! ✨`));
+            } else { playSound('wrong'); say(`${hello()}, не хватает монеток! Играй еще!`); }
         }
 
         function equipTheme(themeId) {
             playSound('click'); currentTheme = themeId; localStorage.setItem('mathTheme', currentTheme);
-            updateUI(); renderShop(); say("Как красиво вокруг! 🤩");
+            updateUI(); renderShop(); say(withName("Как красиво вокруг! 🤩"));
         }
 
         // --- ИГРОВАЯ ЛОГИКА ---
@@ -1900,9 +1860,9 @@
             switchScreen('game-screen');
             startTimer();
             if (currentSubject === 'math') {
-                say([`Урок ${levelIndex}! Поехали! 🚀`, `Урок ${levelIndex}. Давай учиться!`, `Время математики! Урок ${levelIndex} ✨`][Math.floor(Math.random() * 3)]);
+                say(pickOne([`Урок ${levelIndex}, ${hello()}! Поехали! 🚀`, `Урок ${levelIndex}. Давай учиться, ${hello()}!`, `Время математики! Урок ${levelIndex}, ${hello()} ✨`]));
             } else {
-                say([`Буквознайка! Урок ${levelIndex} 🌟`, `Тут ${currentPetName} учит тебя буквам!`, `Не зубри — играй! Поехали! 🎈`][Math.floor(Math.random() * 3)]);
+                say(pickOne([`Буквознайка, ${hello()}! Урок ${levelIndex} 🌟`, `Тут ${currentPetName} учит ${hello() || 'тебя'} буквам!`, `Не зубри — играй! Поехали, ${hello()}! 🎈`]));
             }
             generateQuestion();
         }
@@ -2186,7 +2146,7 @@
                 questionCount++;
 
                 btnElement.classList.add('correct-flash');
-                say(["Правильно! 🎉", "Умница! 🌟", "Точно-точно! 👏", "Супер! 🚀"][Math.floor(Math.random() * 4)]);
+                say(pickOne([`Молодец, ${hello()}! 🎉`, `Правильно, ${hello()}! 🌟`, "Точно-точно! 👏", `Супер, ${hello()}! 🚀`]));
                 createFireworks(btnElement);
 
                 setTimeout(() => {
@@ -2385,7 +2345,7 @@
                     currentSubject = sdef.id;
                     localStorage.setItem('tkSubject', currentSubject);
                     currentModule = unlockedForSubject() >= 11 ? 2 : 1;
-                    say(currentSubject === 'math' ? "Ура, считалочки! 🧮" : "Ура, буквознайка! 🔤");
+                    say(withName(currentSubject === 'math' ? "Ура, считалочки! 🧮" : "Ура, буквознайка! 🔤"));
                     renderMap();
                 };
                 sw.appendChild(b);
@@ -2402,7 +2362,7 @@
                 b.textContent = locked ? `🔒 Модуль ${m.num}` : `${m.icon} Модуль ${m.num}`;
                 b.onmouseenter = () => playSound('hover');
                 b.onclick = () => {
-                    if (locked) { playSound('wrong'); say(currentSubject === 'math' ? "Сначала пройди все 10 уроков Солнечной поляны! 😉" : "Сначала пройди все 10 весёлых буквок! 😉"); return; }
+                    if (locked) { playSound('wrong'); say(`${hello()}, сначала ${currentSubject === 'math' ? 'пройди все 10 уроков Солнечной поляны! 😉' : 'пройди все 10 весёлых буквок! 😉'}`); return; }
                     playSound('click'); currentModule = m.num; renderMap();
                 };
                 sw.appendChild(b);
@@ -2644,7 +2604,7 @@
             localStorage.setItem('chessLvl', chessLessonsDone);
             playSound('win'); createFireworks(event.target, 14);
             coins += 10; localStorage.setItem('mathCoins', coins); updateUI();
-            say(chessLessonsDone >= chessLessons.length ? 'Ты знаешь все правила! 🏆 Можно +10 монеток!' : 'Молодец! +10 монеток за урок! 🪙');
+            say(hello() + ', ' + (chessLessonsDone >= chessLessons.length ? 'ты знаешь все правила! 🏆 Можно +10 монеток!' : 'молодец! +10 монеток за урок! 🪙'));
             renderChess();
         }
 
@@ -2695,7 +2655,7 @@
             playSound('click');
             chState = { board: newChessBoard(), sel: null, legal: [], myTurn: true, over: false, lastMove: null, level, status: 'Твой ход! Нажми на свою белую фигурку 👇' };
             renderChess();
-            say('Игра началась! Ты — белые. Ходи аккуратно! ♟️');
+            say(`Игра началась, ${hello()}! Ты — белые. Ходи аккуратно! ♟️`);
         }
         function resignGame() {
             if (!chState || chState.over) { chState = null; renderChess(); return; }
@@ -2769,13 +2729,13 @@
             playSound('win'); launchConfetti(); updateUI();
             st.status = msg + ` +${reward} 🪙`;
             renderChess();
-            say('Ура! Победа в шахматах! Ты гений! 🧠🏆');
+            say(`Ура, ${hello()}! Победа в шахматах! Ты гений! 🧠🏆`);
         }
         function loseGame() {
             const st = chState; st.over = true;
             st.status = 'Мат… Бот победил 🤖 Но ты не сдавайся — попробуй ещё!';
             playSound('wrong'); renderChess();
-            say('Не расстраивайся! Проиграй ещё раз — и станешь сильнее! 💪');
+            say(`${hello()}, не расстраивайся! Попробуй ещё раз — и станешь сильнее! 💪`);
         }
         function winPlayerLoss(msg) { const st = chState; st.over = true; st.status = msg; renderChess(); }
 
