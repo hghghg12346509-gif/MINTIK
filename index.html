@@ -568,6 +568,11 @@
     </div>
 
     <script>
+        // ВАЖНО: объявляем состояние темы ДО функций, которые его используют
+        // (иначе будет ошибка "Cannot access 'currentTheme' before initialization"
+        //  и весь скрипт упадёт — кнопки перестанут работать).
+        let currentTheme = localStorage.getItem('mathTheme') || 'meadow';
+
         // --- ГЕНЕРАЦИЯ ФОНА ---
         const THEME_EMOJIS = {
             meadow: ['🔢', '➕', '⭐', '🎈', '🌈', '🍎', '🧸', '🐱', '🍭', '🦋', '🌼'],
@@ -619,7 +624,7 @@
             ['w1', 'w2', 'w3'].forEach(cls => {
                 const w = document.createElement('div');
                 w.className = 'wave ' + cls;
-                w.style.backgroundImage = `url("data:image/svg+xml,${WAVE_SVG}")`;
+                w.style.backgroundImage = `url("image/svg+xml,${WAVE_SVG}")`;
                 bg.appendChild(w);
             });
         })();
@@ -815,7 +820,7 @@
         let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
         let currentPetId = localStorage.getItem('mathPet') || 'bear';
         let ownedPets = JSON.parse(localStorage.getItem('mathOwnedPets')) || ['bear'];
-        let currentTheme = localStorage.getItem('mathTheme') || 'meadow';
+        // currentTheme уже объявлен в начале скрипта (до функций, которые его используют)
         let ownedThemes = JSON.parse(localStorage.getItem('mathOwnedThemes')) || ['meadow'];
         // Прогресс по предметам: математика (глобальный уровень 1..20) и буквы (1..20)
         let mathUnlocked = parseInt(localStorage.getItem('mathUnlockedLevel')) || 1; // совместимость со старым сохранением
