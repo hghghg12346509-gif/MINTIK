@@ -163,7 +163,7 @@
 
         /* --- ПАНЕЛИ --- */
         #top-bar {
-            position: fixed; top: 92px; right: 20px; z-index: 102;
+            position: fixed; top: 78px; right: 20px; z-index: 102;
             background: linear-gradient(180deg, #fffbe6, #fff3c4);
             padding: 10px 22px; border-radius: 999px;
             font-size: 24px; font-weight: 900; color: #c98a00;
@@ -583,19 +583,60 @@
         body[data-theme="night"] .lesson-intro, body[data-theme="space"] .lesson-intro { color: #bfe0ff; }
         body[data-theme="night"] .letter-gap, body[data-theme="space"] .letter-gap { border-bottom-color: #5a6ac0; color: #5a6ac0; }
 
-        /* --- МУЗЫКАЛЬНАЯ КНОПКА (крупная, рядом с магазинчиком) --- */
-        #music-btn {
-            position: fixed; top: 92px; right: 20px; z-index: 101; cursor: pointer;
-            background: linear-gradient(180deg, #ffe6f4, #ffc9e6);
-            padding: 10px 22px; border-radius: 999px;
-            font-size: 20px; font-weight: 900; color: #b0246e;
-            box-shadow: 0 5px 0 rgba(176,36,110,0.25), 0 8px 20px rgba(0,0,0,0.1);
-            border: 3px solid #ff8fc0; user-select: none; transition: transform 0.15s;
+        /* --- БОЛЬШАЯ КНОПКА «НАЗАД» НАВЕРХУ (между именем и звуками) --- */
+        #back-top-btn {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 130;
+            display: none; align-items: center; justify-content: center; gap: 10px;
+            min-height: 60px; padding: 10px 30px; border-radius: 999px; cursor: pointer;
+            background: linear-gradient(160deg, #ffb0d0, #ff6fa0); color: white;
+            border: 4px solid #fff; font-family: 'Baloo 2', cursive;
+            font-size: 24px; font-weight: 900; text-shadow: 0 2px 3px rgba(0,0,0,0.25);
+            box-shadow: 0 6px 0 #d84470, 0 10px 24px rgba(0,0,0,0.2);
+            transition: transform 0.12s cubic-bezier(0.34,1.56,0.64,1); user-select: none;
         }
-        #music-btn:hover { transform: scale(1.07) rotate(2deg); }
-        #music-btn.muted { background: linear-gradient(180deg, #eee, #ddd); color: #999; border-color: #bbb; box-shadow: 0 5px 0 rgba(0,0,0,0.12); }
-        .note-float { position: absolute; font-size: 26px; animation: noteUp 2.2s ease-out forwards; pointer-events: none; }
-        @keyframes noteUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-90px) scale(1.3) rotate(20deg); } }
+        #back-top-btn.show { display: flex; }
+        #back-top-btn::after { content: ''; position: absolute; top: -70%; left: -25%; width: 40%; height: 240%; background: rgba(255,255,255,0.4); transform: rotate(25deg); animation: shine 3.5s ease-in-out infinite; }
+        #back-top-btn:hover { transform: translateX(-50%) scale(1.07) rotate(-1deg); filter: brightness(1.06); }
+        #back-top-btn:active { transform: translateX(-50%) translateY(5px); box-shadow: 0 1px 0 #d84470; }
+        body[data-theme="night"] #back-top-btn, body[data-theme="space"] #back-top-btn { border-color: #5a6ac0; }
+
+        /* --- ПРОМОКОДЫ (правый нижний угол) --- */
+        #promo-box {
+            position: fixed; bottom: 16px; right: 16px; z-index: 101;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+            font-family: 'Baloo 2', cursive;
+        }
+        #promo-input-wrap {
+            display: none; align-items: center; gap: 8px;
+            background: linear-gradient(180deg, #ffffff, #f3ecff);
+            border: 3px solid #c9a6ff; border-radius: 20px; padding: 10px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+        }
+        #promo-input-wrap.show { display: flex; animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        #promo-input {
+            border: 3px dashed #c9a6ff; border-radius: 14px; background: #faf6ff;
+            font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 900; color: #7b3fbf;
+            padding: 8px 14px; width: 190px; outline: none; text-transform: uppercase; letter-spacing: 1px;
+        }
+        #promo-go {
+            min-height: 46px; padding: 8px 18px; border-radius: 14px; border: 3px solid #fff; cursor: pointer;
+            background: linear-gradient(160deg, #8ce98f, #4cbf5f); color: white;
+            font-family: 'Baloo 2', cursive; font-size: 18px; font-weight: 900;
+            box-shadow: 0 4px 0 #2f8c3e; transition: transform 0.12s;
+        }
+        #promo-go:hover { transform: scale(1.06); }
+        #promo-go:active { transform: translateY(4px); box-shadow: none; }
+        #promo-toggle {
+            cursor: pointer; user-select: none;
+            background: linear-gradient(180deg, #fff3c4, #ffd93d); color: #8a5a00;
+            border: 3px solid #fff; padding: 12px 22px; border-radius: 999px;
+            font-size: 20px; font-weight: 900;
+            box-shadow: 0 5px 0 rgba(180,120,0,0.35), 0 8px 18px rgba(0,0,0,0.15);
+            transition: transform 0.15s; animation: promoWiggle 2.8s ease-in-out infinite;
+        }
+        #promo-toggle:hover { transform: scale(1.08) rotate(-2deg); }
+        #promo-toggle:active { transform: translateY(4px); box-shadow: none; }
+        @keyframes promoWiggle { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
 
         /* ================= ЗВУКИ ПРИРОДЫ (панель слева сверху) ================= */
         #nature-btn {
@@ -685,9 +726,9 @@
         .float-text.egg { color: #7b3fbf; }
         @keyframes floatUpText { 0% { opacity: 0; transform: translateY(10px) scale(0.6); } 15% { opacity: 1; transform: scale(1.15); } 100% { opacity: 0; transform: translateY(-110px) scale(1); } }
 
-        /* ================= ОКНО СБРОСА ПРОГРЕССА ================= */
+        /* ================= ОКНО СБРОСА ПРОГРЕССА (поверх всех панелей) ================= */
         #reset-modal {
-            position: fixed; inset: 0; z-index: 400; display: none;
+            position: fixed; inset: 0; z-index: 500; display: none;
             align-items: center; justify-content: center; background: rgba(40,30,80,0.55);
         }
         #reset-modal.show { display: flex; animation: fadeModal 0.25s ease; }
@@ -736,6 +777,9 @@
         <input id="player-name" maxlength="14" placeholder="Напиши имя…" autocomplete="off">
     </div>
 
+    <!-- БОЛЬШАЯ КНОПКА «НАЗАД» НАВЕРХУ — между именем и звуками, появляется вне тропинки -->
+    <div id="back-top-btn" onclick="backToMap()" title="Вернуться на тропинку">🏡 НАЗАД</div>
+
     <!-- ЗВУКИ ПРИРОДЫ: шум моря, огня, ветра, колокольчики -->
     <div id="nature-btn" title="Тихие звуки природы">🌿 Шумики</div>
     <div id="nature-panel">
@@ -760,6 +804,15 @@
                 <button class="m-btn yes" onclick="confirmResetStep()">💣 Да, да, сбрасывай!</button>
             </div>
         </div>
+    </div>
+
+    <!-- ПРОМОКОДЫ: правый нижний угол -->
+    <div id="promo-box">
+        <div id="promo-input-wrap">
+            <input id="promo-input" maxlength="20" placeholder="ПРОМОКОД" autocomplete="off">
+            <button id="promo-go" onclick="applyPromo()">🎁 Активировать</button>
+        </div>
+        <div id="promo-toggle" onclick="togglePromoBox()" title="Ввести промокод">🎟️ Промокод</div>
     </div>
 
     <!-- АНТИСТРЕССЫ по бокам: нажми — и что-то происходит! -->
@@ -1020,6 +1073,52 @@
         }
         document.getElementById('logo-bonus').addEventListener('click', tapLogoBonus);
         refreshLogoBonus();
+
+        // --- ПРОМОКОДЫ (правый нижний угол) ---
+        const PROMOS = {
+            'MINTIK325': { coins: 2500, msg: 'вау! Мега-подарок: +2500 монеток!' }
+        };
+        let usedPromos;
+        try { usedPromos = JSON.parse(localStorage.getItem('tkUsedPromos')) || []; } catch (e) { usedPromos = []; }
+
+        function togglePromoBox() {
+            initAudio(); playSound('click');
+            const wrap = document.getElementById('promo-input-wrap');
+            wrap.classList.toggle('show');
+            if (wrap.classList.contains('show')) document.getElementById('promo-input').focus();
+        }
+        function applyPromo() {
+            initAudio();
+            const inp = document.getElementById('promo-input');
+            const code = inp.value.trim().toUpperCase().replace(/\s+/g, '');
+            const box = document.getElementById('promo-box');
+            if (!code) { playSound('wrong'); return; }
+            const promo = PROMOS[code];
+            if (!promo) {
+                playSound('wrong');
+                floatText(box, 'Такого промокода нет 😅', 'bad');
+                say(`Промокод «${code}» не найден. Попробуй другой! 🤔`);
+                return;
+            }
+            if (usedPromos.includes(code)) {
+                playSound('wrong');
+                floatText(box, 'Уже использован! ✋', 'bad');
+                say(`Этот промокод ты уже забрал, ${hello()}! Один раз на носика 😉`);
+                return;
+            }
+            usedPromos.push(code);
+            localStorage.setItem('tkUsedPromos', JSON.stringify(usedPromos));
+            coins += promo.coins; localStorage.setItem('mathCoins', coins); updateUI();
+            playSound('win'); launchConfetti(); createFireworks(box, 20);
+            floatText(box, `+${promo.coins} 🪙`);
+            burstAtEl(box, ['🪙', '💰', '✨']);
+            say(withName(promo.msg) + ' 🎉');
+            inp.value = '';
+            document.getElementById('promo-input-wrap').classList.remove('show');
+        }
+        document.getElementById('promo-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); applyPromo(); }
+        });
 
         // --- МИР ОКЕАНА: волны, декор донышка, пузырьки ---
         const WAVE_SVG = encodeURIComponent(
@@ -1562,9 +1661,10 @@
                 playSound('wrong');
                 return;
             }
-            // второе «Да» — реально сбрасываем
+            // второе «Да» — реально сбрасываем (и промокоды тоже — всё с нуля!)
             ['mathCoins','mathPet','mathOwnedPets','mathTheme','mathOwnedThemes','mathUnlockedLevel',
-             'letUnlockedLevel','mathLevelStars','mathBestTimes','chessLvl','chessBeaten','tkSubject']
+             'letUnlockedLevel','mathLevelStars','mathBestTimes','chessLvl','chessBeaten','tkSubject',
+             'tkUsedPromos','tkLogoBonusDay']
                 .forEach(k => localStorage.removeItem(k));
             location.reload();   // страница перезагружается — и всё заново!
         }
@@ -1599,6 +1699,9 @@
             document.getElementById(screenId).classList.add('active');
             // кнопка сброса прогресса живёт только на главной странице (тропинке), слева внизу
             document.body.classList.toggle('on-map', screenId === 'map-screen');
+            // большая кнопка «НАЗАД» наверху — везде, кроме тропинки
+            const backBtn = document.getElementById('back-top-btn');
+            if (backBtn) backBtn.classList.toggle('show', screenId !== 'map-screen');
         }
 
         function backToMap() {
@@ -2211,7 +2314,16 @@
 
             document.getElementById('reward-coins').textContent = earnedCoins;
             const boostLine = document.getElementById('reward-boost');
-            if (pet.mult > 1) { boostLine.style.display = 'block'; boostLine.innerHTML = `${pet.emoji} ${pet.name} умножил награду: ×${pet.mult.toFixed(1)}!`; }
+            if (pet.mult > 1) {
+                boostLine.style.display = 'block';
+                // показываем ребёнку ВЕСЬ путь монеток: было → +бонус → ×питомец
+                boostLine.innerHTML =
+                    `🪙 ${baseReward} базовых` +
+                    (timeBonus(elapsed) ? ` + ⏱️ ${timeBonus(elapsed)} за скорость` : '') +
+                    ` = <b>${baseReward + timeBonus(elapsed)}</b>` +
+                    ` → ${pet.emoji} <b>${pet.name}</b> (${TIER_NAMES[pet.tier]}) умножил на <b>×${pet.mult.toFixed(1)}</b>` +
+                    ` → <span style="color:#c98a00;font-size:22px;">${earnedCoins} 🪙!</span>`;
+            }
             else boostLine.style.display = 'none';
             document.getElementById('time-result').innerHTML =
                 `⏱️ Время: <b>${fmtTime(elapsed)}</b>${recordText}` +
@@ -2270,9 +2382,10 @@
         }
         function hideTimer() { timerBox.style.display = 'none'; }
         function timeBonus(sec) {
-            if (sec <= 30) return 30;
-            if (sec <= 60) return 20;
-            if (sec <= 90) return 10;
+            // тихий бонус: скорость приятна, но не перебивает множитель питомца
+            if (sec <= 30) return 8;
+            if (sec <= 60) return 5;
+            if (sec <= 90) return 2;
             return 0;
         }
 
