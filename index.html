@@ -38,7 +38,8 @@
             z-index: 0; pointer-events: none; overflow: hidden;
         }
         /* фон НЕ должен перекрывать кнопки и панельки — иначе «ничего не нажимается»! */
-        #bg-animations > * { pointer-events: auto; }
+        /* ОБЛАКА И СОЛНЦЕ — только украшение! Кликов НЕ принимают (по просьбе юного дизайнера 😉) */
+        #bg-animations > * { pointer-events: none; }
         #sun {
             position: absolute; top: -40px; right: -40px; width: 210px; height: 210px;
             background: radial-gradient(circle, #fff7c0 20%, #ffd93d 55%, transparent 70%);
@@ -50,15 +51,6 @@
             position: absolute; font-size: 70px; opacity: 0.85; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
             animation: cloudDrift linear infinite;
         }
-        /* облачко-лотерея: внутри плывущего облака — неподвижная кнопочка ☁️ (кликать легче!) */
-        .cloud.lottery::before { content: ''; position: absolute; inset: -12px; }
-        .cloud-btn {
-            display: inline-block; font-size: 0.72em; line-height: 1; cursor: pointer; user-select: none;
-            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
-            filter: drop-shadow(0 4px 5px rgba(60,50,120,0.25));
-        }
-        .cloud-btn:hover { transform: scale(1.3) rotate(-6deg); }
-        .cloud-btn:active { transform: scale(0.9); }
         @keyframes cloudDrift {
             0% { transform: translateX(-120px); }
             100% { transform: translateX(110vw); }
@@ -100,6 +92,164 @@
         @keyframes stBubbleBurst { 0% { transform: scale(1); } 50% { transform: scale(1.5); opacity: 0.4; } 100% { transform: scale(0.1); opacity: 0; } }
         .stress-item.bursting span { animation: stBubbleBurst 0.45s ease forwards; }
         @media (max-width: 900px) { .stress-zone { display: none; } }
+
+        /* ================= ДОМАШНИЙ ПИТОМЕЦ (тамагочи-ухаживания) ================= */
+        #home-pet-card {
+            max-width: 560px; margin: 18px auto 6px; padding: 18px 20px 16px;
+            background: rgba(255,255,255,0.88); border: 4px solid #fff; border-radius: 26px;
+            box-shadow: 0 10px 0 rgba(120,90,180,0.18), 0 16px 34px rgba(0,0,0,0.12);
+            text-align: center; position: relative; overflow: hidden;
+        }
+        #home-pet-card::before {
+            content: ''; position: absolute; top: -60%; left: -30%; width: 35%; height: 220%;
+            background: rgba(255,255,255,0.5); transform: rotate(25deg); pointer-events: none;
+            animation: shine 5s ease-in-out infinite;
+        }
+        @keyframes shine { 0%, 60% { left: -30%; } 100% { left: 130%; } }
+        .hp-title { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 21px; color: #7a5fb8; margin-bottom: 6px; }
+        .hp-pet-row { display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .hp-emoji { font-size: 74px; cursor: pointer; transition: transform 0.15s; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15)); }
+        .hp-emoji:hover { transform: scale(1.15) rotate(-6deg); }
+        .hp-emoji.happy-jump { animation: hpJump 0.6s ease; }
+        @keyframes hpJump { 0% { transform: translateY(0); } 30% { transform: translateY(-26px) rotate(8deg); } 55% { transform: translateY(0) scaleY(0.85); } 75% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+        .hp-mood { font-size: 40px; min-width: 52px; }
+        .hp-bars { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 220px; max-width: 300px; }
+        .hp-bar-row { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; color: #6b6390; }
+        .hp-bar-label { width: 30px; text-align: center; font-size: 20px; }
+        .hp-bar-track { flex: 1; height: 18px; border-radius: 999px; background: #ece7f8; border: 2px solid #d8ccff; overflow: hidden; position: relative; }
+        .hp-bar-fill { height: 100%; border-radius: 999px; transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1); background: linear-gradient(90deg, #7ee081, #35c04a); }
+        .hp-bar-fill.low { background: linear-gradient(90deg, #ffb199, #ff5e5e); animation: barBlink 1s ease-in-out infinite alternate; }
+        @keyframes barBlink { from { filter: brightness(1); } to { filter: brightness(1.3); } }
+        .hp-actions { display: flex; gap: 10px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+        .hp-btn {
+            padding: 10px 18px; border-radius: 999px; border: 3px solid #fff; cursor: pointer;
+            font-weight: 900; font-size: 16px; font-family: 'Baloo 2', cursive; color: #fff;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.18); transition: transform 0.12s; user-select: none;
+        }
+        .hp-btn:hover { transform: scale(1.08) rotate(-2deg); }
+        .hp-btn:active { transform: scale(0.92); }
+        .hp-feed { background: linear-gradient(160deg, #ffa62b, #ff7b2b); }
+        .hp-play { background: linear-gradient(160deg, #ff8fc0, #e0559a); }
+        .hp-wash { background: linear-gradient(160deg, #5bc8f5, #2b8cc4); }
+        .hp-hug { background: linear-gradient(160deg, #b07fe8, #7b3fc4); }
+        .hp-care-badge {
+            position: absolute; top: 12px; right: 14px; background: linear-gradient(160deg, #ffe28a, #ffc23d);
+            border: 3px solid #fff; border-radius: 999px; padding: 4px 12px; font-weight: 900; font-size: 14px; color: #7a4500;
+            box-shadow: 0 3px 0 rgba(200,140,0,0.4);
+        }
+        .hp-bonus-note { margin-top: 8px; font-size: 14px; font-weight: 800; color: #2f9fd8; }
+
+        /* ================= Достижения ================= */
+        .achv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 10px; }
+        .achv-card {
+            background: rgba(255,255,255,0.9); border: 3px solid #d8ccff; border-radius: 18px; padding: 12px 8px;
+            text-align: center; box-shadow: 0 5px 0 rgba(120,90,180,0.15); transition: transform 0.15s;
+        }
+        .achv-card.got { border-color: #ffd93d; background: linear-gradient(160deg, #fff8dc, #ffeaa0); }
+        .achv-card.got:hover { transform: scale(1.06) rotate(-1deg); }
+        .achv-icon { font-size: 40px; filter: grayscale(1) opacity(0.4); }
+        .achv-card.got .achv-icon { filter: none; animation: bounceMap 1.6s ease-in-out infinite; }
+        .achv-name { font-weight: 900; font-size: 15px; color: #5a3ea1; margin-top: 4px; }
+        .achv-desc { font-size: 12px; color: #8a83b8; font-weight: 700; margin-top: 2px; }
+        .achv-reward { font-size: 13px; font-weight: 900; color: #c98a00; margin-top: 4px; }
+        @keyframes bounceMap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        /* ================= Мини-игра «Поймай звезду» ================= */
+        #catch-field {
+            position: fixed; inset: 0; z-index: 3000; display: none;
+            background: radial-gradient(circle at 50% 30%, rgba(20,20,70,0.55), rgba(10,10,40,0.82));
+            cursor: crosshair; overflow: hidden;
+        }
+        #catch-field.show { display: block; }
+        .catch-star {
+            position: absolute; font-size: 46px; cursor: pointer; user-select: none;
+            filter: drop-shadow(0 0 12px rgba(255,220,80,0.9)); transition: transform 0.1s;
+            animation: starTwinkle 0.9s ease-in-out infinite alternate;
+        }
+        .catch-star:hover { transform: scale(1.25); }
+        @keyframes starTwinkle { from { filter: brightness(1) drop-shadow(0 0 8px gold); } to { filter: brightness(1.4) drop-shadow(0 0 18px gold); } }
+        .catch-bomb { position: absolute; font-size: 42px; cursor: pointer; user-select: none; }
+        .catch-gem { position: absolute; font-size: 40px; cursor: pointer; user-select: none; filter: drop-shadow(0 0 10px rgba(120,220,255,0.9)); }
+        .catch-hud {
+            position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 22px; background: rgba(255,255,255,0.95); border-radius: 999px;
+            padding: 10px 26px; font-weight: 900; font-size: 20px; color: #46406b; border: 4px solid #ffd93d;
+            box-shadow: 0 6px 0 rgba(200,150,0,0.35); z-index: 2;
+        }
+        .catch-countdown {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%);
+            font-family: 'Baloo 2', cursive; font-size: 120px; font-weight: 800; color: #fff;
+            text-shadow: 0 0 30px rgba(255,220,80,0.9), 0 8px 0 rgba(0,0,0,0.25); z-index: 3; pointer-events: none;
+        }
+        .catch-close {
+            position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+            padding: 12px 30px; border-radius: 999px; background: linear-gradient(160deg, #ff8fc0, #e0559a);
+            color: #fff; font-weight: 900; font-size: 19px; font-family: 'Baloo 2', cursive; border: 4px solid #fff;
+            cursor: pointer; box-shadow: 0 6px 0 rgba(150,40,90,0.4); z-index: 2;
+        }
+        .catch-result {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            background: rgba(255,255,255,0.96); border: 5px solid #ffd93d; border-radius: 26px;
+            padding: 26px 40px; text-align: center; font-weight: 900; color: #46406b; z-index: 4;
+            box-shadow: 0 12px 0 rgba(200,150,0,0.3), 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        /* ================= Настройки ================= */
+        #settings-modal .modal-box { max-width: 460px; }
+        .set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0; font-weight: 900; color: #5a4f85; font-size: 17px; }
+        .toggle-sw {
+            width: 64px; height: 34px; border-radius: 999px; background: #d8ccff; position: relative; cursor: pointer;
+            border: 3px solid #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,0.12); transition: background 0.25s; flex-shrink: 0;
+        }
+        .toggle-sw.on { background: #7ee081; }
+        .toggle-sw::after {
+            content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; border-radius: 50%;
+            background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.25); transition: left 0.25s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .toggle-sw.on::after { left: 32px; }
+        .set-slider { flex: 1; accent-color: #b07fe8; height: 26px; }
+        .gear-btn {
+            position: fixed; top: 96px; right: 14px; z-index: 101;
+            width: 62px; height: 62px; border-radius: 50%; border: 4px solid #fff; cursor: pointer;
+            background: radial-gradient(circle at 32% 26%, #ffffff, #e8e2ff 45%, #c9bbf5 100%);
+            display: flex; align-items: center; justify-content: center; font-size: 32px;
+            box-shadow: 0 6px 0 rgba(120,90,180,0.35), 0 10px 22px rgba(0,0,0,0.15);
+            transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .gear-btn:hover { transform: rotate(90deg) scale(1.1); }
+        @media (max-width: 900px) { .gear-btn { top: auto; bottom: 84px; right: 10px; width: 54px; height: 54px; font-size: 26px; } }
+
+        /* ================= Витрина дня ================= */
+        #daily-showcase {
+            max-width: 560px; margin: 10px auto; padding: 14px 18px; border-radius: 22px;
+            background: linear-gradient(135deg, rgba(255,226,138,0.95), rgba(255,194,61,0.9));
+            border: 4px solid #fff; box-shadow: 0 8px 0 rgba(200,140,0,0.3); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        #daily-showcase .ds-label { font-weight: 900; font-size: 15px; color: #7a4500; letter-spacing: 1px; }
+        #daily-showcase .ds-body { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 20px; color: #5a3200; margin-top: 4px; }
+        #daily-showcase .ds-emoji { font-size: 40px; display: inline-block; vertical-align: middle; margin-right: 10px; animation: hpJump 2.4s ease-in-out infinite; }
+        #daily-showcase .ds-shop { margin-top: 8px; display: inline-block; padding: 8px 22px; border-radius: 999px; background: #fff; color: #b07800; font-weight: 900; cursor: pointer; border: 3px solid #ffd24d; box-shadow: 0 4px 0 rgba(200,140,0,0.3); transition: transform 0.12s; }
+        #daily-showcase .ds-shop:hover { transform: scale(1.07); }
+
+        /* ================= Статистика и дневной квест ================= */
+        #stats-strip { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 8px auto; max-width: 640px; }
+        .stat-chip {
+            background: rgba(255,255,255,0.9); border: 3px solid #fff; border-radius: 999px; padding: 7px 16px;
+            font-weight: 900; font-size: 15px; color: #6b6390; box-shadow: 0 4px 0 rgba(120,90,180,0.15);
+            display: flex; align-items: center; gap: 7px;
+        }
+        .stat-chip b { color: #e0559a; font-size: 17px; }
+        #daily-quest {
+            max-width: 560px; margin: 8px auto; padding: 12px 16px; border-radius: 20px;
+            background: linear-gradient(135deg, rgba(142,208,255,0.95), rgba(120,180,255,0.9));
+            border: 4px solid #fff; box-shadow: 0 7px 0 rgba(60,110,200,0.25); text-align: center;
+        }
+        .dq-label { font-weight: 900; font-size: 14px; color: #1c4d8a; letter-spacing: 1px; }
+        .dq-text { font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 19px; color: #14406f; margin-top: 2px; }
+        .dq-bar { height: 14px; border-radius: 999px; background: rgba(255,255,255,0.6); margin: 8px auto 4px; max-width: 320px; overflow: hidden; border: 2px solid #fff; }
+        .dq-fill { height: 100%; background: linear-gradient(90deg, #7ee081, #35c04a); border-radius: 999px; transition: width 0.5s; }
+        .dq-done { color: #0c6b2d !important; }
 
         /* ================= ШАХМАТЫ ================= */
         .chess-tabs { display: flex; gap: 16px; justify-content: center; margin: 14px 0 20px; flex-wrap: wrap; }
@@ -223,6 +373,96 @@
 
         .screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 700px; padding: 20px; z-index: 10; position: relative; animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); margin-top: 96px; }
         .screen.active { display: flex; }
+
+        /* ============ ПАЛИТРЫ ТЕМ (раскачивают весь мир сайта) ============ */
+        body[data-theme="ocean"]  { --pink:#5fd0e8; --blue:#2f9fd8; --green:#4ecfa0; --yellow:#ffe066; --orange:#ffa62b; --purple:#5a8fe0; --text:#134a66; --gold:#ffd23d; }
+        body[data-theme="sunset"] { --pink:#ff7e9c; --blue:#ffb066; --green:#c9a06c; --yellow:#ffd93d; --orange:#ff8a3d; --purple:#e066a0; --text:#6b3a2e; }
+        body[data-theme="forest"] { --pink:#7fce8a; --blue:#4aa85c; --green:#2f8f3f; --yellow:#d8ec6a; --orange:#b0783d; --purple:#4a8f5c; --text:#20502a; }
+        body[data-theme="candy"]  { --pink:#ff5ca8; --blue:#c86aff; --green:#ff8fc0; --yellow:#ffd0e8; --orange:#ff7ab0; --purple:#9a4ae0; --text:#6b2a5a; }
+        body[data-theme="night"]  { --pink:#8a9aff; --blue:#6fd3ff; --green:#7ee081; --yellow:#ffe066; --orange:#ffb02e; --purple:#b07fe8; --text:#dfe8ff; }
+        body[data-theme="space"]  { --pink:#ff6fd8; --blue:#6fb8ff; --green:#7ee0ff; --yellow:#ffe066; --orange:#ff9a5c; --purple:#c96aff; --text:#e8dcff; }
+        body[data-theme="autumn"] { --pink:#e07a5a; --blue:#c98a3d; --green:#8a9a3d; --yellow:#ffc23d; --orange:#ff8a3d; --purple:#a05a2e; --text:#5a3a1e; }
+        body[data-theme="winter"] { --pink:#9ad0ff; --blue:#5ab0ff; --green:#a8e6cf; --yellow:#e8f4ff; --orange:#7fceff; --purple:#6a8fd8; --text:#2a4a6b; }
+
+        /* тёмные темы — текст и карточки */
+        body[data-theme="night"] .subtitle, body[data-theme="space"] .subtitle,
+        body[data-theme="night"] .map-hint,  body[data-theme="space"] .map-hint,
+        body[data-theme="night"] .stat-chip, body[data-theme="space"] .stat-chip { color: #cfe0ff; }
+        body[data-theme="night"] .game-board, body[data-theme="space"] .game-board { background: linear-gradient(180deg,#2a3570,#232c5e); border-color:#6fd3ff; }
+        body[data-theme="night"] .result-board, body[data-theme="space"] .result-board { background: linear-gradient(180deg,#2a3570,#25306a); border-color:#8a52e0; }
+        body[data-theme="night"] .visual-aid, body[data-theme="space"] .visual-aid { background:#26305f; border-color:#4a5aa8; }
+        body[data-theme="night"] .speech-bubble, body[data-theme="space"] .speech-bubble { background:linear-gradient(180deg,#313e80,#2b3670); color:#ffe066; border-color:#6fd3ff; }
+        body[data-theme="night"] .shop-item .name, body[data-theme="space"] .shop-item .name,
+        body[data-theme="night"] .egg-card .name,  body[data-theme="space"] .egg-card .name,
+        body[data-theme="night"] .theme-desc,      body[data-theme="space"] .theme-desc { color:#dfe8ff; }
+        body[data-theme="night"] .modal-box, body[data-theme="space"] .modal-box { background:linear-gradient(180deg,#2c3a7f,#25306a); color:#dfe8ff; border-color:#6fd3ff; }
+
+        /* ============ КРУПНАЯ ПАНЕЛЬ ПРЕДМЕТОВ (видно и понятно) ============ */
+        .subject-switcher { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:14px 0 6px; width:100%; }
+        .subj-btn {
+            min-width:150px; padding:14px 20px; border-radius:22px; cursor:pointer; text-align:center;
+            background:linear-gradient(180deg,#ffffff,#eef2ff); border:4px solid #cfc6e8;
+            box-shadow:0 7px 0 rgba(90,70,150,.28), 0 12px 26px rgba(0,0,0,.12);
+            transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s;
+            font-family:'Baloo 2',cursive; font-weight:800; color:#5a4a8a; position:relative;
+        }
+        .subj-btn:hover { transform:translateY(-4px) scale(1.05) rotate(-1deg); }
+        .subj-btn:active { transform:translateY(3px); box-shadow:0 2px 0 rgba(90,70,150,.28); }
+        .subj-btn .sb-icon { font-size:44px; display:block; line-height:1.1; filter:drop-shadow(0 3px 4px rgba(0,0,0,.15)); }
+        .subj-btn .sb-label { font-size:21px; letter-spacing:.5px; display:block; margin-top:2px; }
+        .subj-btn .sb-hint { display:block; font-size:12.5px; opacity:.75; font-family:'Nunito'; }
+        .subj-btn.active-math    { background:linear-gradient(160deg,#ffe28a,#ffb02e); border-color:#fff; color:#7a4500; box-shadow:0 7px 0 #c97a12, 0 0 30px rgba(255,190,60,.6); }
+        .subj-btn.active-letters { background:linear-gradient(160deg,#b0f5a8,#4ecb62); border-color:#fff; color:#1e5a28; box-shadow:0 7px 0 #2f8f3f, 0 0 30px rgba(90,210,110,.55); }
+        .subj-btn.active-chess   { background:linear-gradient(160deg,#d8c2ff,#9a6aff); border-color:#fff; color:#3d2170; box-shadow:0 7px 0 #6a3fc0, 0 0 30px rgba(150,100,255,.55); }
+        .subj-btn .sb-badge { position:absolute; top:-12px; right:-10px; background:#ff5c7a; color:#fff; font-size:12px; font-weight:900; padding:3px 9px; border-radius:20px; border:2px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.25); transform:rotate(8deg); }
+
+        /* ============ ЭКРАН «ЧТО НОВОГО» ============ */
+        .whatsnew-body { max-height:56vh; overflow-y:auto; text-align:left; width:100%; }
+        .wn-item { display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,.7); border:3px solid #e6ddff; border-radius:16px; padding:10px 14px; margin-bottom:10px; font-weight:800; color:#5a4a8a; font-size:16.5px; }
+        .wn-item .wn-ico { font-size:28px; line-height:1; }
+        .wn-item small { display:block; font-weight:700; color:#8a7ab0; font-size:13.5px; }
+
+        /* ============ АНИМАЦИИ ФОНА (дождь, снег, листья, огоньки) ============ */
+        .fx-drop { position:absolute; pointer-events:none !important; animation:fxFall linear forwards; opacity:.85; }
+        @keyframes fxFall { from { transform:translateY(-8vh) rotate(0deg); } to { transform:translateY(108vh) rotate(360deg); } }
+        .firefly { position:absolute; font-size:22px; pointer-events:none !important; animation:flyDrift ease-in-out infinite alternate, flyGlow 2.4s ease-in-out infinite; opacity:.8; }
+        @keyframes flyDrift { from { transform:translate(0,0); } to { transform:translate(70px,-50px); } }
+        @keyframes flyGlow { 0%,100% { filter:brightness(.6); } 50% { filter:brightness(1.5); } }
+        .snowflake { position:absolute; pointer-events:none !important; animation:fxFall linear infinite; opacity:.9; }
+
+        /* ============ УРОКИ С ДРУЖКОМ (диалог) ============ */
+        .lesson-chat { width:100%; max-width:560px; margin:0 auto 12px; display:flex; flex-direction:column; gap:8px; }
+        .chat-line { display:flex; gap:10px; align-items:flex-start; animation:chatIn .5s cubic-bezier(.34,1.56,.64,1) both; }
+        .chat-line .cl-face { font-size:38px; line-height:1.1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.18)); flex-shrink:0; }
+        .chat-line .cl-text { background:linear-gradient(180deg,#fffdf4,#fff3c8); border:3px solid #ffd93d; border-radius:16px 16px 16px 4px; padding:8px 14px; font-weight:900; color:#7a5a10; font-size:17px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
+        .chat-line.kid .cl-text { background:linear-gradient(180deg,#eafcff,#c2ecff); border-color:#5bc8f5; color:#134a66; border-radius:16px 16px 4px 16px; }
+        .chat-line.kid { flex-direction:row-reverse; }
+        @keyframes chatIn { from { opacity:0; transform:translateY(14px) scale(.9); } to { opacity:1; transform:none; } }
+        .chat-next-btn { align-self:center; margin-top:4px; background:linear-gradient(160deg,#b0f5a8,#4ecb62); border:4px solid #fff; color:#1e5a28; font-family:'Baloo 2',cursive; font-weight:800; font-size:19px; padding:10px 26px; border-radius:20px; cursor:pointer; box-shadow:0 6px 0 #2f8f3f; transition:transform .15s; animation:btnPulse 1.6s ease-in-out infinite; }
+        .chat-next-btn:hover { transform:scale(1.07); }
+        .chat-next-btn:active { transform:translateY(4px); box-shadow:0 2px 0 #2f8f3f; }
+        @keyframes btnPulse { 0%,100% { box-shadow:0 6px 0 #2f8f3f, 0 0 0 rgba(80,200,100,.5); } 50% { box-shadow:0 6px 0 #2f8f3f, 0 0 22px rgba(80,200,100,.65); } }
+
+        /* ============ ДОПОЛНИТЕЛЬНОЕ ЗАДАНИЕ В УРОКЕ ============ */
+        .extra-task { width:100%; max-width:560px; margin:6px auto 10px; background:linear-gradient(180deg,#fff0fa,#ffd9ec); border:4px dashed #ff8fc0; border-radius:18px; padding:12px 16px; text-align:center; }
+        .extra-task .et-q { font-family:'Baloo 2',cursive; font-weight:800; font-size:26px; color:#8f1450; margin-bottom:8px; }
+        .extra-task .et-opts { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .extra-task .et-btn { font-family:'Baloo 2',cursive; font-weight:800; font-size:24px; padding:8px 22px; border-radius:16px; border:4px solid #fff; cursor:pointer; background:linear-gradient(160deg,#ffe28a,#ffc23d); color:#7a4500; box-shadow:0 5px 0 #d99a12; transition:transform .15s; }
+        .extra-task .et-btn:hover { transform:scale(1.08); }
+        .extra-task .et-btn.done-ok { background:linear-gradient(160deg,#b0f5a8,#5ecb52); color:#1e5a28; box-shadow:0 5px 0 #2f8f3f; pointer-events:none; }
+
+        /* ============ ЗВЁЗДЫ НА КАРТЕ ============ */
+        .node-star { display:inline-block; animation:starSpin 2.6s ease-in-out infinite; font-size:18px; }
+        @keyframes starSpin { 0%,100% { transform:rotate(-8deg) scale(1); } 50% { transform:rotate(8deg) scale(1.2); } }
+
+        /* ============ БОЛЬШИЕ ВКЛАДКИ МАГАЗИНА ============ */
+        .shop-tabs.big-tabs .shop-tab { font-size:21px; padding:16px 26px; min-width:150px; }
+        .shop-tabs.big-tabs .shop-tab .st-sub { display:block; font-size:12.5px; font-weight:800; opacity:.75; font-family:'Nunito'; }
+        .shop-tabs.big-tabs .shop-tab.active-pets { background:linear-gradient(160deg,#ffd6ea,#ff8fc0); }
+
+        /* ============ КНОПКА «ЧТО НОВОГО» ============ */
+        .gear-btn.gear-new { background:linear-gradient(160deg,#b0f5a8,#4ecb62); color:#1e5a28; }
+        .gb-badge { position:absolute; top:-8px; right:-8px; background:#ff5c7a; color:#fff; font-size:11px; font-weight:900; padding:2px 7px; border-radius:14px; border:2px solid #fff; animation:btnPulse 1.4s infinite; }
         @keyframes popIn { 0% { opacity: 0; transform: translateY(25px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
         /* --- КАРТА --- */
@@ -748,9 +988,8 @@
         .btn-top.blue:active { box-shadow: 0 1px 0 #2b8cc4; }
         body[data-theme="night"] .btn-top, body[data-theme="space"] .btn-top { border-color: #5a6ac0; }
 
-        /* ================= ОБЛАКО-ЛОТЕРЕЯ и СОЛНЫШКО-ИГУМЕН ================= */
-        .cloud.lottery { pointer-events: auto; cursor: pointer; filter: drop-shadow(0 6px 10px rgba(80,60,150,0.25)); transition: transform 0.15s; }
-        .cloud.lottery:hover { transform: scale(1.18); }
+        /* ================= ОБЛАКА — ПРОСТО УКРАШЕНИЕ (кликать нельзя) ================= */
+        .cloud.lottery { pointer-events: none; cursor: default; filter: drop-shadow(0 6px 10px rgba(80,60,150,0.25)); }
         .cloud.lottery.zzz { animation: cloudDrift linear infinite, cloudShake 0.4s ease; }
         @keyframes cloudShake { 0%,100% { margin-left: 0; } 25% { margin-left: -8px; } 75% { margin-left: 8px; } }
         #sun { pointer-events: none; }
@@ -832,6 +1071,31 @@
 
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
 
+    <!-- ⚙️ НАСТРОЙКИ: шестерёнка справа -->
+    <div class="gear-btn" id="gear-btn" title="Настройки" onclick="openSettings()">⚙️</div>
+    <div id="settings-modal" onclick="if(event.target===this)closeSettings()">
+        <div class="modal-box">
+            <div style="font-size:52px;">⚙️🎛️</div>
+            <div class="modal-q">Настройки тропинки</div>
+            <div class="set-row">🔊 Звуки игр <div class="toggle-sw on" id="sw-sfx" onclick="toggleSetting('sfx', this)"></div></div>
+            <div class="set-row">🌿 Шумики природы <div class="toggle-sw" id="sw-nature" onclick="toggleSetting('nature', this)"></div></div>
+            <div class="set-row">✨ Красивые эффекты <div class="toggle-sw on" id="sw-fx" onclick="toggleSetting('fx', this)"></div></div>
+            <div class="set-row">🏰 Родительский контроль <div class="toggle-sw" id="sw-parent" onclick="toggleSetting('parent', this)"></div></div>
+            <div class="set-row" id="parent-lock-note" style="display:none; font-size:14px; color:#c2554f;">Магазин и промокоды будут спрашивать пример-задачку 🔐</div>
+            <div style="text-align:center; margin-top:6px;"><button class="m-btn no" onclick="closeSettings()">👍 Готово!</button></div>
+        </div>
+    </div>
+
+    <!-- 🌟 МИНИ-ИГРА «ПОЙМАЙ ЗВЕЗДУ» -->
+    <div id="catch-field">
+        <div class="catch-hud">⭐ <span id="cf-score">0</span> &nbsp; ⏱️ <span id="cf-time">20</span> &nbsp; 💎 <span id="cf-gems">0</span></div>
+        <div class="catch-countdown" id="cf-countdown"></div>
+        <div class="catch-close" onclick="closeCatchGame()">🚪 Выйти</div>
+    </div>
+
+    <!-- КНОПКА СТАРТ МИНИ-ИГРЫ (на тропинке) -->
+    <div id="catch-start-btn" style="display:none;"></div>
+
     <!-- КНОПКА СБРОСА ПРОГРЕССА -->
     <div id="reset-btn" onclick="openResetModal()" title="Начать всё заново">🗑️ Сбросить весь прогресс</div>
     <div id="reset-modal">
@@ -892,6 +1156,9 @@
         </div>
         <h1 class="logo-title logo-bonus" id="logo-bonus" title="Нажми на название!">🌈 Тропинка Знаний ✨<span class="lb-badge" id="lb-badge">+50 🪙</span></h1>
         <div class="subtitle" id="map-subtitle">Учимся считать и читать играя! 🎈</div>
+        <div id="stats-strip"></div>
+        <div id="daily-quest"></div>
+        <div id="daily-showcase" style="display:none;"></div>
         <div class="subject-switcher" id="subject-switcher"></div>
         <div class="module-switcher" id="module-switcher"></div>
         <div class="module-banner mb-1" id="module-banner">☀️ МОДУЛЬ 1 · Солнечная поляна</div>
@@ -900,6 +1167,17 @@
             <div class="map-container" id="map-container"></div>
         </div>
         <div class="map-hint">🔒 Проходи уроки по порядку, чтобы открыть новые!</div>
+        <!-- ДОМАШНИЙ ПИТОМЕЦ: корми, мой, играй — он дарит бонус к доходу! -->
+        <div id="home-pet-card" style="display:none;"></div>
+        <!-- МИНИ-ИГРА «ПОЙМАЙ ЗВЕЗДУ» -->
+        <div style="text-align:center; margin: 14px auto 4px;">
+            <button class="hp-btn" style="background: linear-gradient(160deg,#ffd93d,#ffa62b); font-size:20px; padding:14px 34px;" onclick="openCatchGame()">🌟 Поймай звезду! (мини-игра)</button>
+        </div>
+        <!-- ДОСТИЖЕНИЯ -->
+        <div id="achv-section" style="max-width:640px; margin:18px auto 8px;">
+            <div style="font-family:'Baloo 2',cursive; font-weight:800; font-size:24px; color:#7a5fb8; text-align:center;">🏅 Мои награды</div>
+            <div class="achv-grid" id="achv-grid"></div>
+        </div>
     </div>
 
     <div id="game-screen" class="screen">
@@ -953,6 +1231,7 @@
         <div class="shop-tabs">
             <div class="shop-tab" id="tab-pets" onclick="switchShopTab('pets')">🥚 Яйца с питомцами</div>
             <div class="shop-tab" id="tab-collect" onclick="switchShopTab('collect')" style="display:none;">🐾 Моя коллекция</div>
+            <div class="shop-tab" id="tab-ency" onclick="switchShopTab('ency')">📖 Букварь друзей</div>
             <div class="shop-tab" id="tab-themes" onclick="switchShopTab('themes')">🎨 Темы и ауры</div>
         </div>
         <div class="shop-grid" id="shop-grid"></div>
@@ -981,6 +1260,9 @@
             const got = boostAmount(raw);
             coins += got;
             localStorage.setItem('mathCoins', coins);
+            // статистика: сколько всего монеток заработано за всё время
+            stats.totalEarned += got; saveStats();
+            checkAchievements();
             updateUI();
             if (srcLabel && petMult() > 1) {
                 const p = pets.find(x => x.id === currentPetId);
@@ -995,6 +1277,88 @@
         if (!ownedPets.includes(currentPetId)) currentPetId = 'none';
 
         // --- ГЕНЕРАЦИЯ ФОНА ---
+        // ---------- ДАННЫЕ: АНЕКДОТЫ (огромная коллекция!) ----------
+        const jokes = [
+            'Заходит как-то улитка в кафе, а ей говорят: «У нас быстро!» — Она рассмеялась и уползла 😂🐌',
+            '— Доктор, я буду жить? — А смысл? 🤣',
+            'Штирлиц шёл по лесу и нашёл телефон. Набрал 02 — вызов принят, но никто не ответил. Тогда он набрал свой номер — и услышал себя! 📞',
+            'Колобок повесился… на турнике, когда качал пресс! 💪😄',
+            '— Почему программисты путают Хэллоуин и Рождество? — Потому что OCT 31 == DEC 25! 🎃🎄',
+            'Встречаются два кита. Один другому: «Что-то сегодня воды нет!» 🐋🌊',
+            'Заходит белка в магазин: «Есть орешки?» — «Нет». — На следующий день: «Есть орешки?» — «Нет!» — Третьего дня: «А если я скажу „не орешки“, вы засмеётесь?» 🐿️😆',
+            'Почему динозавры не играли в карты? — Потому что их всех съел метеорит-мошенник! 🦖☄️',
+            'Слоник чихнул — и полкласса убежало на физкультуру! 🐘💨',
+            '— Мамочка, меня зовут Печенька! — Нет, сынок, тебя зовут Дениска 🍪😂',
+            'Корова в поле щиплет траву… то есть делает вид, что учит английский: graaaass! 🐄🇬🇧',
+            'Заяц пришёл к парикмахеру: «Сделайте мне модную стрижку!» — Тот постриг… и заяц стал зайкой на 2 см ниже 😹✂️',
+            'Что сказал один замок другому? — «Не подходи, а то закрою!» 🔒😆',
+            'Учитель: «Петя, где твоя собака?» — Петя: «Она дома, грызёт косточку!» — «А почему тогда она грызёт твою тетрадь?!» 🐶📖',
+            'Какое море самое музыкальное? — До-ми-соль-Море! 🎵🌊',
+            'Ёжик спросил у ёлки: «Вы тоже колючая или это причёска такая?» 🦔🎄',
+            'Приходят два брата в магазин. Один говорит: «Дайте нам молока», — второй: «А нам — печенье!» Кассир: «А вы кто друг другу?» — «Братья!» — «Тогда为什么... ой, то есть почему вы один за двоих говорите?!» 🥛🍪',
+            'Обезьянка села на кактус: «Ой!» — и подпрыгнула до Луны 🐒🌵',
+            'Что такое «5 плюс 5»? — Десять пальчиков целых! А «10 минус 3»? — Семь пальчиков и три в кармане! 🖐️😂',
+            'Пингвин идёт по льду и думает: «Эх, жалко, что не медведь — упал бы мягче!» 🐧❄️',
+            'Барон Мюнхгаузен вытащил себя из лужи за волосы. Баран Мундигузен залез обратно и не смог 😎🐏',
+            '— Папа, папа, а правда, что в Африке жарко? — Сынок, я сейчас на работе, не отвлекай маму! 🌍😅',
+            'Рыбка-красавка сказала крабику: «Ты всегда такой красный?» — «Да, просто я стесняюсь!» 🐠🦀',
+            'Кузнечик зашёл в школу с портфелем. Учитель: «Извини, мы принимаем только с двух лет…» — «Да мне уже три прыжка!» 🦗🎒',
+            'Врач сказал больному: «Вам нельзя нервничать!» — Больной: «А можно танцевать?!» 👨‍⚕️🕺',
+            'Как-то раз у жирафа шея заболела. Он пошёл к врачу… и весь путь чихал сверху вниз! 🦒🤧',
+            'Два друга: помидор и огурец. Помидор покраснел от смеха, а огурец плакал — он был малосольный! 🍅🥒',
+            'Черепаха бежала марафон. Пришла последней. Но домой вернулась раньше всех — её везли на машине! 🐢🚗',
+            '— Алло, это прачечная? — Нет, это шахматная школа! — А почему там всё в клеточку? ♟️👕',
+            'Сова-профи получила двойку. Оказалось, она спала на уроке. Совсем как некоторые! 🦉😴',
+            'Ракета сказала Луне: «Хочешь, покатаю тебя?» — Луна: «Ну ты и хвастунишка, я сама кругами летаю!» 🚀🌙',
+            'Мишка уснул зимой, а проснулся и видит — вокруг все ходят в куртках. «Странное у меня дежавю…» 🐻🧥',
+            'Лисичка учила волчонка считать: «Сколько будет 3 курицы плюс 2 курицы?» — Волчонок: «Много-много вкусной еды!» 🦊🐺',
+            'Заходит муха в cafeteria… ой, столовую! И говорит: «Мне компот!» Ей: «Тебе — только жужжать!» 🪰🥤',
+            'Почему единороги такие быстрые? — Потому что у них одна опора — рог! 🦄😂',
+            'Феникс возродился из пепла и первое, что сделал: почистил перья! 🐦‍🔥🧹',
+            'Маг взмахнул посохом — и домашка превратилась в мороженое. Правда, съедобное оказалось только задание №1 🧙🍦',
+            'Привидение пришло в школу без учебников. Говорят: «Ты же прозрачный — видно, что ничего не знаешь!» 👻📚',
+            'Дракончиха спрашивает: «Где мои очки?» Дракон: «Ты же сама светиться можешь, зачем тебе очки?!» 🐲🕶️',
+            'Робо-друг зарядился и сказал: «Я не устал, я просто экономлю батарейку для танцев!» 🤖🔋',
+            'Лунтик прилетел на Землю и первым делом попробовал шарлотку. Теперь он живёт тут 👽🥧',
+            'Кот учёный сидит под цепью… ой, под деревом и говорит: «Мур — и всё понятно!» 🐱🌳',
+            'Собака научилась играть в шахматы. Правда, только ест коней 🐶♞',
+            'Зайчик поменял часы на морковку. Теперь он знает время только когда голодный 🐰🥕',
+            'Что общего у слона и лифта? — Оба поднимают настроение, когда приходят! 🐛😄',
+            'Утенок спросил: «Мама, мы квакаем или крякаем?» — «Крякаем, сынок, не путай нас с лягушками!» 🦆🐸',
+            'Хомяк набил щёки семечками и сказал: «Теперь я хомяк-бублик!» 🐹🥯',
+            'Паук сплёл паутину и написал на ней: «Уроки будут после обеда» 🕷️📝',
+            'Муравей поднял штангу в 50 его весов. Все аплодируют, а он: «Да ладно, я каждый день such тяжести ношу!» 🐜🏋️',
+            'Жираф чихнул — и у соседей загорелась ёлка. Хорошо, что рядом была река! 🦒🎄💦'
+        ];
+
+        // ---------- ДАННЫЕ: НОВЫЕ ТЕМЫ (осенняя и зимняя) ----------
+        const EXTRA_THEMES = [
+            { id: 'autumn', name: 'Золотая осень', icon: '🍁', price: 600, rarity: 'epic',      desc: 'Листопад и тёплые краски', grad: 'linear-gradient(180deg,#ffe9c2,#ffb56b)' },
+            { id: 'winter', name: 'Зимняя сказка', icon: '❄️', price: 700, rarity: 'legendary', desc: 'Снежок, блёстки и уют',     grad: 'linear-gradient(180deg,#dff3ff,#a8d8ff)' }
+        ];
+
+        // ---------- ДАННЫЕ: МИНИ-ИГРЫ ----------
+        const MINI_GAMES = [
+            { id: 'memory',   icon: '🧠', name: 'Пары-искатели',    hint: 'найди одинаковые картинки', reward: 14 },
+            { id: 'mathrun',  icon: '🏃', name: 'Быстрый счёт',     hint: 'ловим правильные ответы',   reward: 16 },
+            { id: 'bubble',   icon: '🫧', name: 'Лопни лишнее',     hint: 'шарики с числами по порядку', reward: 14 },
+            { id: 'shadow',   icon: '🌑', name: 'Тень друга',       hint: 'угадай питомца по силуэту',  reward: 12 },
+            { id: 'jigsaw',   icon: '🧩', name: 'Собери картинку',  hint: 'сложи слово из букв',        reward: 15 },
+            { id: 'simon',    icon: '🎵', name: 'Повтори мелодию',  hint: 'запоминай порядок огоньков',  reward: 18 }
+        ];
+
+        // ---------- ДАННЫЕ: ЧТО НОВОГО ----------
+        const WHATSNEW_DATA = [
+            ['🌈', 'Новые миры!', 'Добавлены темы «Золотая осень» и «Зимняя сказка» — с листопадом и снегопадом!'],
+            ['🎮', 'Мини-игры!', 'Целых 6 новых игр: память, быстрый счёт, шарики, тени, пазлы и мелодия. За них дают монетки!'],
+            ['🎭', 'Театр!', 'Питомцы показывают смешные сценки. Зайди в «Театр дружка» на тропинке!'],
+            ['📅', 'Календарь!', 'Отмечай дни захода в гости — за серию дают подарки!'],
+            ['🗨️', 'Уроки с диалогом!', 'Перед каждым уроком твой друг проводит мини-объяснение — так понятнее!'],
+            ['⭐', 'Живые звёздочки!', 'Звёзды на карте теперь переливаются и крутятся!'],
+            ['😂', 'Больше анекдотов!', 'В копилке юмора уже больше 50 шуток — кликай и смеши się!'],
+            ['🎨', 'Все кнопки стали крупнее!', 'Переключать предметы и магазины теперь легко и удобно!']
+        ];
+
         const THEME_EMOJIS = {
             meadow: ['🔢', '➕', '⭐', '🎈', '🌈', '🍎', '🧸', '🐱', '🍭', '🦋', '🌼'],
             ocean:  ['🌊', '🐠', '🐚', '⭐', '🫧', '🐬', '⚓️', '🦀', '🌴', '🐳', '🪸'],
@@ -1002,7 +1366,9 @@
             forest: ['🌲', '🍄', '🦉', '🌰', '🍂', '🐿️', '🦌', '🌿', '🫐', '🐝'],
             candy:  ['🍬', '🍭', '🧁', '🍩', '🍦', '🎀', '🍓', '🍰', '🌈', '💖'],
             night:  ['🌙', '⭐', '✨', '🌟', '💫', '🦉', '🌠', '☁️'],
-            space:  ['🚀', '🪐', '🛸', '⭐', '🌟', '☄️', '🌠', '👽']
+            space:  ['🚀', '🪐', '🛸', '⭐', '🌟', '☄️', '🌠', '👽'],
+            autumn: ['🍁', '🍂', '🌰', '🎃', '🍄', '🦝', '🌾', '🍎', '🐿️', '☂️'],
+            winter: ['❄️', '⛄️', '🌨️', '🧊', '❄️', '🦉', '✨', '🎿', '☃️', '🕯️']
         };
         function themeEmojis() { return THEME_EMOJIS[currentTheme] || THEME_EMOJIS.meadow; }
 
@@ -1025,62 +1391,15 @@
         buildBgEmojis();
 
         // Плывущие облака (в океане уплывают за горизонт)
-        // ОБЛАКА-ЛОТЕРЕЯ: нажми на облачко — и выпадет приз! 🎁
-        function hitCloud(cl) {
-            if (cl.dataset.cool === '1') return;
-            initAudio();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            cl.dataset.cool = '1';
-            cl.classList.add('zzz');
-            const btn = cl.querySelector('.cloud-btn');
-            if (btn) { btn.textContent = '🎁'; setTimeout(() => { btn.textContent = '☁️'; }, 900); }
-            const r = Math.random();
-            let msg, cls = '';
-            if (r < 0.32) {
-                const got = gainCoins(10, true); playSound('coin');
-                msg = petMult() > 1
-                    ? pickOne([`☁️ Облачко дало 10, а ${currentPetName} умножил до ${got} монеток! 💰`, `${hello()}, тучка сыплет: 10 × ${petMult().toFixed(1)} = ${got}!`])
-                    : pickOne([withName(`+10 монеток из облачка! ☁️💰`), withName(`Облачко сыплет монетки: +10!`)]);
-                burstAtEl(cl, ['🪙', '✨']); floatText(cl, `+${got} 🪙`);
-            } else if (r < 0.54) {
-                const loss = Math.min(coins, 10);
-                coins -= loss; localStorage.setItem('mathCoins', coins); updateUI(); playSound('wrong');
-                msg = pickOne([`Ой, ${hello()}! Тучка забрала ${loss} монеток… 😅`, `Зато в следующем уроке ${hello()} заработает больше!`]);
-                burstAtEl(cl, ['🌧️', '💧']); floatText(cl, `-${loss} 🪙`, 'bad');
-            } else if (r < 0.76) {
-                const egg = eggs[Math.floor(Math.random() * eggs.length)];
-                const got = gainCoins(egg.price, true); playSound('win');
-                msg = pickOne([`🎁 ${hello()}, облачко подарило яйцо «${egg.name}» — ${got} монеток в копилку!`, `Дождь из подарков! ${hello()}, яичко на ${got} монеток!`]);
-                launchConfetti(); burstAtEl(cl, ['🥚', '🎁']); floatText(cl, `🎁 ${egg.emoji} +${got}`, 'egg');
-            } else {
-                const owned = ownedPets.filter(p => p !== currentPetId);
-                if (owned.length > 1 && Math.random() < 0.5) {
-                    const pid = owned[Math.floor(Math.random() * owned.length)];
-                    const taken = pets.find(p => p.id === pid);
-                    ownedPets = ownedPets.filter(x => x !== pid);
-                    localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
-                    updateUI(); renderShop(); playSound('wrong');
-                    msg = `☁️ Ой-ой, ${hello()}! Загадочное облачко утащило друга: ${taken ? taken.emoji + ' ' + taken.name : 'кого-то'}!`;
-                    burstAtEl(cl, ['☁️', '💨']); floatText(cl, `${taken ? taken.emoji : '☁️'} —`, 'bad');
-                } else {
-                    const got = gainCoins(5, true); playSound('coin');
-                    msg = pickOne([`Пустое облачко… но ${hello()} нашёл ${got} монеток! ☁️`, `Из тучки капнуло +${got}!`]);
-                    floatText(cl, `+${got} 🪙`);
-                }
-            }
-            say(msg);
-            setTimeout(() => { cl.classList.remove('zzz'); cl.dataset.cool = '0'; }, 900);
-        }
+        // ОБЛАКА — ПРОСТО УКРАШЕНИЕ! Кликов не принимают (по просьбе юного дизайнера 😉)
         for (let i = 0; i < 4; i++) {
             const cl = document.createElement('div');
             cl.classList.add('cloud', 'lottery');
             cl.textContent = '☁️';
-            cl.title = 'Нажми на облачко — лотерея! 🎁';
             cl.style.top = (3 + Math.random() * 25) + 'vh';
             cl.style.fontSize = (50 + Math.random() * 50) + 'px';
             cl.style.animationDuration = (40 + Math.random() * 40) + 's';
             cl.style.animationDelay = (-Math.random() * 40) + 's';
-            cl.onclick = () => hitCloud(cl);
             document.getElementById('bg-animations').appendChild(cl);
         }
 
@@ -1209,44 +1528,6 @@
         }
         startBubbles();
 
-        // --- ДЕТСКИЕ АНЕКДОТЫ (большой сборник!) ---
-        const jokes = [
-            "— Почему у слона такие большие уши?\n— Чтобы лучше слышать, как растёт трава!",
-            "— Встречаются две коровы. Одна говорит:\n— Му!\nВторая:\n— Я тоже тебе «му»!",
-            "— Что говорит чайник, когда закипает?\n— Пых-пых-пых!",
-            "— Почему рыбы никогда не разговаривают?\n— Потому что у них полный рот воды!",
-            "— Знаешь, почему математика грустит?\n— Потому что у неё слишком много проблем!",
-            "— Учитель спрашивает: «Сколько будет 2 плюс 2?»\nУченик: «А складывать или умножать?»",
-            "— Колобок повесился…\nНа нотной линейке между до и ре.",
-            "— Штирлиц шёл по лесу и увидел: горят деревья.\n«Как красиво», — подумал Штирлиц и пошёл дальше.",
-            "— Почему зайца зовут Зая?\n— А попробуй догнать и спросить!",
-            "— Заходит улитка в кафе…\nОфициант выгоняет её. Через год улитка возвращается: «Ну и зачем ты так резко?!»",
-            "— Что делает повар на кухне?\n— Всё, что умеет!",
-            "— Почему помидор покраснел?\n— Потому что увидел заправку для салата!",
-            "— Висят два огурца. Один говорит:\n— Ох, студент…\n— Ты кто?! — испугался второй.",
-            "— Кот кричит в трубку: «Ёжик!»\nА ёжик не берёт трубку — у него лапки.",
-            "— Сколько нужно программистов, чтобы вкрутить лампочку?\n— Ни одного, это аппаратная проблема!",
-            "— Идут два утёнка через дорогу.\nМама кричит: «Кря-кря!» — то есть «Два-два, осторожно!»",
-            "— Два гектара кукурузы спорили.\nТретий молчал — он был с початками.",
-            "— Почему динозавры не ходили в кино?\n— Потому что ещё не придумали попкорн!",
-            "— В комнате 4 угла. В каждом углу по кошке, напротив каждой кошки по 3 кошки.\nСколько всего кошек? — Четыре! Обманка!",
-            "— Почему скелеты не дерутся?\n— У них кишка тонка!",
-            "— Апельсин опоздал на автобус.\nПришлось… выдавить его соком.",
-            "— Как называется пингвин без обуви?\n— Просто пингвин.",
-            "— Что общего между ежом и телефоном?\n— Оба делают «дрррр»!",
-            "— Медведь надел очки.\nВсе думают — панда! А он просто умный.",
-            "— Учитель: «Назови пять животных!»\nУченик: «Корова, корова, корова, корова и корова!»\nУчитель: «Они же одинаковые!»\nУченик: «Зато чёрные и белые!»",
-            "— Почему паук не дружит с ноутбуком?\n— Потому что ноутбук уже весь в сети!",
-            "— Ананас — это фрукт, который носит чешую и считает себя рыбой.",
-            "— — Алло! Это прачечная?\n— Нет, это баня.\n— А где мыло?\n— Парься — найдёшь!",
-            "— Что ждёт тебя впереди и позади, но никогда не ловит?\n— Хвост ящерицы… ой, это загадка! Не перепутай!",
-            "— Почему книга не хочет идти гулять?\n— Потому что её не дочитали до конца!",
-            "— Самый вежливый овощ — артишок: его надо суметь достать!",
-            "— Сидят два кита. Один говорит:\n— Мне холодно.\n— Ого, кит заговорил!\n— А мне тепло стало — от удивления.",
-            "— — Доктор, я буду жить?\n— А в чём смысл?\n— Вот! Смысл появился — живите!",
-            "— Ложка сказала вилке:\n— Ты с зубами, а всё равно есть не можешь!",
-            "— Почему облако не играет в футбол?\n— Боится удара… молнией по голове!"
-        ];
 
         // ================= ПИТОМЦЫ ТЕПЕРЬ ВОЗВРАЩАЮТСЯ ИЗ ЯИЦ! 🥚 =================
         // Питомцев нельзя купить напрямую — только яйца. Из яйца вылупляется случайный друг.
@@ -1376,7 +1657,8 @@
             { id: 'forest',  name: 'Лесная сказка',icon: '🌲', price: 200, rarity: 'rare',      desc: 'Зелёный волшебный лес',       grad: 'linear-gradient(180deg,#bfe9ff,#6cc47a)' },
             { id: 'candy',   name: 'Конфетти-мир', icon: '🍬', price: 250, rarity: 'epic',      desc: 'Розово-сиреневая сладость',   grad: 'linear-gradient(180deg,#ffd1ec,#e6d4ff)' },
             { id: 'night',   name: 'Ночная аура',  icon: '🌙', price: 350, rarity: 'epic',      desc: 'Сияние звёздного неба',       grad: 'linear-gradient(180deg,#1b2560,#6a4c93)' },
-            { id: 'space',   name: 'Космо-аура',   icon: '🪐', price: 500, rarity: 'legendary', desc: 'Пурпур далёких галактик',     grad: 'linear-gradient(180deg,#0d1030,#4a2c6b)' }
+            { id: 'space',   name: 'Космо-аура',   icon: '🪐', price: 500, rarity: 'legendary', desc: 'Пурпур далёких галактик',     grad: 'linear-gradient(180deg,#0d1030,#4a2c6b)' },
+            ...EXTRA_THEMES
         ];
 
         // Модуль 1 — Солнечная поляна: сначала очень легко, потом понемногу сложнее (награды скуднее — монетки в цене!)
@@ -1525,6 +1807,50 @@
 
         // Ночные темы: добавляем мерцающие звёзды, приглушаем облака;Ocean: облака уплывают
         let starsBuilt = false;
+        // ---------- ПОГОДА В ФОНЕ: снег, листопад, пузырьки, светлячки ----------
+        let weatherTimer = null;
+        function clearWeatherFX() {
+            if (weatherTimer) { clearInterval(weatherTimer); weatherTimer = null; }
+            document.querySelectorAll('.fx-drop,.firefly,.snowflake').forEach(e => e.remove());
+        }
+        function startWeatherFX() {
+            clearWeatherFX();
+            const bg = document.getElementById('bg-animations');
+            if (!settings.fx) return;
+            const mk = (emoji, cls, durMin, durMax, sizeMin, sizeMax) => {
+                const d = document.createElement('div');
+                d.className = cls; d.textContent = emoji;
+                d.style.left = (Math.random() * 96) + 'vw';
+                d.style.top = '-8vh';
+                d.style.fontSize = (sizeMin + Math.random() * (sizeMax - sizeMin)) + 'px';
+                d.style.animationDuration = (durMin + Math.random() * (durMax - durMin)) + 's';
+                bg.appendChild(d);
+                setTimeout(() => d.remove(), (durMax + 1) * 1000);
+            };
+            if (currentTheme === 'winter') {
+                weatherTimer = setInterval(() => { for (let i = 0; i < 2; i++) mk('\u2744\ufe0f', 'snowflake', 7, 13, 16, 30); }, 700);
+            } else if (currentTheme === 'autumn') {
+                weatherTimer = setInterval(() => { mk(['\U0001F341','\U0001F342','\U0001F343'][Math.floor(Math.random()*3)], 'fx-drop', 6, 11, 22, 34); }, 900);
+            } else if (currentTheme === 'ocean') {
+                weatherTimer = setInterval(() => { mk('\U0001FAC8', 'fx-drop', 8, 14, 14, 26); }, 1400);
+            } else if (currentTheme === 'forest') {
+                weatherTimer = setInterval(() => { mk('\u2728', 'fx-drop', 9, 15, 12, 20); }, 1600);
+            } else if (currentTheme === 'night' || currentTheme === 'space') {
+                for (let i = 0; i < 10; i++) {
+                    const f = document.createElement('div');
+                    f.className = 'firefly'; f.textContent = ['\u2728','\u2b50','\U0001F4AB'][i % 3];
+                    f.style.left = (Math.random() * 92) + 'vw';
+                    f.style.top = (Math.random() * 85) + 'vh';
+                    f.style.animationDuration = (3 + Math.random() * 5) + 's, ' + (2 + Math.random() * 3) + 's';
+                    bg.appendChild(f);
+                }
+            } else if (currentTheme === 'candy') {
+                weatherTimer = setInterval(() => { mk(['\U0001F36C','\U0001F36D','\U0001F369'][Math.floor(Math.random()*3)], 'fx-drop', 8, 13, 18, 28); }, 1500);
+            } else if (currentTheme === 'sunset') {
+                weatherTimer = setInterval(() => { mk('\U0001F54B\ufe0f', 'fx-drop', 10, 16, 20, 30); }, 2600);
+            }
+        }
+
         function applyThemeFX() {
             const dark = (currentTheme === 'night' || currentTheme === 'space');
             const ocean = currentTheme === 'ocean';
@@ -1546,6 +1872,7 @@
             bg.querySelectorAll('.wave').forEach(w => w.style.display = ocean ? 'block' : 'none');
             const sd = document.getElementById('sea-decor');
             if (sd) sd.style.display = ocean ? 'block' : 'none';
+            startWeatherFX();
         }
 
         // --- ЗВУКИ ---
@@ -3030,9 +3357,731 @@
             }
         }
 
+        // ================= НОВЫЕ МОДУЛИ ПРОКАЧКИ v3.0 =================
+        // 1) Статистика и дневная активность
+        // 2) Достижения (ачивки с наградами)
+        // 3) Домашний питомец (тамагочи): кормёжка, мойка, игры — бонус к доходу!
+        // 4) Мини-игра «Поймай звезду» (+ гача-звёздочка в конце)
+        // 5) Букварь друзей (энциклопедия питомцев)
+        // 6) Настройки + родительский контроль (защита магазина и промокодов)
+        // 7) Витрина дня и ежедневный квест
+
+        // ---------- 1) СТАТИСТИКА ----------
+        let stats;
+        try { stats = JSON.parse(localStorage.getItem('tkStats')) || {}; } catch (e) { stats = {}; }
+        stats.lessonsDone   = stats.lessonsDone   || 0;   // всего уроков пройдено
+        stats.perfect       = stats.perfect       || 0;   // уроков без ошибок
+        stats.totalEarned   = stats.totalEarned   || 0;   // сколько монеток заработано за всё время
+        stats.eggsOpened    = stats.eggsOpened    || 0;   // сколько яиц открыто
+        stats.chessWins     = stats.chessWins     || 0;   // побед в шахматах
+        stats.miniGames     = stats.miniGames     || 0;   // сыгранно мини-игр
+        stats.stressPops    = stats.stressPops    || 0;   // покликовано антистрессов
+        stats.jokesSeen     = stats.jokesSeen     || 0;   // анекдотов прочитано
+        stats.bestCatch     = stats.bestCatch     || 0;   // рекорд мини-игры
+        function saveStats() { localStorage.setItem('tkStats', JSON.stringify(stats)); }
+
+        // ---------- 2) ДОСТИЖЕНИЯ ----------
+        let gotAchv;
+        try { gotAchv = JSON.parse(localStorage.getItem('tkAchv')) || []; } catch (e) { gotAchv = []; }
+        const ACHV = [
+            { id: 'first',      icon: '🌱', name: 'Первый шаг',      desc: 'Пройти первый урок',            reward: 15,  check: () => stats.lessonsDone >= 1 },
+            { id: 'five',       icon: '✋', name: 'Пять из пяти!',   desc: 'Пройти 5 уроков',                 reward: 30,  check: () => stats.lessonsDone >= 5 },
+            { id: 'ten',        icon: '🔟', name: 'Десяточка',       desc: 'Пройти 10 уроков',                reward: 60,  check: () => stats.lessonsDone >= 10 },
+            { id: 'twenty',     icon: '🚀', name: 'Ракета знаний',   desc: 'Пройти 20 уроков',                reward: 120, check: () => stats.lessonsDone >= 20 },
+            { id: 'thirty',     icon: '🏎️', name: 'Скоростной умник',desc: 'Пройти 30 уроков',                reward: 200, check: () => stats.lessonsDone >= 30 },
+            { id: 'perfect1',   icon: '💯', name: 'Ни одной ошибки!',desc: 'Пройти урок без ошибок',          reward: 25,  check: () => stats.perfect >= 1 },
+            { id: 'perfect5',   icon: '🎯', name: 'Меткий пять раз', desc: '5 уроков без единой ошибки',      reward: 80,  check: () => stats.perfect >= 5 },
+            { id: 'perfect15',  icon: '🤖', name: 'Робот-отличник',  desc: '15 уроков без ошибок',            reward: 200, check: () => stats.perfect >= 15 },
+            { id: 'egg1',       icon: '🐣', name: 'Первое яичко',    desc: 'Открыть первое яйцо',             reward: 20,  check: () => stats.eggsOpened >= 1 },
+            { id: 'egg5',       icon: '🍳', name: 'Яичница!',        desc: 'Открыть 5 яиц',                  reward: 60,  check: () => stats.eggsOpened >= 5 },
+            { id: 'egg15',      icon: '🥚', name: 'Фабрика яиц',    desc: 'Открыть 15 яиц',                 reward: 150, check: () => stats.eggsOpened >= 15 },
+            { id: 'collect5',   icon: '🐾', name: 'Друзей полным-полно', desc: 'Собрать 5 питомцев',         reward: 70,  check: () => ownedPets.length >= 5 },
+            { id: 'collect15',  icon: '🦁', name: 'Зоопарк',         desc: 'Собрать 15 питомцев',             reward: 180, check: () => ownedPets.length >= 15 },
+            { id: 'collect30',  icon: '👑', name: 'Король зверей',   desc: 'Собрать 30 питомцев',             reward: 350, check: () => ownedPets.length >= 30 },
+            { id: 'mythic',     icon: '🦄', name: 'Мифический друг', desc: 'Вылупить мифического питомца',    reward: 100, check: () => ownedPets.some(id => (pets.find(p=>p.id===id)||{}).tier === 'mythic') },
+            { id: 'rich100',    icon: '💰', name: 'Копилка',         desc: 'Заработать 100 монеток',          reward: 10,  check: () => stats.totalEarned >= 100 },
+            { id: 'rich1k',     icon: '💎', name: 'Богатей!',        desc: 'Заработать 1000 монеток',         reward: 100, check: () => stats.totalEarned >= 1000 },
+            { id: 'rich5k',     icon: '🏦', name: 'Монетный банк',   desc: 'Заработать 5000 монеток',         reward: 250, check: () => stats.totalEarned >= 5000 },
+            { id: 'chess1',     icon: '♟️', name: 'Первая партия',   desc: 'Победить бота один раз',          reward: 30,  check: () => stats.chessWins >= 1 },
+            { id: 'chess5',     icon: '🏆', name: 'Шахматист',       desc: 'Победить бота 5 раз',             reward: 90,  check: () => stats.chessWins >= 5 },
+            { id: 'chessPro',   icon: '🧠', name: 'Гроссмейстер',    desc: 'Победить Бота-чемпиона',          reward: 150, check: () => (chessBeaten.hard || 0) >= 1 },
+            { id: 'themes3',    icon: '🎨', name: 'Художник миров',  desc: 'Купить 3 темы',                   reward: 60,  check: () => ownedThemes.length >= 3 },
+            { id: 'themesAll',  icon: '🌌', name: 'Все миры открыты',desc: 'Купить все 7 тем',                reward: 200, check: () => ownedThemes.length >= 7 },
+            { id: 'catch10',    icon: '🌟', name: 'Ловец звёзд',     desc: 'Поймать 10 звёзд за игру',        reward: 40,  check: () => stats.bestCatch >= 10 },
+            { id: 'catch20',    icon: '☄️', name: 'Звездопад!',      desc: 'Поймать 20 звёзд за игру',        reward: 100, check: () => stats.bestCatch >= 20 },
+            { id: 'stress10',   icon: '😌', name: 'Спокойный гений', desc: 'Нажать на антистрессы 10 раз',  reward: 20,  check: () => stats.stressPops >= 10 },
+            { id: 'joke10',     icon: '😂', name: 'Смешинка',        desc: 'Прочитать 10 анекдотов',          reward: 30,  check: () => stats.jokesSeen >= 10 },
+            { id: 'care10',     icon: '🍼', name: 'Заботливый друг', desc: '10 раз поухаживать за питомцем',  reward: 50,  check: () => petCare.careCount >= 10 },
+            { id: 'care50',     icon: '❤️‍🔥', name: 'Супер-хозяин', desc: '50 уходов за питомцем',           reward: 150, check: () => petCare.careCount >= 50 },
+            { id: 'nameit',     icon: '📛', name: 'Как меня зовут?', desc: 'Написать своё имя на тропинке',   reward: 10,  check: () => playerName.length > 0 }
+        ];
+        function checkAchievements() {
+            let newly = [];
+            ACHV.forEach(a => {
+                if (!gotAchv.includes(a.id) && a.check()) {
+                    gotAchv.push(a.id);
+                    coins += a.reward;                     // награда без множителя — это уже подарок от игры
+                    newly.push(a);
+                }
+            });
+            if (newly.length) {
+                localStorage.setItem('mathCoins', coins);
+                localStorage.setItem('tkAchv', JSON.stringify(gotAchv));
+                saveStats();
+                updateUI();
+                renderAchievements();
+                newly.forEach((a, i) => setTimeout(() => showAchvToast(a), i * 1600));
+            }
+        }
+        function showAchvToast(a) {
+            let t = document.getElementById('achv-toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'achv-toast';
+                t.style.cssText = 'position:fixed;top:150px;left:50%;transform:translateX(-50%) scale(0);z-index:4000;background:linear-gradient(160deg,#fff8dc,#ffeaa0);border:5px solid #ffd93d;border-radius:22px;padding:14px 26px;font-weight:900;color:#7a4500;font-size:20px;font-family:"Baloo 2",cursive;box-shadow:0 10px 0 rgba(200,140,0,0.3),0 16px 40px rgba(0,0,0,0.25);transition:transform .4s cubic-bezier(.34,1.56,.64,1);text-align:center;pointer-events:none;';
+                document.body.appendChild(t);
+            }
+            t.innerHTML = `🏅 Награда: «${a.name}»!<br><span style="font-size:16px;">+${a.reward} 🪙 за ${a.desc.toLowerCase()}</span>`;
+            t.style.transform = 'translateX(-50%) scale(1)';
+            playSound('win'); launchConfetti();
+            setTimeout(() => { t.style.transform = 'translateX(-50%) scale(0)'; }, 2600);
+        }
+        function renderAchievements() {
+            const g = document.getElementById('achv-grid');
+            if (!g) return;
+            g.innerHTML = '';
+            ACHV.forEach(a => {
+                const got = gotAchv.includes(a.id);
+                const card = document.createElement('div');
+                card.className = 'achv-card' + (got ? ' got' : '');
+                card.innerHTML = `<div class="achv-icon">${a.icon}</div><div class="achv-name">${a.name}</div><div class="achv-desc">${a.desc}</div><div class="achv-reward">${got ? '✅ Получено' : '+' + a.reward + ' 🪙'}</div>`;
+                card.onmouseenter = () => playSound('hover');
+                card.onclick = () => { if (got) { playSound('coin'); createFireworks(card, 8); } };
+                g.appendChild(card);
+            });
+        }
+
+        // ---------- 3) ДОМАШНИЙ ПИТОМЕЦ (тамагочи) ----------
+        let petCare;
+        try { petCare = JSON.parse(localStorage.getItem('tkPetCare')) || {}; } catch (e) { petCare = {}; }
+        petCare.hunger = typeof petCare.hunger === 'number' ? petCare.hunger : 80;
+        petCare.clean  = typeof petCare.clean  === 'number' ? petCare.clean  : 80;
+        petCare.fun    = typeof petCare.fun    === 'number' ? petCare.fun    : 80;
+        petCare.careCount = petCare.careCount || 0;
+        petCare.lastTick = petCare.lastTick || Date.now();
+        function savePetCare() {
+            petCare.lastTick = Date.now();
+            localStorage.setItem('tkPetCare', JSON.stringify(petCare));
+        }
+        // пока игрока не было — питомец чуть проголодался (но не быстрее 3 часов за сессию)
+        (function decayOffline() {
+            const hrs = Math.min(3, (Date.now() - petCare.lastTick) / 3600000);
+            petCare.hunger = Math.max(0, petCare.hunger - hrs * 4);
+            petCare.clean  = Math.max(0, petCare.clean  - hrs * 3);
+            petCare.fun    = Math.max(0, petCare.fun    - hrs * 5);
+            savePetCare();
+        })();
+        function careBonus() {
+            // средний уход даёт до +0.3 к множителю питомца — надо поддерживать друга в форме!
+            const avg = (petCare.hunger + petCare.clean + petCare.fun) / 3;
+            return +(avg / 100 * 0.3).toFixed(2);
+        }
+        function petMoodEmoji() {
+            const avg = (petCare.hunger + petCare.clean + petCare.fun) / 3;
+            if (avg > 75) return '😄';
+            if (avg > 50) return '🙂';
+            if (avg > 25) return '😕';
+            return '😢';
+        }
+        function renderHomePet() {
+            const card = document.getElementById('home-pet-card');
+            if (!card) return;
+            const pet = pets.find(p => p.id === currentPetId);
+            if (!pet) { card.style.display = 'none'; return; }
+            card.style.display = 'block';
+            const cb = careBonus();
+            card.innerHTML = `
+                <div class="hp-care-badge">🏠 Домашний друг</div>
+                <div class="hp-title">Заботься о друге — он станет сильнее!</div>
+                <div class="hp-pet-row">
+                    <div class="hp-emoji" id="hp-emoji" title="Погладь!">${pet.emoji}</div>
+                    <div class="hp-mood" id="hp-mood">${petMoodEmoji()}</div>
+                    <div class="hp-bars">
+                        <div class="hp-bar-row"><span class="hp-bar-label">🍎</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.hunger < 30 ? 'low' : ''}" style="width:${petCare.hunger}%"></div></div><b>${Math.round(petCare.hunger)}</b></div>
+                        <div class="hp-bar-row"><span class="hp-bar-label">🫧</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.clean < 30 ? 'low' : ''}" style="width:${petCare.clean}%"></div></div><b>${Math.round(petCare.clean)}</b></div>
+                        <div class="hp-bar-row"><span class="hp-bar-label">🎈</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.fun < 30 ? 'low' : ''}" style="width:${petCare.fun}%"></div></div><b>${Math.round(petCare.fun)}</b></div>
+                    </div>
+                </div>
+                <div class="hp-actions">
+                    <button class="hp-btn hp-feed" onclick="carePet('feed')">🍎 Покормить</button>
+                    <button class="hp-btn hp-wash" onclick="carePet('wash')">🫧 Помыть</button>
+                    <button class="hp-btn hp-play" onclick="carePet('play')">🎈 Поиграть</button>
+                    <button class="hp-btn hp-hug" onclick="carePet('hug')">🤗 Обнять</button>
+                </div>
+                <div class="hp-bonus-note">💪 Забота даёт +${cb.toFixed(2)} к множителю друга! Итого: ×${effectiveMult().toFixed(2)}</div>`;
+            const em = document.getElementById('hp-emoji');
+            if (em) em.onclick = () => { carePet('hug'); };
+        }
+        function carePet(kind) {
+            const msgs = {
+                feed: pickOne([`Ням-ням! Спасибо, ${hello()}! 🍎`, 'Вкуснятина! У-у-ум!', `${hello()}, ты лучший кормилец! 😋`]),
+                wash: pickOne(['Буль-буль! Как свежо! 🫧', 'Мыться — здорово! Спасибо!', `${hello()}, я теперь блестю! ✨`]),
+                play: pickOne(['Ура, играем! Ещё-ещё! 🎈', 'Хи-хи! Ты весёлый, ' + hello() + '!', 'Игра — лучшее дело! 🥳']),
+                hug:  pickOne([`${withName('Обнимаю тебя крепко')} 🤗`, 'Как тепло! ❤️', `${hello()}, я тебя люблю! 💖`])
+            };
+            if (kind === 'feed') petCare.hunger = Math.min(100, petCare.hunger + 22);
+            if (kind === 'wash') petCare.clean  = Math.min(100, petCare.clean + 22);
+            if (kind === 'play') petCare.fun    = Math.min(100, petCare.fun + 22);
+            if (kind === 'hug') { petCare.fun = Math.min(100, petCare.fun + 8); petCare.hunger = Math.min(100, petCare.hunger + 3); }
+            petCare.careCount++;
+            savePetCare();
+            playSound('correct');
+            say(msgs[kind]);
+            const em = document.getElementById('hp-emoji');
+            if (em) { em.classList.remove('happy-jump'); void em.offsetWidth; em.classList.add('happy-jump'); burstAt(em, ['❤️', '✨', '⭐']); }
+            checkAchievements();
+            renderHomePet();
+            updateUI();
+        }
+        // тихий «тик»: раз в минуту друг чуть голодает
+        setInterval(() => {
+            if (document.hidden) return;
+            petCare.hunger = Math.max(0, petCare.hunger - 0.4);
+            petCare.clean  = Math.max(0, petCare.clean - 0.3);
+            petCare.fun    = Math.max(0, petCare.fun - 0.5);
+            savePetCare();
+            if (document.getElementById('map-screen').classList.contains('active')) renderHomePet();
+        }, 60000);
+
+        // ---------- 4) МИНИ-ИГРА «ПОЙМАЙ ЗВЕЗДУ» ----------
+        let cf = null; // состояние мини-игры
+        function openCatchGame() {
+            initAudio(); playSound('click');
+            const f = document.getElementById('catch-field');
+            f.classList.add('show');
+            cf = { score: 0, gems: 0, time: 20, over: false, spawnT: null, tickT: null, items: [] };
+            document.getElementById('cf-score').textContent = '0';
+            document.getElementById('cf-gems').textContent = '0';
+            document.getElementById('cf-time').textContent = '20';
+            const cd = document.getElementById('cf-countdown');
+            cd.textContent = '3'; cd.style.display = 'block';
+            let n = 3;
+            const go = setInterval(() => {
+                n--;
+                if (n > 0) { cd.textContent = n; playSound('hover'); }
+                else { clearInterval(go); cd.style.display = 'none'; startCatchRound(); }
+            }, 800);
+        }
+        function startCatchRound() {
+            cf.tickT = setInterval(() => {
+                cf.time--;
+                document.getElementById('cf-time').textContent = cf.time;
+                if (cf.time <= 0) endCatchGame();
+            }, 1000);
+            cf.spawnT = setInterval(spawnCatchItem, 550);
+            spawnCatchItem(); spawnCatchItem();
+        }
+        function spawnCatchItem() {
+            if (!cf || cf.over) return;
+            const f = document.getElementById('catch-field');
+            const roll = Math.random();
+            let cls, emoji, val;
+            if (roll < 0.62) { cls = 'catch-star'; emoji = pickOne(['⭐', '🌟', '✨']); val = 1; }
+            else if (roll < 0.78) { cls = 'catch-gem'; emoji = pickOne(['💎', '🔷']); val = 5; }
+            else if (roll < 0.92) { cls = 'catch-bomb'; emoji = '💣'; val = -3; }
+            else { cls = 'catch-star'; emoji = '👑'; val = 10; }
+            const el = document.createElement('div');
+            el.className = cls; el.textContent = emoji;
+            el.style.left = (5 + Math.random() * 85) + 'vw';
+            el.style.top = (15 + Math.random() * 65) + 'vh';
+            el.onclick = () => {
+                if (!cf || cf.over) return;
+                if (val > 0) {
+                    cf.score += val;
+                    if (cls === 'catch-gem') cf.gems++;
+                    playSound('coin'); burstAtEl(el, ['✨']);
+                } else {
+                    cf.score = Math.max(0, cf.score + val);
+                    playSound('wrong'); burstAtEl(el, ['💨']);
+                    el.style.transition = 'transform .2s'; el.style.transform = 'scale(1.6) rotate(40deg)';
+                }
+                document.getElementById('cf-score').textContent = cf.score;
+                document.getElementById('cf-gems').textContent = cf.gems;
+                el.remove();
+            };
+            f.appendChild(el);
+            setTimeout(() => el.remove(), 1600);
+        }
+        function endCatchGame() {
+            if (!cf || cf.over) return;
+            cf.over = true;
+            clearInterval(cf.tickT); clearInterval(cf.spawnT);
+            document.querySelectorAll('#catch-field .catch-star, #catch-field .catch-bomb, #catch-field .catch-gem').forEach(e => e.remove());
+            stats.miniGames++;
+            if (cf.score > stats.bestCatch) stats.bestCatch = cf.score;
+            saveStats();
+            const reward = cf.score + cf.gems * 4;
+            const got = gainCoins(reward, true);
+            checkAchievements();
+            // гача-приз: шанс выбить редкое яичко!
+            let gachaHtml = '';
+            const gRoll = Math.random() * 100;
+            if (cf.score >= 8 && gRoll < 6) {
+                const egg = eggs[Math.floor(Math.random() * eggs.length)];
+                ownedEggs.push(egg.id); localStorage.setItem('tkOwnedEggs', JSON.stringify(ownedEggs));
+                gachaHtml = `<div style="margin-top:10px;font-size:18px;color:#7b3fc4;">🎁 Гача-приз: подарочное яйцо «${egg.name}» ${egg.emoji}! Забери его во вкладке «🎁 Призы» в магазине!</div>`;
+                playSound('win'); launchConfetti();
+            } else if (gRoll < 14) {
+                const bonus = gainCoins(10, false);
+                gachaHtml = `<div style="margin-top:10px;font-size:17px;color:#2f9fd8;">🍀 Гача-бонус: ещё +${bonus} 🪙!</div>`;
+            }
+            let res = document.querySelector('.catch-result');
+            if (!res) { res = document.createElement('div'); res.className = 'catch-result'; document.getElementById('catch-field').appendChild(res); }
+            res.style.display = 'block';
+            res.innerHTML = `
+                <div style="font-size:46px;">${cf.score >= 15 ? '🏆' : cf.score >= 8 ? '🥈' : '🎈'}</div>
+                <div style="font-size:24px;margin:6px 0;">Поймано: ⭐ ${cf.score} &nbsp; 💎 ${cf.gems}</div>
+                <div style="color:#c98a00;font-size:20px;">+${got} 🪙 (питомец помог!)</div>
+                ${gachaHtml}
+                <button class="hp-btn hp-play" style="margin-top:14px;" onclick="restartCatchGame()">🔄 Ещё раз!</button>
+                <button class="hp-btn hp-wash" style="margin-top:14px;" onclick="closeCatchGame()">🏡 На тропинку</button>`;
+            if (cf.score >= 10) createFireworks(res, 20);
+        }
+        function restartCatchGame() {
+            const r = document.querySelector('.catch-result'); if (r) r.style.display = 'none';
+            cf = null; openCatchGame();
+        }
+        function closeCatchGame() {
+            if (cf) { clearInterval(cf.tickT); clearInterval(cf.spawnT); }
+            cf = null;
+            const r = document.querySelector('.catch-result'); if (r) r.remove();
+            document.getElementById('catch-field').classList.remove('show');
+            updateUI(); renderMap();
+        }
+
+        // ---------- 5) БУКВАРЬ ДРУЗЕЙ (энциклопедия) ----------
+        const PET_LORE = {
+            bear:'Любит мёд и обнимашки. Первый друг всех детей!', cat:'Мурчит на уроках и считает лапками.', dog:'Приносит тапочки и примеры решает за секунды!',
+            bunny:'Прыгает на две буквы вперёд.', fox:'Хитрая: знает все ответы, но подсказывает только друзьям.', frog:'Квакает правильные ответы. Ква!',
+            panda:'Ест бамбук и удваивает внимание.', koala:'Спит на эвкалипте, но ради тебя не спит.', tiger:'Полосатый спортсмен: бегает задачи быстрее всех.',
+            hedgehog:'Носит яблоки на иголках — как флешку с знаниями!', owl:'Ночная профессорша: у неё очки и диплом.', penguin:'Не умеет летать, зато скользит по льду знаний.',
+            monkey:'Крадёт бананы и угадывает буквы.', chick:'Ещё птенец, но уже умница.', wolf:'Воет на правильные ответы от радости.', deer:'Оленёнок-скороход: 100 метров с препятствиями!',
+            whale:'Глубокий ум: знает ответы даже со дна океана.', octo:'Восемью лапами пишет восемь примеров сразу!', bug:'Светится в темноте — как ночник для задач.',
+            snail:'Медленный, но никогда не сдаётся.', bee:'Трудяга: собирает знания как нектар.', dino:'Древний учёный: ему 65 миллионов лет.',
+            dragon:'Дышит огнём на неправильные ответы.', robot:'Считает миллиарды примеров в секунду.', alien:'Прилетел с Луны учить детей танцевать с буквами.',
+            wizard:'Взмахнул посохом — и задача решена!', ghost:'Бу! Но добрый: пугает только двойки.', unicorn:'Рог исполняет желания: хочешь пятёрку — будет пятёрка!',
+            phoenix:'Каждый день возрождается для новых подвигов.', hamster:'Насунул семечки за щёки и готов учиться!', hatch:'Кря-кря! Самый весёлый цыплёнок двора.',
+            goat:'Гуляет по крышам и грызёт учебники.', mouse:'Маленькая, но съела весь сыр знаний.', calf:'Му-у-у! Даёт молочко для ума.',
+            horse:'И-го-го! Скачет к пятёркам.', sheep:'Считает себя по утрам: раз-два-три...', croc:'Чик-чирик! Шучу. Крок-крок! Улыбка на 66 зубов.',
+            turtle:'Мудрая: панцирь весь в формулах.', hippo:'Широкая улыбка — половина класса помещается.', elefant:'Помнит все правила с первого класса!',
+            seal:'Хлопает ластами в такт ответам.', coral:'Самая красивая рыбка рифа.', rocket:'Вжух! И ты уже на орбите знаний.',
+            cat2:'Рыжий хулиган с золотым сердцем.', crab:'Щёлк клешнёй — и домашняя работа готова!', fairy:'Посыпает задачи волшебной пылью.', starpet:'Сама звёздочка с неба — светит ярче всех!',
+            mole:'Копает ходы прямо к ответам.', squirrel:'Делает запасы орешков-пятерёрок на зиму.', donkey:'Трудолюбивый и верный: с ним любая задача по плечу.',
+            rooster:'Ку-ка-ре-ку! Поднимает на учёбу вовремя.', parrot:'Повторяет слова и учит языкам.', swan:'Грациозна, как буква А в прописях.',
+            duck:'Кря! Плавает по морю букв.', feather:'Лёгкое перышко: пишет им однодневки... шутка, сочинения!', maple:'Красный листик-закладка для лучших страниц.',
+            ram:'Баранка-крутилка: решает задачи рогами.', goose:'ГАК! Самая громкая птица двора.', fly:'Жужжит над ухом: «Учи таблицу умножения!»',
+            spider:'Плетёт паутинку из ответов.', scorp:'Осторожный: жалит только ошибки.', beetle:'Жук-силач: поднимет штангу из учебников!',
+            antman:'Муравьиная команда: один за всех!', puffer:'Нарывается шариком от важности.', shellpet:'Ракушка-подсказка: приложи к уху — услышишь ответ.',
+            sunflower:'Всегда смотрит на солнышко-знания.', mushroom:'Подберёзовик-интеллигент.', clover:'Счастливый листик: четыре лепестка — четыре пятёрки!',
+            catking:'Мяу-ваше величество! Правит всей кошачьей страной.', zombie:'Добрый зомби: ест только мозги... задачи!', elf:'Лучник из сказки: стреляет точно в цель-ответ.', melody:'Поёт ноту «до» — и все понимают.'
+        };
+        function loreFor(pet) { return PET_LORE[pet.id] || 'Таинственный друг: раскрой его секреты в игре!'; }
+
+        // ---------- 6) НАСТРОЙКИ + РОДИТЕЛЬСКИЙ КОНТРОЛЬ ----------
+        let settings;
+        try { settings = JSON.parse(localStorage.getItem('tkSettings')) || {}; } catch (e) { settings = {}; }
+        settings.sfx = settings.sfx !== false;         // звуки игр (по умолчанию вкл)
+        settings.fx  = settings.fx  !== false;         // конфетти/салюты (вкл)
+        settings.nature = !!settings.nature;           // главный рубильник шумиков
+        settings.parent = !!settings.parent;           // родительский контроль
+        function saveSettings() { localStorage.setItem('tkSettings', JSON.stringify(settings)); }
+        function openSettings() {
+            initAudio(); playSound('click');
+            document.getElementById('sw-sfx').classList.toggle('on', settings.sfx);
+            document.getElementById('sw-nature').classList.toggle('on', settings.nature);
+            document.getElementById('sw-fx').classList.toggle('on', settings.fx);
+            document.getElementById('sw-parent').classList.toggle('on', settings.parent);
+            document.getElementById('parent-lock-note').style.display = settings.parent ? 'flex' : 'none';
+            document.getElementById('settings-modal').classList.add('show');
+        }
+        function closeSettings() { playSound('click'); document.getElementById('settings-modal').classList.remove('show'); }
+        function toggleSetting(key, el) {
+            settings[key] = !settings[key];
+            el.classList.toggle('on', settings[key]);
+            saveSettings();
+            playSound('click');
+            if (key === 'nature') {
+                if (!settings.nature) Object.keys(natureNodes).forEach(k => natureStop(k));
+                else Object.keys(natureOn).forEach(k => { if (natureOn[k]) natureStart(k); });
+                refreshNatureUI();
+            }
+            if (key === 'parent') {
+                document.getElementById('parent-lock-note').style.display = settings.parent ? 'flex' : 'none';
+                say(settings.parent ? 'Родительский контроль включён! 🔐' : 'Родительский контроль выключен 😉');
+            }
+        }
+        // --- Родительский замок: пример на сложение, ответ вводит взрослый ---
+        let parentGateCb = null;
+        function askParentGate(onPass) {
+            if (!settings.parent) { onPass(); return; }
+            initAudio();
+            const a = 7 + Math.floor(Math.random() * 14), b = 6 + Math.floor(Math.random() * 15);
+            let m = document.getElementById('gate-modal');
+            if (!m) {
+                m = document.createElement('div');
+                m.id = 'gate-modal';
+                m.style.cssText = 'position:fixed;inset:0;z-index:5000;display:none;align-items:center;justify-content:center;background:rgba(30,20,60,0.6);padding:16px;';
+                m.innerHTML = `
+                    <div class="modal-box" style="max-width:400px;">
+                        <div style="font-size:52px;">🔐👨‍👩‍👧</div>
+                        <div class="modal-q">Это место для взрослых!<br>Реши пример, чтобы продолжить:</div>
+                        <div style="font-size:34px;font-weight:900;color:#5a3ea1;margin:10px 0;" id="gate-q"></div>
+                        <input id="gate-in" type="number" placeholder="?" style="font-size:26px;text-align:center;width:130px;padding:8px;border-radius:14px;border:3px solid #d8ccff;font-weight:900;">
+                        <div class="modal-btns">
+                            <button class="m-btn no" onclick="denyGate()">🚫 Не пускать</button>
+                            <button class="m-btn yes" onclick="tryGate()">✔ Проверить</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(m);
+                m.addEventListener('click', (e) => { if (e.target === m) denyGate(); });
+            }
+            document.getElementById('gate-q').textContent = `${a} + ${b} = ?`;
+            m.dataset.answer = String(a + b);
+            m.style.display = 'flex';
+            const inp = document.getElementById('gate-in');
+            inp.value = ''; setTimeout(() => inp.focus(), 100);
+            inp.onkeydown = (e) => { if (e.key === 'Enter') tryGate(); };
+            parentGateCb = onPass;
+        }
+        function tryGate() {
+            const m = document.getElementById('gate-modal');
+            const v = parseInt(document.getElementById('gate-in').value);
+            if (v === parseInt(m.dataset.answer)) {
+                m.style.display = 'none';
+                playSound('correct');
+                if (parentGateCb) { const cb = parentGateCb; parentGateCb = null; cb(); }
+            } else {
+                playSound('wrong');
+                m.style.animation = 'none'; void m.offsetWidth;
+                m.style.animation = 'stSquishAnim 0.4s ease';
+                document.getElementById('gate-in').value = '';
+            }
+        }
+        function denyGate() {
+            document.getElementById('gate-modal').style.display = 'none';
+            playSound('wrong');
+            parentGateCb = null;
+            say('Хорошо, вернёмся к урокам! 📚');
+        }
+
+        // ---------- 7) ВИТРИНА ДНЯ + ЕЖЕДНЕВНЫЙ КВЕСТ ----------
+        let ownedEggs;   // подарочные яйца из мини-игры (забираются в магазине)
+        try { ownedEggs = JSON.parse(localStorage.getItem('tkOwnedEggs')) || []; } catch (e) { ownedEggs = []; }
+        function daySeed() {
+            const d = new Date();
+            return d.getFullYear() * 372 + (d.getMonth() + 1) * 31 + d.getDate();
+        }
+        function seededShuffle(arr, seed) {
+            const a = [...arr]; let s = seed;
+            for (let i = a.length - 1; i > 0; i--) {
+                s = (s * 9301 + 49297) % 233280;
+                const j = Math.floor((s / 233280) * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+        function renderDailyShowcase() {
+            const box = document.getElementById('daily-showcase');
+            if (!box) return;
+            const pickIdx = daySeed() % eggs.length;
+            const egg = eggs[pickIdx];
+            const sale = 10 + (daySeed() % 4) * 5; // скидка 10–25%
+            const price = Math.max(10, Math.round(egg.price * (100 - sale) / 100));
+            box.style.display = 'block';
+            box.innerHTML = `
+                <div class="ds-label">✨ ВИТРИНА ДНЯ ✨</div>
+                <div class="ds-body"><span class="ds-emoji">${egg.emoji}</span>«${egg.name}» сегодня со скидкой ${sale}% — всего ${price} 🪙!</div>
+                <div class="ds-shop" onclick="buyDailyEgg('${egg.id}', ${price})">🛒 Купить выгодно!</div>`;
+        }
+        function buyDailyEgg(eggId, price) {
+            const egg = eggs.find(e => e.id === eggId);
+            if (!egg) return;
+            if (coins < price) { playSound('wrong'); say(`${hello()}, на выгодное яичко не хватает ${price - coins} монеток! Играй ещё! 💪`); return; }
+            askParentGate(() => {
+                coins -= price; localStorage.setItem('mathCoins', coins);
+                updateUI();
+                hatchEggById(egg.id, null, true);
+            });
+        }
+
+        const QUESTS = [
+            { text: 'Пройти 2 урока сегодня', need: 2, key: 'qLessons', reward: 25 },
+            { text: 'Поймать 8 звёзд в мини-игре', need: 8, key: 'qStars', reward: 20 },
+            { text: 'Погладить питомца или поухаживать 3 раза', need: 3, key: 'qCare', reward: 20 },
+            { text: 'Прочитать 2 анекдота', need: 2, key: 'qJokes', reward: 15 },
+            { text: 'Ответить правильно 10 раз', need: 10, key: 'qCorrect', reward: 30 }
+        ];
+        let todayQ;
+        try { todayQ = JSON.parse(localStorage.getItem('tkQuest')) || {}; } catch (e) { todayQ = {}; }
+        if (todayQ.day !== daySeed()) {
+            todayQ = { day: daySeed(), idx: daySeed() % QUESTS.length, prog: 0, done: false };
+            localStorage.setItem('tkQuest', JSON.stringify(todayQ));
+        }
+        function questProgress(key, amount = 1) {
+            const q = QUESTS[todayQ.idx];
+            if (todayQ.done || q.key !== key) return;
+            todayQ.prog = Math.min(q.need, todayQ.prog + amount);
+            if (todayQ.prog >= q.need) {
+                todayQ.done = true;
+                const got = gainCoins(q.reward, true);
+                playSound('win'); launchConfetti();
+                say(`🗺️ Дневной квест выполнен! +${got} монеток, ${hello()}! 🎉`);
+            }
+            localStorage.setItem('tkQuest', JSON.stringify(todayQ));
+            renderDailyQuest();
+        }
+        function renderDailyQuest() {
+            const el = document.getElementById('daily-quest');
+            if (!el) return;
+            const q = QUESTS[todayQ.idx];
+            const pct = Math.round(todayQ.prog / q.need * 100);
+            el.innerHTML = `
+                <div class="dq-label">🗺️ КВЕСТ ДНЯ</div>
+                <div class="dq-text ${todayQ.done ? 'dq-done' : ''}">${todayQ.done ? '✅ Выполнен! Возвращайся завтра!' : q.text + ' — +' + q.reward + ' 🪙'}</div>
+                <div class="dq-bar"><div class="dq-fill" style="width:${pct}%"></div></div>`;
+        }
+        function renderStatsStrip() {
+            const el = document.getElementById('stats-strip');
+            if (!el) return;
+            const totalStars = Object.values(levelStars).reduce((s, v) => s + v, 0);
+            el.innerHTML = `
+                <div class="stat-chip">📚 Уроков: <b>${stats.lessonsDone}</b></div>
+                <div class="stat-chip">⭐ Звёзд: <b>${totalStars}</b></div>
+                <div class="stat-chip">🐾 Друзей: <b>${ownedPets.length}/${pets.length}</b></div>
+                <div class="stat-chip">♟️ Побед: <b>${stats.chessWins}</b></div>
+                <div class="stat-chip">🥚 Яиц: <b>${stats.eggsOpened}</b></div>`;
+        }
+
+        // ================= ЭФФЕКТЫ С УЧЁТОМ НАСТРОЕК =================
+        const _origLaunchConfetti = launchConfetti;
+        launchConfetti = function () { if (settings.fx) _origLaunchConfetti(); };
+        const _origCreateFireworks = createFireworks;
+        createFireworks = function (el, n) { if (settings.fx) _origCreateFireworks(el, n); };
+        const _origPlaySound = playSound;
+        playSound = function (t) { if (settings.sfx) _origPlaySound(t); };
+
+        // ================= ПИТОМЕЦ УМНОЖАЕТ ДОХОД (ОБНОВЛЕНО v3):
+        // итоговый множитель = множитель друга + бонус за заботу (тамагочи)!
+        function effectiveMult() {
+            const p = pets.find(x => x.id === currentPetId);
+            return (p ? p.mult : 1.0) + careBonus();
+        }
+        // перезаписываем petMult — теперь все монетки мира идут через него
+        petMult = function () { return effectiveMult(); };
+
+        // ================= ОБОГАЩЁННЫЕ АНЕКДОТЫ (клик = новый анекдот + статистика) =================
+        const _origShowRandomJoke = showRandomJoke;
+        showRandomJoke = function () {
+            _origShowRandomJoke();
+            stats.jokesSeen++; saveStats();
+            questProgress('qJokes');
+            checkAchievements();
+        };
+
+        // антистрессы тоже ведут статистику
+        ['stPop','stSquish','stBubble','stSpin','stBoing','stSparkle'].forEach(fnName => {
+            const orig = window[fnName];
+            window[fnName] = function (el) {
+                stats.stressPops++; saveStats();
+                checkAchievements();
+                return orig(el);
+            };
+        });
+
+        // ================= МАГАЗИН: новые вкладки (энциклопедия + призы) =================
+        const _origRenderShop = renderShop;
+        renderShop = function () {
+            _origRenderShop();
+            const encyTab = document.getElementById('tab-ency');
+            if (encyTab) encyTab.className = 'shop-tab' + (shopTab === 'ency' ? ' active-themes' : '');
+            if (shopTab === 'ency') renderEncyclopedia();
+            if (shopTab === 'prizes') renderPrizeTab();
+        };
+        function renderEncyclopedia() {
+            const grid = document.getElementById('shop-grid');
+            grid.className = 'ency-grid';
+            grid.innerHTML = `<div class="ency-head">📖 Букварь друзей: ${ownedPets.length} из ${pets.length} уже с тобой!<br><small>Серые карточки — друзья, которых ты ещё не встретил. Открывай яички!</small></div>`;
+            pets.forEach(pet => {
+                const owned = ownedPets.includes(pet.id);
+                const card = document.createElement('div');
+                card.className = 'ency-card' + (owned ? ' owned' : '');
+                card.innerHTML = `
+                    <div class="ency-emoji">${owned ? pet.emoji : '❓'}</div>
+                    <div class="ency-name">${owned ? pet.name : '???'}</div>
+                    <div class="ency-tier t-${pet.tier}">${TIER_NAMES[pet.tier]}</div>
+                    <div class="ency-mult">💰 ×${pet.mult.toFixed(1)}</div>
+                    <div class="ency-lore">${owned ? loreFor(pet) : 'Секретная информация… Вылупи этого друга, чтобы узнать!'}</div>`;
+                card.onmouseenter = () => playSound('hover');
+                grid.appendChild(card);
+            });
+            appendShopBack(grid);
+        }
+        function renderPrizeTab() {
+            const grid = document.getElementById('shop-grid');
+            grid.className = 'egg-grid';
+            if (!ownedEggs.length) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;font-weight:900;color:#7a5fb8;font-size:19px;padding:30px;">🎁 Пока нет подарочных яиц!<br><br>Играй в «Поймай звезду» — там иногда выпадают целые яички в подарок! 🌟</div>`;
+            } else {
+                ownedEggs.forEach((eggId, i) => {
+                    const egg = eggs.find(e => e.id === eggId); if (!egg) return;
+                    const card = document.createElement('div'); card.classList.add('egg-card');
+                    card.innerHTML = `
+                        <div class="egg-emoji">${egg.emoji}</div>
+                        <div class="name" style="font-size:20px;">${egg.name}</div>
+                        <div class="theme-desc">🎁 ПОДАРОК из мини-игры!</div>
+                        <button class="shop-btn" style="background: linear-gradient(160deg,#b0f5a8,#5ecb52); box-shadow: 0 4px 0 #2f8f3f;" onclick="openPrizeEgg(${i}, this)">🐣 Открыть подарок!</button>`;
+                    grid.appendChild(card);
+                });
+            }
+            appendShopBack(grid);
+        }
+        function openPrizeEgg(index, btnEl) {
+            const eggId = ownedEggs[index];
+            ownedEggs.splice(index, 1);
+            localStorage.setItem('tkOwnedEggs', JSON.stringify(ownedEggs));
+            hatchEggById(eggId, btnEl, false);
+        }
+        function appendShopBack(grid) {
+            const backBig = document.createElement('div');
+            backBig.style.cssText = 'grid-column:1/-1;display:flex;justify-content:center;margin-top:18px;';
+            backBig.innerHTML = `<button class="big-back-btn" onclick="backToMap()">🏡 НАЗАД на тропинку</button>`;
+            grid.appendChild(backBig);
+        }
+
+        // общая функция вылупления (используется покупкой и призами)
+        function hatchEggById(eggId, btnEl, isSale) {
+            const egg = eggs.find(e => e.id === eggId); if (!egg) return;
+            let card = btnEl ? btnEl.closest('.egg-card') : null;
+            if (card) card.classList.add('hatching');
+            playSound('coin');
+            setTimeout(() => {
+                const pet = rollPetFromEgg(egg);
+                const isNew = !ownedPets.includes(pet.id);
+                if (isNew) ownedPets.push(pet.id);
+                currentPetId = pet.id;
+                localStorage.setItem('mathOwnedPets', JSON.stringify(ownedPets));
+                localStorage.setItem('mathPet', currentPetId);
+                stats.eggsOpened++; saveStats();
+                checkAchievements();
+                shopTab = 'collect';
+                playSound('win'); launchConfetti();
+                if (card) {
+                    if (card.parentNode) card.classList.remove('hatching');
+                    card.innerHTML = `
+                        <div class="hatched-pet">${pet.emoji}</div>
+                        <div class="name" style="font-size:20px;">${pet.name}</div>
+                        <div class="boost-tag ${pet.tier === 'mythic' || pet.tier === 'legend' ? 'legend' : pet.tier === 'epic' || pet.tier === 'rare' ? 'epic' : ''}">💰 Доход ×${pet.mult.toFixed(1)} · ${TIER_NAMES[pet.tier]}</div>
+                        <div class="theme-desc">${isNew ? 'НОВЫЙ друг в коллекции!' : 'Такой друг уже есть — но пусть будет!'}</div>
+                        <button class="shop-btn" onclick="openShop()">Ура! В магазин</button>`;
+                    createFireworks(card, 24);
+                }
+                updateUI(); renderShop();
+                say(`🐣 ${hello()}, из яйца вылупился ${pet.name}${isNew ? ' — НОВЫЙ друг!' : ''}! Монетки теперь ×${effectiveMult().toFixed(2)}!`);
+            }, 1500);
+        }
+
+        // защита покупок и промокодов родительским замком
+        const _origBuyEgg = buyEgg;
+        buyEgg = function (eggId, btnEl) {
+            askParentGate(() => _origBuyEgg(eggId, btnEl));
+        };
+        const _origApplyPromo = applyPromo;
+        applyPromo = function () {
+            askParentGate(() => _origApplyPromo());
+        };
+        const _origOpenShop = openShop;
+        openShop = function () {
+            askParentGate(() => {
+                _origOpenShop();
+                // добавляем вкладку «Призы», если есть подарки
+                const tabs = document.querySelector('.shop-tabs');
+                if (tabs && !document.getElementById('tab-prizes')) {
+                    const t = document.createElement('div');
+                    t.className = 'shop-tab'; t.id = 'tab-prizes';
+                    t.textContent = '🎁 Призы';
+                    t.onclick = () => switchShopTab('prizes');
+                    tabs.insertBefore(t, document.getElementById('tab-themes'));
+                }
+                const tp = document.getElementById('tab-prizes');
+                if (tp) { tp.style.display = ownedEggs.length ? '' : 'none'; tp.className = 'shop-tab' + (shopTab === 'prizes' ? ' active-themes' : ''); }
+            });
+        };
+
+        // прогресс урока обновляет статистику, квесты и ачивки
+        const _origFinishLesson = finishLesson;
+        finishLesson = function () {
+            stats.lessonsDone++;
+            if (wrongAttempts === 0) stats.perfect++;
+            saveStats();
+            questProgress('qLessons');
+            _origFinishLesson();
+            checkAchievements();
+            renderStatsStrip();
+        };
+        // каждый правильный ответ — в копилку квеста
+        const _origCheckAnswer = checkAnswer;
+        checkAnswer = function (sel, btn) {
+            if (sel === correctAnswer) questProgress('qCorrect');
+            return _origCheckAnswer(sel, btn);
+        };
+        // победа в шахматах — в статистику
+        const _origWinGame = winGame;
+        winGame = function (msg) {
+            stats.chessWins++; saveStats();
+            _origWinGame(msg);
+            checkAchievements();
+        };
+        // уходы за питомцем продвигают квест
+        const _origCarePet = carePet;
+        carePet = function (kind) {
+            questProgress('qCare');
+            _origCarePet(kind);
+        };
+        // мини-игра продвигает квест по звёздам
+        const _origEndCatch = endCatchGame;
+        endCatchGame = function () {
+            if (cf) questProgress('qStars', cf.score);
+            _origEndCatch();
+        };
+
+        // обновлённый вывод множителя на экране результата (виден и бонус заботы!)
+        const _origUpdateUI = updateUI;
+        updateUI = function () {
+            _origUpdateUI();
+            renderHomePet();
+            renderStatsStrip();
+            renderDailyQuest();
+            renderDailyShowcase();
+            renderAchievements();
+            const boostEl = document.getElementById('reward-boost');
+            if (boostEl && boostEl.style.display !== 'none') {
+                // дописываем строку про заботу, если она уже есть
+                if (careBonus() > 0 && boostEl.innerHTML.includes('умножил')) {
+                    boostEl.innerHTML += ` <span style="color:#2f9fd8;">(+${careBonus().toFixed(2)} за заботу 🍼)</span>`;
+                }
+            }
+        };
+
         // Инициализация
         updateUI();
         renderMap();
+        renderAchievements();
+        renderHomePet();
+        renderStatsStrip();
+        renderDailyQuest();
+        renderDailyShowcase();
+        checkAchievements();
+        say(pickOne([`Привет, ${hello()}! Я придумал много нового: смотри «Мои награды» и покорми меня! 🍎`, `${withName('Теперь тут есть мини-игра, домашний питомец и букварь друзей!')} ✨`]));
     </script>
 </body>
 </html>
