@@ -352,6 +352,13 @@
             border: 3px solid var(--gold);
             display: flex; align-items: center; gap: 10px;
         }
+        #gem-bar { position: fixed; top: 158px; right: 20px; z-index: 102; background: linear-gradient(180deg, #f4fbff, #d9f3ff); padding: 7px 18px; border-radius: 999px; font-size: 19px; font-weight: 900; color: #1b6fa8; box-shadow: 0 5px 0 rgba(30,120,180,0.2), 0 8px 20px rgba(0,0,0,0.1); border: 3px solid #8fdcff; display: flex; align-items: center; gap: 7px; }
+        #gem-display { transition: transform 0.2s; display: inline-block; }
+        #gem-display.pop { animation: coinPop 0.5s ease; }
+        #gem-icon { animation: gemPulse 2.2s ease-in-out infinite; display: inline-block; }
+        @keyframes gemPulse { 0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); } 50% { transform: scale(1.2) rotate(8deg); filter: brightness(1.3); } }
+        .shop-btn.gem { background: linear-gradient(160deg,#a8ecff,#4fc8ff); box-shadow: 0 4px 0 #1b7fb8 !important; color: #063a5c; }
+        .shop-tab.active-gems { background: linear-gradient(160deg,#d8f8ff,#7fe0ff); color:#0a5a80; border-color:#fff; box-shadow: 0 6px 0 #2ba0cc, 0 0 24px rgba(90,220,255,0.55); }
         #coin-display { transition: transform 0.2s; display: inline-block; }
         #coin-display.pop { animation: coinPop 0.5s ease; }
         @keyframes coinPop { 0% { transform: scale(1); } 40% { transform: scale(1.6); color: #ff9500; } 100% { transform: scale(1); } }
@@ -1134,6 +1141,7 @@
     </div>
 
     <div id="top-bar"><span id="coin-icon">🪙</span> <span id="coin-display">0</span></div>
+    <div id="gem-bar" title="Алмазы — редкая валюта! Попадают за идеальные уроки, победы и мини-игры"><span id="gem-icon">💎</span> <span id="gem-display">0</span></div>
     <div id="timer-box">⏱️ <span id="timer-display">0:00</span></div>
 
     <div id="map-screen" class="screen active">
@@ -1234,6 +1242,14 @@
         // Это чинило главный баг: облака и солнышко трогали переменные coins/eggs/pets,
         // которые объявлены ниже — скрипт падал ещё до запуска, и кнопки «не нажимались».
         let coins = parseInt(localStorage.getItem('mathCoins')) || 0;
+        // ===== 💎 АЛМАЗЫ — редкая валюта! Падают за идеальные уроки, победы и мини-игры =====
+        let gems = parseInt(localStorage.getItem('tkGems')) || 0;
+        function addGems(n) {
+            if (n <= 0) return;
+            gems += n; localStorage.setItem('tkGems', gems); updateUI();
+            const gd = document.getElementById('gem-display');
+            if (gd) { gd.classList.remove('pop'); void gd.offsetWidth; gd.classList.add('pop'); floatText(gd, `+${n} 💎`, ''); }
+        }
         // ===== ПИТОМЦЫ УМНОЖАЮТ ДОХОД: каждая монетка в мире проходит через буст друга! =====
         function petMult() {
             const p = pets.find(x => x.id === currentPetId);
@@ -1539,16 +1555,16 @@
             { id: 'whale',   name: 'Китик',        emoji: '🐳', mult: 1.8,   tier: 'epic' },
             { id: 'octo',    name: 'Восьмилап',    emoji: '🐙', mult: 1.9,   tier: 'epic' },
             { id: 'bug',     name: 'Жучок',        emoji: '🐞', mult: 1.9,   tier: 'epic' },
-            { id: 'snail',   name: 'Улитка',       emoji: '🐌', mult: 2.0,   tier: 'epic' },
-            { id: 'bee',     name: 'Пчёлка',       emoji: '🐝', mult: 2.0,   tier: 'epic' },
-            { id: 'dino',    name: 'Динозаврик',   emoji: '🦖', mult: 2.1,   tier: 'epic' },
+            { id: 'snail',   name: 'Улитка',       emoji: '🐌', mult: 1.9,   tier: 'epic' },
+            { id: 'bee',     name: 'Пчёлка',       emoji: '🐝', mult: 1.9,   tier: 'epic' },
+            { id: 'dino',    name: 'Динозаврик',   emoji: '🦖', mult: 2.0,   tier: 'epic' },
             { id: 'dragon',  name: 'Дракончик',    emoji: '🐲', mult: 2.2,   tier: 'legend' },
-            { id: 'robot',   name: 'Робо-друг',    emoji: '🤖', mult: 2.3,   tier: 'legend' },
-            { id: 'alien',   name: 'Лунтик',       emoji: '👽', mult: 2.4,   tier: 'legend' },
-            { id: 'wizard',  name: 'Маг',          emoji: '🧙', mult: 2.5,   tier: 'legend' },
-            { id: 'ghost',   name: 'Привидение',   emoji: '👻', mult: 2.5,   tier: 'legend' },
-            { id: 'unicorn', name: 'Единорожек',   emoji: '🦄', mult: 3.0,   tier: 'mythic' },
-            { id: 'phoenix', name: 'Феникс',       emoji: '🐦‍🔥', mult: 3.5, tier: 'mythic' },
+            { id: 'robot',   name: 'Робо-друг',    emoji: '🤖', mult: 2.1,   tier: 'legend' },
+            { id: 'alien',   name: 'Лунтик',       emoji: '👽', mult: 2.1,   tier: 'legend' },
+            { id: 'wizard',  name: 'Маг',          emoji: '🧙', mult: 2.2,   tier: 'legend' },
+            { id: 'ghost',   name: 'Привидение',   emoji: '👻', mult: 2.0,   tier: 'legend' },
+            { id: 'unicorn', name: 'Единорожек',   emoji: '🦄', mult: 2.5,   tier: 'mythic' },
+            { id: 'phoenix', name: 'Феникс',       emoji: '🐦‍🔥', mult: 2.5, tier: 'mythic' },
             // --- НОВЫЕ ДРУЗЬЯ (теперь их 40!) ---
             { id: 'hamster', name: 'Хомка', emoji: '🐹', mult: 1.0, tier: 'common' },
             { id: 'hatch', name: 'Крярик', emoji: '🐤', mult: 1.1, tier: 'common' },
@@ -1561,13 +1577,13 @@
             { id: 'turtle', name: 'Черепашка', emoji: '🐢', mult: 1.7, tier: 'rare' },
             { id: 'hippo', name: 'Тётя-Гиппо', emoji: '🦛', mult: 1.8, tier: 'rare' },
             { id: 'elefant', name: 'Слонёнок', emoji: '🐘', mult: 1.9, tier: 'epic' },
-            { id: 'seal', name: 'Тюленьчик', emoji: '🫐', mult: 2.0, tier: 'epic' },
-            { id: 'coral', name: 'Рыбка-красавка', emoji: '🐠', mult: 2.1, tier: 'epic' },
-            { id: 'rocket', name: 'Ракетик', emoji: '🚀', mult: 2.3, tier: 'legend' },
-            { id: 'cat2', name: 'Кот-рыжик', emoji: '🐈', mult: 2.4, tier: 'legend' },
-            { id: 'crab', name: 'Крабик-танк', emoji: '🦀', mult: 2.5, tier: 'legend' },
-            { id: 'fairy', name: 'Фея-светлячок', emoji: '🧚', mult: 3.2, tier: 'mythic' },
-            { id: 'starpet', name: 'Звёздочка', emoji: '🌟', mult: 4.0, tier: 'mythic' },
+            { id: 'seal', name: 'Тюленьчик', emoji: '🫐', mult: 1.8, tier: 'epic' },
+            { id: 'coral', name: 'Рыбка-красавка', emoji: '🐠', mult: 1.9, tier: 'epic' },
+            { id: 'rocket', name: 'Ракетик', emoji: '🚀', mult: 2.1, tier: 'legend' },
+            { id: 'cat2', name: 'Кот-рыжик', emoji: '🐈', mult: 2.0, tier: 'legend' },
+            { id: 'crab', name: 'Крабик-танк', emoji: '🦀', mult: 2.2, tier: 'legend' },
+            { id: 'fairy', name: 'Фея-светлячок', emoji: '🧚', mult: 2.4, tier: 'mythic' },
+            { id: 'starpet', name: 'Звёздочка', emoji: '🌟', mult: 2.5, tier: 'mythic' },
             // --- ЕЩЁ БОЛЬШЕ ДРУЗЕЙ (теперь их 65!) ---
             { id: 'mole', name: 'Кротошка', emoji: '🐁', mult: 1.0, tier: 'common' },
             { id: 'squirrel', name: 'Белчонка', emoji: '🐿️', mult: 1.1, tier: 'common' },
@@ -1587,13 +1603,13 @@
             { id: 'antman', name: 'Муравей-трудяга', emoji: '🐜', mult: 1.8, tier: 'epic' },
             { id: 'puffer', name: 'Рыбка-шарик', emoji: '🐡', mult: 1.9, tier: 'epic' },
             { id: 'shellpet', name: 'Ракушка', emoji: '🐚', mult: 1.9, tier: 'epic' },
-            { id: 'sunflower', name: 'Солнышко-цвет', emoji: '🌻', mult: 2.0, tier: 'epic' },
-            { id: 'mushroom', name: 'Грибочек', emoji: '🍄', mult: 2.1, tier: 'epic' },
-            { id: 'clover', name: 'Счастливый лист', emoji: '🍀', mult: 2.2, tier: 'legend' },
-            { id: 'catking', name: 'Кот-король', emoji: '😺', mult: 2.3, tier: 'legend' },
-            { id: 'zombie', name: 'Зомби-добрый', emoji: '🧟', mult: 2.4, tier: 'legend' },
-            { id: 'elf', name: 'Эльф-лучник', emoji: '🧝', mult: 2.5, tier: 'legend' },
-            { id: 'melody', name: 'Мелодия', emoji: '🎵', mult: 3.4, tier: 'mythic' }
+            { id: 'sunflower', name: 'Солнышко-цвет', emoji: '🌻', mult: 1.8, tier: 'epic' },
+            { id: 'mushroom', name: 'Грибочек', emoji: '🍄', mult: 1.9, tier: 'epic' },
+            { id: 'clover', name: 'Счастливый лист', emoji: '🍀', mult: 2.1, tier: 'legend' },
+            { id: 'catking', name: 'Кот-король', emoji: '😺', mult: 2.0, tier: 'legend' },
+            { id: 'zombie', name: 'Зомби-добрый', emoji: '🧟', mult: 2.0, tier: 'legend' },
+            { id: 'elf', name: 'Эльф-лучник', emoji: '🧝', mult: 2.2, tier: 'legend' },
+            { id: 'melody', name: 'Мелодия', emoji: '🎵', mult: 2.4, tier: 'mythic' }
         ];
         const TIER_NAMES = { common: 'Обычный', uncommon: 'Необычный', rare: 'Редкий', epic: 'Эпический', legend: 'Легендарный', mythic: 'МИФИЧЕСКИЙ!' };
 
@@ -1762,6 +1778,8 @@
         const speechText = document.getElementById('speech-text');
 
         function updateUI() {
+            const gemDisp = document.getElementById('gem-display');
+            if (gemDisp) gemDisp.textContent = gems;
             if (coinDisplay.textContent !== String(coins)) {
                 coinDisplay.classList.remove('pop');
                 void coinDisplay.offsetWidth;
@@ -2094,7 +2112,7 @@
             // второе «Да» — реально сбрасываем (и промокоды тоже — всё с нуля!)
             ['mathCoins','mathPet','mathOwnedPets','mathTheme','mathOwnedThemes','mathUnlockedLevel',
              'letUnlockedLevel','mathLevelStars','mathBestTimes','chessLvl','chessBeaten','tkSubject',
-             'tkUsedPromos','tkLogoBonusDay']
+             'tkUsedPromos','tkLogoBonusDay','tkGems','tkDiamonds']
                 .forEach(k => localStorage.removeItem(k));
             location.reload();   // страница перезагружается — и всё заново!
         }
@@ -2290,11 +2308,7 @@
                     grid.appendChild(card);
                 });
             }
-            // крупная кнопка НАЗАД внизу магазина — сразу видно, куда выйти
-            const backBig = document.createElement('div');
-            backBig.style.cssText = 'grid-column:1/-1;display:flex;justify-content:center;margin-top:18px;';
-            backBig.innerHTML = `<button class="big-back-btn" onclick="backToMap()">🏡 НАЗАД на тропинку</button>`;
-            grid.appendChild(backBig);
+            // кнопка НАЗАД теперь только наверху — внизу магазина её больше нет
         }
 
         // ПОКУПКА ЯЙЦА: списываем монетки → яйцо трясётся → БУМ, питомец!
@@ -3865,10 +3879,7 @@
             hatchEggById(eggId, btnEl, false);
         }
         function appendShopBack(grid) {
-            const backBig = document.createElement('div');
-            backBig.style.cssText = 'grid-column:1/-1;display:flex;justify-content:center;margin-top:18px;';
-            backBig.innerHTML = `<button class="big-back-btn" onclick="backToMap()">🏡 НАЗАД на тропинку</button>`;
-            grid.appendChild(backBig);
+            // кнопка «НАЗАД» есть только наверху — внизу её больше не добавляем
         }
 
         // общая функция вылупления (используется покупкой и призами)
