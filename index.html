@@ -344,7 +344,7 @@
 
         /* --- ПАНЕЛИ --- */
         #top-bar {
-            position: fixed; top: 78px; right: 20px; z-index: 102;
+            position: fixed; top: 104px; right: 20px; z-index: 102;
             background: linear-gradient(180deg, #fffbe6, #fff3c4);
             padding: 10px 22px; border-radius: 999px;
             font-size: 24px; font-weight: 900; color: #c98a00;
@@ -1071,20 +1071,7 @@
 
     <div id="shop-btn" onmouseenter="playSound('hover')" onclick="openShop()">🛍️ Магазин</div>
 
-    <!-- ⚙️ НАСТРОЙКИ: шестерёнка справа -->
-    <div class="gear-btn" id="gear-btn" title="Настройки" onclick="openSettings()">⚙️</div>
-    <div id="settings-modal" onclick="if(event.target===this)closeSettings()">
-        <div class="modal-box">
-            <div style="font-size:52px;">⚙️🎛️</div>
-            <div class="modal-q">Настройки тропинки</div>
-            <div class="set-row">🔊 Звуки игр <div class="toggle-sw on" id="sw-sfx" onclick="toggleSetting('sfx', this)"></div></div>
-            <div class="set-row">🌿 Шумики природы <div class="toggle-sw" id="sw-nature" onclick="toggleSetting('nature', this)"></div></div>
-            <div class="set-row">✨ Красивые эффекты <div class="toggle-sw on" id="sw-fx" onclick="toggleSetting('fx', this)"></div></div>
-            <div class="set-row">🏰 Родительский контроль <div class="toggle-sw" id="sw-parent" onclick="toggleSetting('parent', this)"></div></div>
-            <div class="set-row" id="parent-lock-note" style="display:none; font-size:14px; color:#c2554f;">Магазин и промокоды будут спрашивать пример-задачку 🔐</div>
-            <div style="text-align:center; margin-top:6px;"><button class="m-btn no" onclick="closeSettings()">👍 Готово!</button></div>
-        </div>
-    </div>
+    <!-- ⚙️ НАСТРОЙКИ УБРАНЫ ПО ПРОСЬБЕ — их больше нет на экране -->
 
     <!-- 🌟 МИНИ-ИГРА «ПОЙМАЙ ЗВЕЗДУ» -->
     <div id="catch-field">
@@ -3425,8 +3412,8 @@
             { id: 'catch20',    icon: '☄️', name: 'Звездопад!',      desc: 'Поймать 20 звёзд за игру',        reward: 100, check: () => stats.bestCatch >= 20 },
             { id: 'stress10',   icon: '😌', name: 'Спокойный гений', desc: 'Нажать на антистрессы 10 раз',  reward: 20,  check: () => stats.stressPops >= 10 },
             { id: 'joke10',     icon: '😂', name: 'Смешинка',        desc: 'Прочитать 10 анекдотов',          reward: 30,  check: () => stats.jokesSeen >= 10 },
-            { id: 'care10',     icon: '🍼', name: 'Заботливый друг', desc: '10 раз поухаживать за питомцем',  reward: 50,  check: () => petCare.careCount >= 10 },
-            { id: 'care50',     icon: '❤️‍🔥', name: 'Супер-хозяин', desc: '50 уходов за питомцем',           reward: 150, check: () => petCare.careCount >= 50 },
+            { id: 'care10',     icon: '🍼', name: 'Друг питомцев', desc: 'Открыть 10 яичек с друзьями',  reward: 50,  check: () => stats.eggsOpened >= 10 },
+            { id: 'care50',     icon: '❤️‍🔥', name: 'Супер-хозяин', desc: 'Собрать 20 питомцев',           reward: 150, check: () => ownedPets.length >= 20 },
             { id: 'nameit',     icon: '📛', name: 'Как меня зовут?', desc: 'Написать своё имя на тропинке',   reward: 10,  check: () => playerName.length > 0 }
         ];
         function checkAchievements() {
@@ -3495,77 +3482,14 @@
             petCare.fun    = Math.max(0, petCare.fun    - hrs * 5);
             savePetCare();
         })();
-        function careBonus() {
-            // средний уход даёт до +0.3 к множителю питомца — надо поддерживать друга в форме!
-            const avg = (petCare.hunger + petCare.clean + petCare.fun) / 3;
-            return +(avg / 100 * 0.3).toFixed(2);
-        }
-        function petMoodEmoji() {
-            const avg = (petCare.hunger + petCare.clean + petCare.fun) / 3;
-            if (avg > 75) return '😄';
-            if (avg > 50) return '🙂';
-            if (avg > 25) return '😕';
-            return '😢';
-        }
+        function careBonus() { return 0; } // уход за питомцами отключён
+        function petMoodEmoji() { return '😄'; }
         function renderHomePet() {
+            // УХАЖИВАТЬ ЗА ПИТОМЦЕМ НЕЛЬЗЯ — карточка тамагочи убрана по просьбе!
             const card = document.getElementById('home-pet-card');
-            if (!card) return;
-            const pet = pets.find(p => p.id === currentPetId);
-            if (!pet) { card.style.display = 'none'; return; }
-            card.style.display = 'block';
-            const cb = careBonus();
-            card.innerHTML = `
-                <div class="hp-care-badge">🏠 Домашний друг</div>
-                <div class="hp-title">Заботься о друге — он станет сильнее!</div>
-                <div class="hp-pet-row">
-                    <div class="hp-emoji" id="hp-emoji" title="Погладь!">${pet.emoji}</div>
-                    <div class="hp-mood" id="hp-mood">${petMoodEmoji()}</div>
-                    <div class="hp-bars">
-                        <div class="hp-bar-row"><span class="hp-bar-label">🍎</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.hunger < 30 ? 'low' : ''}" style="width:${petCare.hunger}%"></div></div><b>${Math.round(petCare.hunger)}</b></div>
-                        <div class="hp-bar-row"><span class="hp-bar-label">🫧</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.clean < 30 ? 'low' : ''}" style="width:${petCare.clean}%"></div></div><b>${Math.round(petCare.clean)}</b></div>
-                        <div class="hp-bar-row"><span class="hp-bar-label">🎈</span><div class="hp-bar-track"><div class="hp-bar-fill ${petCare.fun < 30 ? 'low' : ''}" style="width:${petCare.fun}%"></div></div><b>${Math.round(petCare.fun)}</b></div>
-                    </div>
-                </div>
-                <div class="hp-actions">
-                    <button class="hp-btn hp-feed" onclick="carePet('feed')">🍎 Покормить</button>
-                    <button class="hp-btn hp-wash" onclick="carePet('wash')">🫧 Помыть</button>
-                    <button class="hp-btn hp-play" onclick="carePet('play')">🎈 Поиграть</button>
-                    <button class="hp-btn hp-hug" onclick="carePet('hug')">🤗 Обнять</button>
-                </div>
-                <div class="hp-bonus-note">💪 Забота даёт +${cb.toFixed(2)} к множителю друга! Итого: ×${effectiveMult().toFixed(2)}</div>`;
-            const em = document.getElementById('hp-emoji');
-            if (em) em.onclick = () => { carePet('hug'); };
+            if (card) card.style.display = 'none';
         }
-        function carePet(kind) {
-            const msgs = {
-                feed: pickOne([`Ням-ням! Спасибо, ${hello()}! 🍎`, 'Вкуснятина! У-у-ум!', `${hello()}, ты лучший кормилец! 😋`]),
-                wash: pickOne(['Буль-буль! Как свежо! 🫧', 'Мыться — здорово! Спасибо!', `${hello()}, я теперь блестю! ✨`]),
-                play: pickOne(['Ура, играем! Ещё-ещё! 🎈', 'Хи-хи! Ты весёлый, ' + hello() + '!', 'Игра — лучшее дело! 🥳']),
-                hug:  pickOne([`${withName('Обнимаю тебя крепко')} 🤗`, 'Как тепло! ❤️', `${hello()}, я тебя люблю! 💖`])
-            };
-            if (kind === 'feed') petCare.hunger = Math.min(100, petCare.hunger + 22);
-            if (kind === 'wash') petCare.clean  = Math.min(100, petCare.clean + 22);
-            if (kind === 'play') petCare.fun    = Math.min(100, petCare.fun + 22);
-            if (kind === 'hug') { petCare.fun = Math.min(100, petCare.fun + 8); petCare.hunger = Math.min(100, petCare.hunger + 3); }
-            petCare.careCount++;
-            savePetCare();
-            playSound('correct');
-            say(msgs[kind]);
-            const em = document.getElementById('hp-emoji');
-            if (em) { em.classList.remove('happy-jump'); void em.offsetWidth; em.classList.add('happy-jump'); burstAt(em, ['❤️', '✨', '⭐']); }
-            checkAchievements();
-            renderHomePet();
-            updateUI();
-        }
-        // тихий «тик»: раз в минуту друг чуть голодает
-        setInterval(() => {
-            if (document.hidden) return;
-            petCare.hunger = Math.max(0, petCare.hunger - 0.4);
-            petCare.clean  = Math.max(0, petCare.clean - 0.3);
-            petCare.fun    = Math.max(0, petCare.fun - 0.5);
-            savePetCare();
-            if (document.getElementById('map-screen').classList.contains('active')) renderHomePet();
-        }, 60000);
+        function carePet(kind) { /* уход отключён: питомцы сами о себе заботятся 🐾 */ }
 
         // ---------- 4) МИНИ-ИГРА «ПОЙМАЙ ЗВЕЗДУ» ----------
         let cf = null; // состояние мини-игры
@@ -3701,39 +3625,13 @@
         };
         function loreFor(pet) { return PET_LORE[pet.id] || 'Таинственный друг: раскрой его секреты в игре!'; }
 
-        // ---------- 6) НАСТРОЙКИ + РОДИТЕЛЬСКИЙ КОНТРОЛЬ ----------
-        let settings;
-        try { settings = JSON.parse(localStorage.getItem('tkSettings')) || {}; } catch (e) { settings = {}; }
-        settings.sfx = settings.sfx !== false;         // звуки игр (по умолчанию вкл)
-        settings.fx  = settings.fx  !== false;         // конфетти/салюты (вкл)
-        settings.nature = !!settings.nature;           // главный рубильник шумиков
-        settings.parent = !!settings.parent;           // родительский контроль
-        function saveSettings() { localStorage.setItem('tkSettings', JSON.stringify(settings)); }
-        function openSettings() {
-            initAudio(); playSound('click');
-            document.getElementById('sw-sfx').classList.toggle('on', settings.sfx);
-            document.getElementById('sw-nature').classList.toggle('on', settings.nature);
-            document.getElementById('sw-fx').classList.toggle('on', settings.fx);
-            document.getElementById('sw-parent').classList.toggle('on', settings.parent);
-            document.getElementById('parent-lock-note').style.display = settings.parent ? 'flex' : 'none';
-            document.getElementById('settings-modal').classList.add('show');
-        }
-        function closeSettings() { playSound('click'); document.getElementById('settings-modal').classList.remove('show'); }
-        function toggleSetting(key, el) {
-            settings[key] = !settings[key];
-            el.classList.toggle('on', settings[key]);
-            saveSettings();
-            playSound('click');
-            if (key === 'nature') {
-                if (!settings.nature) Object.keys(natureNodes).forEach(k => natureStop(k));
-                else Object.keys(natureOn).forEach(k => { if (natureOn[k]) natureStart(k); });
-                refreshNatureUI();
-            }
-            if (key === 'parent') {
-                document.getElementById('parent-lock-note').style.display = settings.parent ? 'flex' : 'none';
-                say(settings.parent ? 'Родительский контроль включён! 🔐' : 'Родительский контроль выключен 😉');
-            }
-        }
+        // ---------- 6) НАСТРОЙКИ УБРАНЫ С ЭКРАНА ----------
+        // Кнопок настроек больше нет — всё всегда включено по умолчанию.
+        const settings = { sfx: true, fx: true, nature: true, parent: false };
+        function saveSettings() {}
+        function openSettings() { /* настроек нет */ }
+        function closeSettings() { /* настроек нет */ }
+        function toggleSetting() { /* настроек нет */ }
         // --- Родительский замок: пример на сложение, ответ вводит взрослый ---
         let parentGateCb = null;
         function askParentGate(onPass) {
@@ -3831,7 +3729,7 @@
         const QUESTS = [
             { text: 'Пройти 2 урока сегодня', need: 2, key: 'qLessons', reward: 25 },
             { text: 'Поймать 8 звёзд в мини-игре', need: 8, key: 'qStars', reward: 20 },
-            { text: 'Погладить питомца или поухаживать 3 раза', need: 3, key: 'qCare', reward: 20 },
+            { text: 'Нажать на антистрессы 5 раз', need: 5, key: 'qStress', reward: 20 },
             { text: 'Прочитать 2 анекдота', need: 2, key: 'qJokes', reward: 15 },
             { text: 'Ответить правильно 10 раз', need: 10, key: 'qCorrect', reward: 30 }
         ];
@@ -3884,11 +3782,11 @@
         const _origPlaySound = playSound;
         playSound = function (t) { if (settings.sfx) _origPlaySound(t); };
 
-        // ================= ПИТОМЕЦ УМНОЖАЕТ ДОХОД (ОБНОВЛЕНО v3):
-        // итоговый множитель = множитель друга + бонус за заботу (тамагочи)!
+        // ================= ПИТОМЕЦ УМНОЖАЕТ ДОХОД:
+        // итоговый множитель = множитель друга (уход больше не влияет — его убрали)!
         function effectiveMult() {
             const p = pets.find(x => x.id === currentPetId);
-            return (p ? p.mult : 1.0) + careBonus();
+            return (p ? p.mult : 1.0);
         }
         // перезаписываем petMult — теперь все монетки мира идут через него
         petMult = function () { return effectiveMult(); };
@@ -3902,11 +3800,12 @@
             checkAchievements();
         };
 
-        // антистрессы тоже ведут статистику
+        // антистрессы тоже ведут статистику и продвигают квест дня
         ['stPop','stSquish','stBubble','stSpin','stBoing','stSparkle'].forEach(fnName => {
             const orig = window[fnName];
             window[fnName] = function (el) {
                 stats.stressPops++; saveStats();
+                questProgress('qStress');
                 checkAchievements();
                 return orig(el);
             };
@@ -4055,12 +3954,7 @@
             _origWinGame(msg);
             checkAchievements();
         };
-        // уходы за питомцем продвигают квест
-        const _origCarePet = carePet;
-        carePet = function (kind) {
-            questProgress('qCare');
-            _origCarePet(kind);
-        };
+        // антистрессы продвигают квест — см. блок статистики ниже (уход за питомцем отключён)
         // мини-игра продвигает квест по звёздам
         const _origEndCatch = endCatchGame;
         endCatchGame = function () {
@@ -4078,12 +3972,7 @@
             renderDailyShowcase();
             renderAchievements();
             const boostEl = document.getElementById('reward-boost');
-            if (boostEl && boostEl.style.display !== 'none') {
-                // дописываем строку про заботу, если она уже есть
-                if (careBonus() > 0 && boostEl.innerHTML.includes('умножил')) {
-                    boostEl.innerHTML += ` <span style="color:#2f9fd8;">(+${careBonus().toFixed(2)} за заботу 🍼)</span>`;
-                }
-            }
+            // (бонус за заботу убран — ухаживать нельзя)
         };
 
         // Инициализация
