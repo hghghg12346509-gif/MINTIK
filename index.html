@@ -2377,6 +2377,20 @@
             updateUI(); renderShop(); say(withName("Как красиво вокруг! 🤩"));
         }
 
+        function buyTheme(themeId, price) {
+            const th = themes.find(t => t.id === themeId);
+            if (coins >= price) {
+                coins -= price; ownedThemes.push(themeId); currentTheme = themeId;
+                localStorage.setItem('mathCoins', coins); localStorage.setItem('mathOwnedThemes', JSON.stringify(ownedThemes)); localStorage.setItem('mathTheme', currentTheme);
+                playSound('coin'); launchConfetti(); updateUI(); say(`Вау! Мир «${th.name}» включён! ✨`); renderShop();
+            } else { playSound('wrong'); say("Не хватает монеток! Играй еще!"); }
+        }
+
+        function equipTheme(themeId) {
+            playSound('click'); currentTheme = themeId; localStorage.setItem('mathTheme', currentTheme);
+            updateUI(); renderShop(); say("Как красиво вокруг! 🤩");
+        }
+
         // --- ИГРОВАЯ ЛОГИКА ---
         let currentLessonObj = null;
         let correctAnswer = 0;          // матеша: число; буквы: буква или индекс слова
