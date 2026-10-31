@@ -1469,7 +1469,8 @@
         // --- ПРОМОКОДЫ (правый нижний угол) ---
         const PROMOS = {
             'MINTIK325': { coins: 2500, msg: 'вау! Мега-подарок: +2500 монеток!' },
-            'GO': { coins: 1000, msg: 'класс! Держи подарочек: +1000 монеток!' }
+            'GO': { coins: 1000, msg: 'класс! Держи подарочек: +1000 монеток!' },
+            'GGG': { coins: 500, msg: 'ура! Подарочек для тебя: +500 монеток!' }
         };
         let usedPromos;
         try { usedPromos = JSON.parse(localStorage.getItem('tkUsedPromos')) || []; } catch (e) { usedPromos = []; }
@@ -1694,6 +1695,34 @@
             ...EXTRA_THEMES
         ];
 
+        // ================= ПРОКАЧКА ×2: УРОКИ ×2, НАГРАДЫ ×2! =================
+        // Каждому уроку добавлен второй набор заданий (уровень сложности +1 ступенька),
+        // а награда за урок удвоена. Старые сохранения прогресса работают как раньше.
+        function upgradeLesson(l) {
+            let m2;
+            if (typeof l.max === 'number') {                       // математика: harder generator tier
+                const tiers = [3, 4, 5, 6, 7, 8, 10, 12, 14, 15, 18, 20];
+                m2 = Math.min(20, tiers[Math.min(tiers.indexOf(l.max) + 1, tiers.length - 1)] || (l.max + 2));
+            } else if (Array.isArray(l.pool)) {                    // буквы: pool grows by one letter
+                m2 = l.pool.slice();
+                const extra = Object.keys(LETTER_DATA).filter(c => !m2.includes(c));
+                if (extra.length) m2.push(extra[Math.floor(Math.random() * extra.length)]);
+            } else if (Array.isArray(l.words)) {                   // слова: add a new word from LETTER_DATA
+                m2 = l.words.slice();
+                const cand = Object.keys(LETTER_DATA)
+                    .map(k => LETTER_DATA[k].word.toUpperCase())
+                    .filter(w => /^[А-ЯЁ]+$/.test(w) && w.length >= 3 && w.length <= 6 && !m2.includes(w));
+                if (cand.length) m2.push(cand[Math.floor(Math.random() * cand.length)]);
+            } else if (Array.isArray(l.letters)) {                 // знакомство: +одна новая буква
+                m2 = l.letters.slice();
+                const extra = Object.keys(LETTER_DATA).filter(c => !m2.includes(c));
+                if (extra.length) m2.push(extra[Math.floor(Math.random() * extra.length)]);
+            } else m2 = null;
+            return Object.assign({}, l, {
+                reward: (l.reward || 8) * 2,   // награды стали щедрее в ДВА раза!
+                max2: m2
+            });
+        }
         // Модуль 1 — Солнечная поляна: сначала очень легко, потом понемногу сложнее (награды скуднее — монетки в цене!)
         const lessons1 = [
             { id: 1,  title: "1", max: 3,  type: 'add', reward: 6 },
@@ -1706,7 +1735,7 @@
             { id: 8,  title: "8", max: 10, type: 'sub', reward: 9 },
             { id: 9,  title: "9", max: 12, type: 'mix', reward: 10 },
             { id: 10, title: "🏆", max: 12, type: 'mix', reward: 12 }
-        ];
+        ].map(upgradeLesson);
         // Модуль 2 — Лунная долина: открывается, когда пройден весь модуль 1
         const lessons2 = [
             { id: 11, title: "1", max: 10, type: 'add', reward: 8 },
@@ -1719,7 +1748,7 @@
             { id: 18, title: "8", max: 20, type: 'sub', reward: 11 },
             { id: 19, title: "9", max: 20, type: 'mix', reward: 12 },
             { id: 20, title: "👑", max: 20, type: 'mix', reward: 15 }
-        ];
+        ].map(upgradeLesson);
         const MODULES_MATH = [
             { num: 1, name: 'Солнечная поляна', icon: '☀️', cls: 'mb-1', lessons: lessons1 },
             { num: 2, name: 'Лунная долина',    icon: '🌙', cls: 'mb-2', lessons: lessons2 }
@@ -1757,7 +1786,7 @@
             { id: 8,  title: '7',  type: 'find', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] , reward: 10 },
             { id: 9,  title: '8',  type: 'first', pool: ['Л','Ы','Ш','И','Ж','К','М','А','У','О','Н','Р','С','Т'] , reward: 10 },
             { id: 10, title: '🏆', type: 'word', words: ['ЛИСА','КОЗА','КНИГА','МАЛЬВА'] , reward: 11 }
-        ];
+        ].map(upgradeLesson);
         // Модуль 2 — буквы посерьёзнее, открывается после всего модуля 1
         const letterLessons2 = [
             { id: 11, title: '🌟', type: 'intro', letters: ['Ё','Ж','Й','Ц','Ч','Щ','Э','Ю','Я','Ы','Ь','Ъ'] , reward: 9 },
@@ -1770,7 +1799,7 @@
             { id: 18, title: '7',  type: 'find', pool: Object.keys(LETTER_DATA) , reward: 16 },
             { id: 19, title: '8',  type: 'first', pool: Object.keys(LETTER_DATA) , reward: 17 },
             { id: 20, title: '👑', type: 'word', words: ['РАКЕТА','ЩИТУХА','ЦЫПЛЁНОК','ЯГОДА'] , reward: 18 }
-        ];
+        ].map(upgradeLesson);
         const MODULES_LETTERS = [
             { num: 1, name: 'Весёлые буквы',    icon: '🌈', cls: 'mb-1', lessons: letterLessons1 },
             { num: 2, name: 'Взрослая азбука',  icon: '📚', cls: 'mb-2', lessons: letterLessons2 }
@@ -2433,6 +2462,15 @@
         let correctWordIdx = -1;        // для типа 'word' — индекс выбранного слова
         let questionCount = 0;
         const QUESTIONS_PER_LESSON = 5;
+        // --- ПРОКАЧКА ×2: второй (усложнённый) набор заданий внутри урока ---
+        // Задания 1–5 — обычный уровень урока, задания 6–10 — прокачанный (сложнее).
+        // Если у урока нет второго набора — он остаётся на 5 заданий.
+        function lessonQuestionsTotal() {
+            return currentLessonObj && currentLessonObj.max2 ? QUESTIONS_PER_LESSON * 2 : QUESTIONS_PER_LESSON;
+        }
+        function isHardPhase() {
+            return !!(currentLessonObj && currentLessonObj.max2 && questionCount >= QUESTIONS_PER_LESSON);
+        }
         let lessonCorrectCount = 0;
         let wrongAttempts = 0;
         let hintUsed = false;           // подсказка не штрафуется, но запоминается
@@ -2606,15 +2644,23 @@
         function renderProgressDots() {
             const dotsEl = document.getElementById('progress-dots');
             dotsEl.innerHTML = '';
-            for (let i = 0; i < QUESTIONS_PER_LESSON; i++) {
+            const total = lessonQuestionsTotal();
+            for (let i = 0; i < total; i++) {
                 const d = document.createElement('div');
-                d.className = 'p-dot' + (i < questionCount ? ' done' : i === questionCount ? ' now' : '');
+                d.className = 'p-dot' + (i < questionCount ? ' done' : i === questionCount ? ' now' : '') + (i >= QUESTIONS_PER_LESSON && currentLessonObj && currentLessonObj.max2 ? ' hard-dot' : '');
                 dotsEl.appendChild(d);
             }
         }
 
         function generateQuestion() {
-            if (questionCount >= QUESTIONS_PER_LESSON) { finishLesson(); return; }
+            if (questionCount >= lessonQuestionsTotal()) { finishLesson(); return; }
+            // ПРОКАЧКА ×2: между двумя половинами урока — весёлый привал
+            if (currentSubject !== 'letters' && currentLessonObj && currentLessonObj.max2 && questionCount === QUESTIONS_PER_LESSON) {
+                say(pickOne([`Отлично, ${hello()}! Привал! 🍵 А теперь — ПРОКАЧАННЫЕ задания посложнее!`, `Половина готова! Вторая волна — для смелых: уровень выше! 💪`]));
+                playSound('win');
+                setTimeout(() => generateQuestion(), 1500);
+                return;
+            }
             renderProgressDots();
 
             // Сброс вспомогательных зон
@@ -2633,7 +2679,7 @@
 
             if (currentSubject === 'letters') { generateLetterQuestion(); return; }
 
-            let max = currentLessonObj.max;
+            let max = isHardPhase() ? (currentLessonObj.max2 || currentLessonObj.max) : currentLessonObj.max;
             let type = currentLessonObj.type;
 
             // Генераторы вариантов (результат: [num1, op, num2])
@@ -2739,6 +2785,12 @@
 
         function generateLetterQuestion() {
             const lesson = currentLessonObj;
+            // ПРОКАЧКА ×2: во второй половине урока — усложнённый набор (max2)
+            if (isHardPhase()) lesson = Object.assign({}, lesson, {
+                pool: lesson.max2 || lesson.pool,
+                words: lesson.max2 || lesson.words,
+                letters: lesson.max2 || lesson.letters
+            });
             const qEl = document.getElementById('question-text');
             const vaEl = document.getElementById('visual-aid');
             const introEl = document.getElementById('lesson-intro');
