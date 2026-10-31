@@ -1469,7 +1469,8 @@
         // --- ПРОМОКОДЫ (правый нижний угол) ---
         const PROMOS = {
             'MINTIK325': { coins: 2500, msg: 'вау! Мега-подарок: +2500 монеток!' },
-            'GO': { coins: 1000, msg: 'класс! Держи подарочек: +1000 монеток!' }
+            'GO': { coins: 1000, msg: 'класс! Держи подарочек: +1000 монеток!' },
+            'GGG': { coins: 500, msg: 'ура! Подарочек для тебя: +500 монеток!' }
         };
         let usedPromos;
         try { usedPromos = JSON.parse(localStorage.getItem('tkUsedPromos')) || []; } catch (e) { usedPromos = []; }
