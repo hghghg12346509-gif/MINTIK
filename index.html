@@ -651,6 +651,28 @@
         .shop-tab.active-pets { background: linear-gradient(160deg, #ffd6ea, #ff8fc0); color: #8f1450; border-color: #fff; box-shadow: 0 6px 0 #d84470, 0 0 24px rgba(255,140,190,0.55); }
         .shop-tab.active-themes { background: linear-gradient(160deg, #d8f3ff, #8ddcff); color: #14537f; border-color: #fff; box-shadow: 0 6px 0 #2b8cc4, 0 0 24px rgba(120,210,255,0.55); }
 
+        /* --- КАЗИНО (вкладка магазина) --- */
+        .shop-tab.active-casino { background: linear-gradient(160deg, #ffe9a8, #ffb63d); color: #7a4b00; border-color: #fff; box-shadow: 0 6px 0 #cf8a12, 0 0 24px rgba(255,190,70,0.6); }
+        .casino-panel { width: 100%; max-width: 640px; margin: 22px auto 0; text-align: center; background: linear-gradient(180deg, #fffdf4, #ffefc6); border: 5px solid #e8b23a; border-radius: 26px; padding: 22px 18px; box-shadow: 0 8px 0 #d49a17, inset 0 0 30px rgba(255,255,255,0.5); }
+        .casino-wheel { position: relative; width: min(320px, 86vw); height: min(320px, 86vw); margin: 0 auto 16px; }
+        .casino-wheel svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 6px 10px rgba(120,80,0,0.3)); transition: transform 4s cubic-bezier(0.12, 0.68, 0.08, 1); }
+        .cw-label { font-family: 'Baloo 2', cursive; font-weight: 900; }
+        .casino-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 40px; z-index: 3; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35)); }
+        .casino-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff6d6, #ffc23d); border: 4px solid #a9741a; box-shadow: 0 4px 0 #a9741a; font-size: 34px; cursor: pointer; z-index: 2; transition: transform 0.12s; }
+        .casino-hub:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.1); }
+        .casino-hub:active:not(:disabled) { transform: translate(-50%, -50%) scale(0.92); }
+        .casino-hub:disabled { filter: grayscale(0.6); opacity: 0.7; cursor: default; }
+        .casino-result { min-height: 34px; font-size: 22px; font-weight: 900; color: #8a5b00; font-family: 'Baloo 2', cursive; margin-bottom: 8px; }
+        .casino-result.win { animation: casinoPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); color: #1d8f3a; }
+        .casino-result.jackpot { animation: casinoPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); color: #d926a9; text-shadow: 0 0 14px rgba(255, 100, 220, 0.8); }
+        @keyframes casinoPop { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.25); } 100% { transform: scale(1); opacity: 1; } }
+        .casino-odds { font-size: 13.5px; font-weight: 800; color: #a08a52; margin-bottom: 12px; }
+        .casino-stats { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .casino-stat { background: #fff; border: 3px solid #eedda8; border-radius: 16px; padding: 7px 16px; font-weight: 900; font-size: 15px; color: #8a7434; }
+        .casino-stat b { color: #d99a12; font-size: 18px; }
+        .casino-stat.net-plus b { color: #1d8f3a; } .casino-stat.net-minus b { color: #d0453e; }
+        @media (max-width: 560px) { .casino-panel { padding: 16px 10px; } .casino-result { font-size: 19px; } }
+
         .theme-preview {
             height: 92px; border-radius: 18px; margin-bottom: 12px; border: 3px dashed rgba(255,255,255,0.85);
             background: var(--t-bg, linear-gradient(180deg,#a8e6ff,#b8ecc0));
@@ -1265,6 +1287,7 @@
             <div class="shop-tab" id="tab-collect" onclick="switchShopTab('collect')" style="display:none;">🐾 Моя коллекция</div>
             <div class="shop-tab" id="tab-ency" onclick="switchShopTab('ency')">📖 Букварь друзей</div>
             <div class="shop-tab" id="tab-themes" onclick="switchShopTab('themes')">🎨 Темы и ауры</div>
+            <div class="shop-tab" id="tab-casino" onclick="switchShopTab('casino')">🎰 Казино</div>
         </div>
         <div class="shop-grid" id="shop-grid"></div>
     </div>
@@ -3977,8 +4000,11 @@
             _origRenderShop();
             const encyTab = document.getElementById('tab-ency');
             if (encyTab) encyTab.className = 'shop-tab' + (shopTab === 'ency' ? ' active-themes' : '');
+            const casinoTabEl = document.getElementById('tab-casino');
+            if (casinoTabEl) casinoTabEl.className = 'shop-tab' + (shopTab === 'casino' ? ' active-casino' : '');
             if (shopTab === 'ency') renderEncyclopedia();
             if (shopTab === 'prizes') renderPrizeTab();
+            if (shopTab === 'casino') renderCasinoTab();
         };
         function renderEncyclopedia() {
             const grid = document.getElementById('shop-grid');
@@ -4029,6 +4055,150 @@
             backBig.style.cssText = 'grid-column:1/-1;display:flex;justify-content:center;margin-top:18px;';
             backBig.innerHTML = `<button class="big-back-btn" onclick="backToMap()">🏡 НАЗАД на тропинку</button>`;
             grid.appendChild(backBig);
+        }
+
+        // ================= 🎰 КАЗИНО: колесо фортуны за монетки =================
+        // Средний итог спина ≈ 0.85×ставки: выиграть можно (шанс ~46%),
+        // но в долгую казино всегда в плюсе — игра остаётся тяжёлой!
+        const CASINO_SPIN_COST = 200;
+        const CASINO_PRIZES = [
+            { label: '−10',    delta: -10,   w: 14, color: '#e05c55' },   // 14%
+            { label: '+30',    delta: 30,    w: 16, color: '#f7b733' },   // 16%
+            { label: '−30',    delta: -30,   w: 16, color: '#d94f4f' },   // 16%
+            { label: '+60',    delta: 60,    w: 12, color: '#a8e063' },   // 12%
+            { label: '−60',    delta: -60,   w: 12, color: '#c0392b' },   // 12%
+            { label: '+100',   delta: 100,   w: 8,  color: '#7fd8be' },   //  8%
+            { label: '×2! 🍀', delta: 'x2',  w: 4,  color: '#ffd700' },   //  4% (возврат всей ставки!)
+            { label: '+200',   delta: 200,   w: 3,  color: '#8ddcff' },   //  3%
+            { label: '−100',   delta: -100,  w: 10, color: '#a93226' },   // 10%
+            { label: 'JACKPOT +300', delta: 300, w: 1, color: '#ff6ec7' } //  1%
+        ];
+        let casinoSpins = parseInt(localStorage.getItem('tkCasinoSpins')) || 0;
+        let casinoNet = parseInt(localStorage.getItem('tkCasinoNet')) || 0;
+        let casinoAngle = 0, casinoBusy = false;
+
+        function rollCasinoPrize() {
+            const total = CASINO_PRIZES.reduce((s, p) => s + p.w, 0);
+            let r = Math.random() * total;
+            for (const p of CASINO_PRIZES) { r -= p.w; if (r <= 0) return p; }
+            return CASINO_PRIZES[0];
+        }
+        function prizeDelta(p) { return p.delta === 'x2' ? CASINO_SPIN_COST : p.delta; }
+
+        function buildCasinoWheelSvg() {
+            const n = CASINO_PRIZES.length, cx = 160, cy = 160, R = 152;
+            const seg = 360 / n;
+            let out = '<svg id="casino-svg" viewBox="0 0 320 320">';
+            out += `<circle cx="${cx}" cy="${cy}" r="${R + 6}" fill="#8a5b12"/>`;
+            CASINO_PRIZES.forEach((p, i) => {
+                const a1 = (i * seg - 90) * Math.PI / 180;
+                const a2 = ((i + 1) * seg - 90) * Math.PI / 180;
+                const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
+                const x2 = cx + R * Math.cos(a2), y2 = cy + R * Math.sin(a2);
+                out += `<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 0,1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${p.color}" stroke="#fffdf4" stroke-width="3"/>`;
+                const midDeg = i * seg + seg / 2 - 90;
+                const rot = midDeg > 90 || midDeg < -90 ? midDeg + 180 : midDeg;
+                const flip = midDeg > 90 || midDeg < -90;
+                const lr = flip ? 52 : 118;
+                const lx = cx + lr * Math.cos(midDeg * Math.PI / 180);
+                const ly = cy + lr * Math.sin(midDeg * Math.PI / 180);
+                const fs = String(p.label).length > 8 ? 11 : 14;
+                out += `<text class="cw-label" x="${lx.toFixed(1)}" y="${(ly + fs / 3).toFixed(1)}" font-size="${fs}" fill="#4a3200" text-anchor="middle" transform="rotate(${rot.toFixed(1)} ${lx.toFixed(1)} ${ly.toFixed(1)})">${p.label}</text>`;
+            });
+            for (let i = 0; i < n; i++) {
+                const a = (i * seg - 90) * Math.PI / 180;
+                out += `<circle cx="${(cx + (R + 2) * Math.cos(a)).toFixed(1)}" cy="${(cy + (R + 2) * Math.sin(a)).toFixed(1)}" r="4.5" fill="#fff6d6" stroke="#a9741a" stroke-width="1.5"/>`;
+            }
+            out += '</svg>';
+            return out;
+        }
+
+        function renderCasinoTab() {
+            const grid = document.getElementById('shop-grid');
+            grid.className = 'egg-grid';
+            grid.innerHTML = `
+                <div class="casino-panel" style="grid-column:1/-1;">
+                    <h2 style="font-family:'Baloo 2',cursive;color:#8a5b00;font-size:28px;margin-bottom:4px;">🎰 Колесо Фортуны!</h2>
+                    <div class="casino-odds">Ставка: <b>${CASINO_SPIN_COST} 🪙</b> за спин · шанс выиграть: 46% · ДЖЕКПОТ +300: всего 1%! · возврат ставки ×2: 4%</div>
+                    <div class="casino-wheel">
+                        <div class="casino-pointer">🔻</div>
+                        ${buildCasinoWheelSvg()}
+                        <button class="casino-hub" id="casino-spin-btn" title="Крутить колесо!" onclick="casinoSpin()" onmouseenter="playSound('hover')">🎲</button>
+                    </div>
+                    <div class="casino-result" id="casino-result">Нажми на кубик в центре колеса, ${hello()}!</div>
+                    <div class="casino-stats">
+                        <div class="casino-stat">Кручений: <b id="casino-spins">${casinoSpins}</b></div>
+                        <div class="casino-stat ${casinoNet >= 0 ? 'net-plus' : 'net-minus'}">Баланс казино: <b id="casino-net">${casinoNet >= 0 ? '+' : ''}${casinoNet}</b> 🪙</div>
+                    </div>
+                </div>`;
+            appendShopBack(grid);
+        }
+
+        function casinoSpin() {
+            if (casinoBusy) return;
+            if (coins < CASINO_SPIN_COST) {
+                playSound('wrong');
+                say(`${hello()}, на спин казино не хватает ${CASINO_SPIN_COST - coins} монеток! Проходи уроки и копи! 💪`);
+                return;
+            }
+            askParentGate(doCasinoSpin);
+        }
+
+        function doCasinoSpin() {
+            if (casinoBusy) return;
+            if (coins < CASINO_SPIN_COST) { playSound('wrong'); return; }
+            const svg = document.getElementById('casino-svg');
+            const resEl = document.getElementById('casino-result');
+            const hubBtn = document.getElementById('casino-spin-btn');
+            if (!svg || !resEl) return;
+            casinoBusy = true;
+            if (hubBtn) hubBtn.disabled = true;
+            coins -= CASINO_SPIN_COST; localStorage.setItem('mathCoins', coins); updateUI();
+            playSound('coin');
+            resEl.className = 'casino-result';
+            resEl.textContent = 'Колесико крутится… 🎡';
+
+            const prize = rollCasinoPrize();
+            const idx = CASINO_PRIZES.indexOf(prize);
+            const seg = 360 / CASINO_PRIZES.length;
+            const targetMod = (360 - (idx * seg + seg / 2) + (Math.random() * (seg * 0.7) - seg * 0.35) + 360) % 360;
+            const curMod = ((casinoAngle % 360) + 360) % 360;
+            let add = targetMod - curMod; if (add < 0) add += 360;
+            casinoAngle += 360 * 5 + add;   // 5 полных оборотов + точная остановка
+
+            svg.style.transition = 'transform 4s cubic-bezier(0.12, 0.68, 0.08, 1)';
+            svg.style.transform = `rotate(${casinoAngle}deg)`;
+
+            setTimeout(() => {
+                const won = prize.delta === 'x2' ? CASINO_SPIN_COST * 2 : CASINO_SPIN_COST + prize.delta;
+                const net = won - CASINO_SPIN_COST;
+                coins += won; localStorage.setItem('mathCoins', coins);
+                casinoSpins++; casinoNet += net;
+                localStorage.setItem('tkCasinoSpins', casinoSpins);
+                localStorage.setItem('tkCasinoNet', casinoNet);
+                stats.casinoSpins = (stats.casinoSpins || 0) + 1; saveStats();
+                const sp = document.getElementById('casino-spins'), nt = document.getElementById('casino-net');
+                if (sp) sp.textContent = casinoSpins;
+                if (nt) { nt.textContent = (casinoNet >= 0 ? '+' : '') + casinoNet; nt.closest('.casino-stat').className = 'casino-stat ' + (casinoNet >= 0 ? 'net-plus' : 'net-minus'); }
+                if (net > 0) {
+                    resEl.className = 'casino-result' + (prize.delta === 500 || prize.delta === 'x2' ? ' jackpot' : ' win');
+                    resEl.textContent = prize.delta === 'x2' ? `🍀 УДАЧА! Ставка удвоена: +${CASINO_SPIN_COST} 🪙!`
+                                  : prize.delta === 500 ? '🎆 ДЖЕКПОТ!!! +500 монеток!' : `🎉 Выигрыш: ${prize.label.replace('+', '')} 🪙!`;
+                    playSound('win'); launchConfetti();
+                    const wheel = document.querySelector('.casino-wheel');
+                    if (wheel) createFireworks(wheel, prize.delta === 500 || prize.delta === 'x2' ? 34 : 16);
+                    floatText(document.getElementById('coin-display') || wheel || resEl, `+${net} 🪙`);
+                    say(net >= 200 ? `ВОУ, ${hello()}! ДЖЕКПОТ! Целых ${net} монеток сверху! 🤑` : `Ура, ${hello()}! Колесо принесло тебе +${net} монеток! 🎰✨`);
+                } else {
+                    resEl.className = 'casino-result';
+                    resEl.textContent = `${prize.label} 🪙… повезёт в следующий раз!`;
+                    playSound('wrong');
+                    say(`Ух ты, ${hello()}, колесо забрало ${-net} монеток! Ничего, крути ещё — удачка рядом! 🍀`);
+                }
+                updateUI();
+                casinoBusy = false;
+                if (hubBtn) hubBtn.disabled = false;
+            }, 4200);
         }
 
         // общая функция вылупления (используется покупкой и призами)
